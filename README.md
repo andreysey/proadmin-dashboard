@@ -1,73 +1,137 @@
-# React + TypeScript + Vite
+# ProAdmin Dashboard (React Edition)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional-grade administrative interface built with a focus on engineering excellence, scalability, and maintainable architecture.
 
-Currently, two official plugins are available:
+This project serves as a demonstration of a **Junior+ to Middle** transition, moving beyond simple coding to system design.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Goals
 
-## React Compiler
+The primary objective is to incrementally build build a production-oriented dashboard that solves real-world engineering challenges:
+- **Scalability:** Using Feature-Sliced Design (FSD) to prevent "spaghetti code".
+- **Type Safety:** 100% TypeScript coverage with strict mode.
+- **Data Integrity:** Runtime validation of API responses and form inputs.
+- **Team Readiness:** Clean documentation, linting, and modular structure.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Tech Stack
 
-## Expanding the ESLint configuration
+- **Core:** React 19 + Vite
+- **Language:** TypeScript (Strict Mode)
+- **State Management:** - **TanStack Query (v5):** Server state, caching, and synchronization.
+  - **Zustand:** Lightweight client-side UI state.
+- **Forms & Validation:** React Hook Form + **Zod** (Schema-based validation).
+- **UI & Styling:** Tailwind CSS + **shadcn/ui** (Accessible Radix-based components).
+- **Networking:** Axios with custom interceptors for error handling.
+- **Mocking:** Mocking: MSW (Mock Service Worker) to simulate realistic backend interactions during development.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Architecture: Feature-Sliced Design (FSD)
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+The project follows the FSD methodology to ensure a clear separation of concerns:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **app/** — Global providers (QueryClient, Auth), global styles, and routing setup.
+- **pages/** — Composition layer; assembles widgets into full-screen views.
+- **widgets/** — Self-contained, complex UI blocks (e.g., `UserTable`, `AnalyticsDashboard`).
+- **features/** — User-centric actions with business value (e.g., `UpdateUserStatus`, `ExportReport`).
+- **entities/** — Domain-specific logic, types, and simple components (e.g., `User`, `Order`).
+- **shared/** — Reusable UI-kit, API clients, utility functions, and constants.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## Engineering Focus Areas
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 1. Robust Error Handling
+Implementation of **Global Error Boundaries** and Axios interceptors to handle 401/403/500 errors gracefully with user-friendly notifications.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 2. Performance Optimization
+- **Code Splitting:** Dynamic imports for route-level components.
+- **Render Optimization:** Strategic use of `useMemo` and `useCallback` for heavy list computations.
+- **Optimistic Updates:** Using TanStack Query to provide instant UI feedback during mutations.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### 3. Strict Type Safety
+No `any` policy. All API responses are validated via Zod schemas at the network boundary to ensure the frontend never processes "garbage" data.
+
+### 4. Role-Based Access Control (RBAC)
+- **Declarative Permissions API:** `<ProtectedAction permission="users:delete" />` and `usePermission('orders:edit')` hooks.
+- **Type-Safe Permissions:** All permissions defined as TypeScript literal types to prevent typos.
+- **Route-Level Guards:** Automatic redirection based on user role and required permissions.
+
+### 5. Advanced Data Management
+- **Server-Side Operations:** Pagination, sorting, and filtering handled on the backend.
+- **URL State Synchronization:** Query parameters persist table state for shareable links.
+- **Debounced Search:** Optimized search input with 300ms debounce to reduce API calls.
+- **Smart Loading States:** Skeleton UI components instead of generic spinners.
+
+### 6. Real-Time Analytics
+- **Live Dashboard:** Auto-refreshing charts using TanStack Query's `refetchInterval`.
+- **Date Range Filtering:** Interactive date pickers for custom report periods.
+- **Data Export:** Client-side CSV/Excel generation using `papaparse` or `xlsx`.
+
+## Features (Roadmap)
+
+- [ ] **Auth System:**
+  - JWT-based authentication with refresh token rotation
+  - Protected routes with automatic token refresh
+  - Secure token storage (httpOnly cookies or localStorage with XSS protection)
+- [ ] **User Management:**
+  - Complex tables with server-side pagination, sorting, and filtering
+  - URL-synced table state (shareable filter/sort links)
+  - Bulk actions (delete, export, status change)
+- [ ] **RBAC:**
+  - Declarative permission system (`usePermission`, `<ProtectedAction>`)
+  - Type-safe permission definitions
+  - Role-based route guards
+- [ ] **Real-Time Monitoring:**
+  - Live charts with auto-refresh (Recharts/Tremor)
+  - Date range filters
+  - CSV/Excel export functionality
+- [ ] **Testing:**
+  - Unit tests for business logic (Vitest)
+  - Integration tests for critical flows (login, CRUD operations)
+  - MSW handler tests
+  - Target: 70%+ coverage for `features/` and `entities/`
+- [ ] **Production Deployment:**
+  - Deployed to Vercel/Netlify with CI/CD
+  - Environment-based configuration
+  - Performance monitoring
+
+## Development Workflow
+
+This project follows an **incremental development approach** with regular code reviews:
+
+1. **GitHub Projects/Issues:** Track progress using GitHub's built-in project management.
+2. **Feature Branches:** Each feature developed in isolation with descriptive branch names.
+3. **Self-Code Review:** Every PR includes a self-review checklist before merging.
+4. **Documentation-First:** Features documented before implementation to clarify requirements.
+
+## Deployment
+
+**Live Demo:** [Coming Soon - Vercel Deployment]
+
+The project will be deployed to **Vercel** (free tier) with automatic deployments on every push to `main`. This provides:
+- Shareable link for recruiters/interviewers
+- Real performance metrics
+- Production-like environment testing
+
+## AI Policy
+
+I use AI as a **Technical Partner**, not a code generator.
+- **Usage:** Architecture brainstorming, brainstorming edge cases in TypeScript, and generating mock data.
+- **Constraint:** Every line of code is manually reviewed, refactored, and integrated with a full understanding of its impact on the system.
+
+## Author
+
+**Andrii Butsvin** *Frontend Developer based in Germany*
+
+- **Technical Skills:** JavaScript (ES6+), TypeScript, React, Vue 3.
+- **Languages:**
+  - German (B1 - Actively progressing to B2)
+  - English (B1 - Actively progressing to B2)
+  - Ukrainian (Native)
+  - Russian (Native)
+- **Work Status:** Resident in Germany (§24), Full Work Permit.
+
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server (with MSW auto-start)
+npm run dev
