@@ -1,3 +1,7 @@
 # Ignore artifacts:
 build
 coverage
+
+# TanStack Router
+.tanstack
+routeTree.gen.ts
