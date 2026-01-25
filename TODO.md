@@ -14,9 +14,9 @@
 
 ## 3. Base Layout & Routing
 
-- [ ] **Implement `DashboardLayout`**:
+- [x] **Implement `DashboardLayout`**:
   - Sidebar (side navigation).
   - Header (top bar with user info/theme).
-- [ ] **Setup Route Protection (Auth Guard)**:
+- [x] **Setup Route Protection (Auth Guard)**:
   - Authentication check before rendering protected pages.
   - Redirect to login if the user is not authorized.
