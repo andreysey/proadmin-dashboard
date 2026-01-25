@@ -7,6 +7,7 @@ This project serves as a demonstration of a **Junior+ to Middle** transition, mo
 ## Project Goals
 
 The primary objective is to incrementally build build a production-oriented dashboard that solves real-world engineering challenges:
+
 - **Scalability:** Using Feature-Sliced Design (FSD) to prevent "spaghetti code".
 - **Type Safety:** 100% TypeScript coverage with strict mode.
 - **Data Integrity:** Runtime validation of API responses and form inputs.
@@ -21,7 +22,7 @@ The primary objective is to incrementally build build a production-oriented dash
 - **Forms & Validation:** React Hook Form + **Zod** (Schema-based validation).
 - **UI & Styling:** Tailwind CSS + **shadcn/ui** (Accessible Radix-based components).
 - **Networking:** Axios with custom interceptors for error handling.
-- **Mocking:** Mocking: MSW (Mock Service Worker) to simulate realistic backend interactions during development.
+- **Mocking:** MSW (Mock Service Worker) for realistic API simulation (Stage 1).
 
 ## Architecture: Feature-Sliced Design (FSD)
 
@@ -37,36 +38,44 @@ The project follows the FSD methodology to ensure a clear separation of concerns
 ## Engineering Focus Areas
 
 ### 1. Robust Error Handling
+
 Implementation of **Global Error Boundaries** and Axios interceptors to handle 401/403/500 errors gracefully with user-friendly notifications.
 
 ### 2. Performance Optimization
+
 - **Code Splitting:** Dynamic imports for route-level components.
 - **Render Optimization:** Strategic use of `useMemo` and `useCallback` for heavy list computations.
 - **Optimistic Updates:** Using TanStack Query to provide instant UI feedback during mutations.
 
 ### 3. Strict Type Safety
+
 No `any` policy. All API responses are validated via Zod schemas at the network boundary to ensure the frontend never processes "garbage" data.
 
 ### 4. Role-Based Access Control (RBAC)
+
 - **Declarative Permissions API:** `<ProtectedAction permission="users:delete" />` and `usePermission('orders:edit')` hooks.
 - **Type-Safe Permissions:** All permissions defined as TypeScript literal types to prevent typos.
 - **Route-Level Guards:** Automatic redirection based on user role and required permissions.
 
 ### 5. Advanced Data Management
+
 - **Server-Side Operations:** Pagination, sorting, and filtering handled on the backend.
 - **URL State Synchronization:** Query parameters persist table state for shareable links.
 - **Debounced Search:** Optimized search input with 300ms debounce to reduce API calls.
 - **Smart Loading States:** Skeleton UI components instead of generic spinners.
 
 ### 6. Real-Time Analytics
+
 - **Live Dashboard:** Auto-refreshing charts using TanStack Query's `refetchInterval`.
 - **Date Range Filtering:** Interactive date pickers for custom report periods.
 - **Data Export:** Client-side CSV/Excel generation using `papaparse` or `xlsx`.
 
 ## Features (Roadmap)
 
-- [ ] **Auth System:**
-  - JWT-based authentication with refresh token rotation
+- [ ] **Auth System (Stage 1 - MSW):**
+  - MSW handlers for login/profile (mocking DummyJSON)
+  - JWT storage abstraction
+  - Login Page (React Hook Form + Zod)
   - Protected routes with automatic token refresh
   - Secure token storage (httpOnly cookies or localStorage with XSS protection)
 - [ ] **User Management:**
@@ -105,6 +114,7 @@ This project follows an **incremental development approach** with regular code r
 **Live Demo:** [Coming Soon - Vercel Deployment]
 
 The project will be deployed to **Vercel** (free tier) with automatic deployments on every push to `main`. This provides:
+
 - Shareable link for recruiters/interviewers
 - Real performance metrics
 - Production-like environment testing
@@ -112,12 +122,13 @@ The project will be deployed to **Vercel** (free tier) with automatic deployment
 ## AI Policy
 
 I use AI as a **Technical Partner**, not a code generator.
+
 - **Usage:** Architecture brainstorming, brainstorming edge cases in TypeScript, and generating mock data.
 - **Constraint:** Every line of code is manually reviewed, refactored, and integrated with a full understanding of its impact on the system.
 
 ## Author
 
-**Andrii Butsvin** *Frontend Developer based in Germany*
+**Andrii Butsvin** _Frontend Developer based in Germany_
 
 - **Technical Skills:** JavaScript (ES6+), TypeScript, React, Vue 3.
 - **Languages:**
@@ -135,3 +146,4 @@ npm install
 
 # Start the development server (with MSW auto-start)
 npm run dev
+```
