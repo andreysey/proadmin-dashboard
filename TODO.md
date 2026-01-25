@@ -2,8 +2,8 @@
 
 ## 1. Auth System (Stage 1)
 
-- [ ] **Infrastructure**:
-  - [ ] Install & Configure MSW.
+- [/] **Infrastructure**:
+  - [x] Install & Configure MSW.
   - [ ] Create `token-storage` utility (localStorage wrapper).
 - [ ] **UI & Logic**:
   - [ ] Implement `LoginForm` with validation (Zod).
