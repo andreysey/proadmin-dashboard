@@ -1,3 +1,4 @@
+import { tokenStorage } from '@/shared/lib/auth'
 import { Link } from '@tanstack/react-router'
 import { Home, Info, LayoutDashboard, LogOut } from 'lucide-react'
 
@@ -30,7 +31,7 @@ export const Sidebar = () => {
         <div className="mt-auto border-t pt-4">
           <button
             onClick={() => {
-              localStorage.removeItem('token')
+              tokenStorage.remove()
               window.location.reload()
             }}
             className="group text-foreground hover:bg-destructive/10 hover:text-destructive flex w-full items-center rounded-lg p-2 transition-colors"

@@ -1,9 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { LoginPage } from '@/pages/login'
+import { tokenStorage } from '@/shared/lib/auth'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/login')({
-  component: RouteComponent,
-})
+  beforeLoad() {
+    const isAuthenticated = tokenStorage.get()
 
-function RouteComponent() {
-  return <div>Hello "/login"!</div>
-}
+    if (isAuthenticated) {
+      throw redirect({ to: '/' })
+    }
+  },
+  component: LoginPage,
+})
