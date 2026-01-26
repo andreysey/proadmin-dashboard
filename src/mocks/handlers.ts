@@ -22,6 +22,9 @@ export const handlers = [
 
   http.get('https://dummyjson.com/users', async ({ request }) => {
     const url = new URL(request.url)
+    const skip = parseInt(url.searchParams.get('skip') ?? '0')
+    const limit = parseInt(url.searchParams.get('limit') ?? '10')
+
     if (url.searchParams.get('limit') === '0') {
       return passthrough()
     }
@@ -35,9 +38,13 @@ export const handlers = [
       role: user.id % 2 === 1 ? 'admin' : 'user',
     }))
 
+    const paginatedUsers = users.slice(skip, skip + limit)
+
     return HttpResponse.json({
-      ...data,
-      users,
+      users: paginatedUsers,
+      total: data.total,
+      skip,
+      limit,
     })
   }),
 ]

@@ -2,7 +2,7 @@ import { getUsers } from '@/entities/user'
 import { useMemo } from 'react'
 import { Button } from '@/shared/ui/button'
 import { Edit, Trash } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   createColumnHelper,
   flexRender,
@@ -62,10 +62,19 @@ const columns = [
   }),
 ]
 
-export const UserList = () => {
+export const UserList = ({
+  skip = 0,
+  limit = 10,
+  onPageChange,
+}: {
+  skip?: number
+  limit?: number
+  onPageChange?: (newSkip: number) => void
+}) => {
   const { data, isPending, isError } = useQuery({
-    queryKey: ['users'],
-    queryFn: getUsers,
+    queryKey: ['users', { skip, limit }],
+    queryFn: () => getUsers({ skip, limit }),
+    placeholderData: keepPreviousData,
   })
 
   // Fix: Ensure data is referentially stable to prevent infinite loops/re-renders
@@ -87,34 +96,64 @@ export const UserList = () => {
     return <div className="p-4 text-center text-red-500">Error loading users</div>
   }
 
+  const total = data?.total ?? 0
+  const hasNextPage = skip + limit < total
+  const hasPrevPage = skip > 0
+
   return (
-    <div className="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
-      <table className="w-full text-left text-sm text-gray-500">
-        <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <tr key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <th key={header.id} className="px-6 py-3">
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(header.column.columnDef.header, header.getContext())}
-                </th>
-              ))}
-            </tr>
-          ))}
-        </thead>
-        <tbody className="divide-y divide-gray-200 bg-white">
-          {table.getRowModel().rows.map((row) => (
-            <tr key={row.id} className="hover:bg-gray-50">
-              {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="px-6 py-4">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div className="flex flex-col gap-4">
+      <div className="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+        <table className="w-full text-left text-sm text-gray-500">
+          <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="px-6 py-3">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id} className="hover:bg-gray-50">
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-6 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div className="flex items-center justify-between px-2">
+        <div className="text-sm text-gray-500">
+          Showing {skip + 1} to {Math.min(skip + limit, total)} of {total} users
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange?.(Math.max(0, skip - limit))}
+            disabled={!hasPrevPage}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange?.(skip + limit)}
+            disabled={!hasNextPage}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

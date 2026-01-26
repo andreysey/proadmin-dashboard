@@ -8,8 +8,8 @@ interface GetUsersResponse {
   limit: number
 }
 
-export const getUsers = async () => {
-  const response = await api.get<GetUsersResponse>('/users')
+export const getUsers = async (params?: { skip?: number; limit?: number }) => {
+  const response = await api.get<GetUsersResponse>('/users', { params })
 
   return response.data
 }

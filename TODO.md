@@ -21,7 +21,7 @@
 
 - [x] Create `UserTable` using `@tanstack/react-table`.
 - [x] Columns: Avatar+Name, Email, Role, Actions.
-- [ ] Pagination controls (Next/Prev, Page size).
+- [x] Pagination controls (Next/Prev, Page size).
 - [ ] Search input (debounced).
 
 ### Functionality (Mutations)
