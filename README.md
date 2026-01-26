@@ -72,20 +72,22 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
 
 ## Features (Roadmap)
 
-- [ ] **Auth System (Stage 1 - MSW):**
-  - MSW handlers for login/profile (mocking DummyJSON)
-  - JWT storage abstraction
-  - Login Page (React Hook Form + Zod)
-  - Protected routes with automatic token refresh
-  - Secure token storage (httpOnly cookies or localStorage with XSS protection)
-- [ ] **User Management:**
+- [x] **Auth System (Stage 1 - MVP):**
+  - [x] MSW handlers for login (mocking DummyJSON)
+  - [x] Login Page (React Hook Form + Zod)
+  - [x] Protected routes (Basic Guard)
+  - [x] LocalStorage token management
+- [ ] **User Management (Stage 2):**
   - Complex tables with server-side pagination, sorting, and filtering
   - URL-synced table state (shareable filter/sort links)
   - Bulk actions (delete, export, status change)
-- [ ] **RBAC:**
+- [ ] **RBAC (Stage 3):**
   - Declarative permission system (`usePermission`, `<ProtectedAction>`)
   - Type-safe permission definitions
   - Role-based route guards
+- [ ] **Advanced Security (Stage 4):**
+  - JWT Refresh token rotation
+  - HttpOnly cookies integration (requires Backend/Proxy)
 - [ ] **Real-Time Monitoring:**
   - Live charts with auto-refresh (Recharts/Tremor)
   - Date range filters
