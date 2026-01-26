@@ -20,9 +20,14 @@
 ### UI Components
 
 - [x] Create `UserTable` using `@tanstack/react-table`.
-- [/] Columns: Avatar+Name, Email, Role, Actions.
+- [x] Columns: Avatar+Name, Email, Role, Actions.
 - [ ] Pagination controls (Next/Prev, Page size).
 - [ ] Search input (debounced).
+
+### Functionality (Mutations)
+
+- [ ] Implement Delete User (with confirmation dialog).
+- [ ] Implement Edit User (navigate to edit page/modal).
 
 ### Architecture
 

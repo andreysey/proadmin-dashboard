@@ -1,5 +1,7 @@
 import { getUsers } from '@/entities/user'
 import { useMemo } from 'react'
+import { Button } from '@/shared/ui/button'
+import { Edit, Trash } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import {
   createColumnHelper,
@@ -45,6 +47,19 @@ const columns = [
       </span>
     ),
   }),
+  columnHelper.display({
+    id: 'actions',
+    cell: () => (
+      <div className="flex items-center justify-end gap-2">
+        <Button variant="outline" size="icon-sm">
+          <Edit className="text-gray-500" />
+        </Button>
+        <Button variant="outline" size="icon-sm">
+          <Trash className="text-red-500" />
+        </Button>
+      </div>
+    ),
+  }),
 ]
 
 export const UserList = () => {
@@ -53,11 +68,13 @@ export const UserList = () => {
     queryFn: getUsers,
   })
 
-  // Memoize data to ensure referential stability and access the correct property
-  const tableData = useMemo(() => data?.users ?? [], [data])
+  // Fix: Ensure data is referentially stable to prevent infinite loops/re-renders
+  // TanStack Table requires stable data.
+  const defaultData = useMemo(() => [], [])
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: tableData,
+    data: data?.users ?? defaultData,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
