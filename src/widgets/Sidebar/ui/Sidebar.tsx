@@ -1,6 +1,6 @@
 import { tokenStorage } from '@/shared/lib/auth'
 import { Link } from '@tanstack/react-router'
-import { Home, Info, LayoutDashboard, LogOut } from 'lucide-react'
+import { Home, Info, LayoutDashboard, LogOut, Users } from 'lucide-react'
 
 export const Sidebar = () => {
   return (
@@ -19,6 +19,15 @@ export const Sidebar = () => {
             <Home className="group-hover:text-primary h-5 w-5 transition duration-75" />
             <span className="ml-3">Dashboard</span>
           </Link>
+
+          <Link
+            to="/users"
+            className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"
+          >
+            <Users className="group-hover:text-primary h-5 w-5 transition duration-75" />
+            <span className="ml-3">Users</span>
+          </Link>
+
           <Link
             to="/about"
             className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"

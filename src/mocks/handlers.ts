@@ -1,10 +1,11 @@
-import { http, HttpResponse, delay } from 'msw'
+import type { User } from '@/entities/user/model/types'
+import { http, HttpResponse, delay, passthrough } from 'msw'
 
 export const handlers = [
   // Mocking DummyJSON login endpoint
   http.post('https://dummyjson.com/auth/login', async () => {
     // Simulate network delay for realism
-    await delay(800)
+    await delay(1000)
 
     return HttpResponse.json({
       id: 15,
@@ -19,5 +20,24 @@ export const handlers = [
     })
   }),
 
-  // You can add more handlers here (e.g. user profile, products)
+  http.get('https://dummyjson.com/users', async ({ request }) => {
+    const url = new URL(request.url)
+    if (url.searchParams.get('limit') === '0') {
+      return passthrough()
+    }
+
+    const response = await fetch('https://dummyjson.com/users?limit=0')
+
+    const data = await response.json()
+
+    const users = data.users.map((user: User) => ({
+      ...user,
+      role: user.id % 2 === 1 ? 'admin' : 'user',
+    }))
+
+    return HttpResponse.json({
+      ...data,
+      users,
+    })
+  }),
 ]
