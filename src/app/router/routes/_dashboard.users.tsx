@@ -5,6 +5,7 @@ import { z } from 'zod'
 const usersSearchSchema = z.object({
   skip: z.number().optional().default(0),
   limit: z.number().optional().default(10),
+  q: z.string().optional(),
 })
 
 export const Route = createFileRoute('/_dashboard/users')({

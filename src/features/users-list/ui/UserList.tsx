@@ -65,15 +65,17 @@ const columns = [
 export const UserList = ({
   skip = 0,
   limit = 10,
+  q,
   onPageChange,
 }: {
   skip?: number
   limit?: number
+  q?: string
   onPageChange?: (newSkip: number) => void
 }) => {
   const { data, isPending, isError } = useQuery({
-    queryKey: ['users', { skip, limit }],
-    queryFn: () => getUsers({ skip, limit }),
+    queryKey: ['users', { skip, limit, q }],
+    queryFn: () => getUsers({ skip, limit, q }),
     placeholderData: keepPreviousData,
   })
 

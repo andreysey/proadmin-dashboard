@@ -33,16 +33,30 @@ export const handlers = [
 
     const data = await response.json()
 
-    const users = data.users.map((user: User) => ({
+    // Enhance users with roles
+    const allUsers = data.users.map((user: User) => ({
       ...user,
       role: user.id % 2 === 1 ? 'admin' : 'user',
     }))
 
-    const paginatedUsers = users.slice(skip, skip + limit)
+    // Filter by query (q)
+    const query = url.searchParams.get('q')?.toLowerCase() ?? ''
+    const filteredUsers = query
+      ? allUsers.filter(
+          (user: User) =>
+            user.firstName.toLowerCase().includes(query) ||
+            user.lastName.toLowerCase().includes(query) ||
+            user.email.toLowerCase().includes(query) ||
+            user.username.toLowerCase().includes(query)
+        )
+      : allUsers
+
+    // Paginate in memory
+    const paginatedUsers = filteredUsers.slice(skip, skip + limit)
 
     return HttpResponse.json({
       users: paginatedUsers,
-      total: data.total,
+      total: filteredUsers.length, // Update total for correct pagination
       skip,
       limit,
     })

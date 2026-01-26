@@ -8,7 +8,7 @@ interface GetUsersResponse {
   limit: number
 }
 
-export const getUsers = async (params?: { skip?: number; limit?: number }) => {
+export const getUsers = async (params?: { skip?: number; limit?: number; q?: string }) => {
   const response = await api.get<GetUsersResponse>('/users', { params })
 
   return response.data
