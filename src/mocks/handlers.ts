@@ -1,10 +1,12 @@
 import type { User } from '@/entities/user/model/types'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
+const deletedUserIds = new Set<number>()
+
 export const handlers = [
   // Mocking DummyJSON login endpoint
   http.post('https://dummyjson.com/auth/login', async () => {
-    // Simulate network delay for realism
+    // ... same as before
     await delay(1000)
 
     return HttpResponse.json({
@@ -30,16 +32,17 @@ export const handlers = [
     }
 
     const response = await fetch('https://dummyjson.com/users?limit=0')
-
     const data = await response.json()
 
-    // Enhance users with roles
-    const allUsers = data.users.map((user: User) => ({
-      ...user,
-      role: user.id % 2 === 1 ? 'admin' : 'user',
-    }))
+    // Enhance and then filter out deleted ones
+    const allUsers = data.users
+      .map((user: User) => ({
+        ...user,
+        role: user.id % 2 === 1 ? 'admin' : 'user',
+      }))
+      .filter((user: User) => !deletedUserIds.has(user.id))
 
-    // Filter by query (q)
+    // Filter by query (q) - using already filtered user list
     const query = url.searchParams.get('q')?.toLowerCase() ?? ''
     const filteredUsers = query
       ? allUsers.filter(
@@ -56,9 +59,21 @@ export const handlers = [
 
     return HttpResponse.json({
       users: paginatedUsers,
-      total: filteredUsers.length, // Update total for correct pagination
+      total: filteredUsers.length,
       skip,
       limit,
+    })
+  }),
+
+  http.delete('https://dummyjson.com/users/:id', async ({ params }) => {
+    const { id } = params
+    deletedUserIds.add(Number(id))
+    await delay(1000)
+
+    return HttpResponse.json({
+      id: Number(id),
+      isDeleted: true,
+      deletedOn: new Date().toISOString(),
     })
   }),
 ]

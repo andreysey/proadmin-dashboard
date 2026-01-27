@@ -13,3 +13,8 @@ export const getUsers = async (params?: { skip?: number; limit?: number; q?: str
 
   return response.data
 }
+export const deleteUser = async (id: number) => {
+  const response = await api.delete(`/users/${id}`)
+
+  return response.data
+}

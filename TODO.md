@@ -15,7 +15,7 @@
 ### Data Model
 
 - [x] Define `User` entity type (id, username, email, role, image, name).
-- [ ] Setup `MSW` handlers for `GET /users` (pagination, sorting, filtering).
+- [x] Setup `MSW` handlers for `GET /users` (pagination, sorting, filtering).
 
 ### UI Components
 
@@ -26,10 +26,10 @@
 
 ### Functionality (Mutations)
 
-- [ ] Implement Delete User (with confirmation dialog).
+- [x] Implement Delete User (with confirmation dialog).
 - [ ] Implement Edit User (navigate to edit page/modal).
 
 ### Architecture
 
 - [x] Use `features/users-list` slice.
-- [ ] Sync table state with URL (useSearch hook).
+- [x] Sync table state with URL (useSearch hook).

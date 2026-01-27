@@ -1,7 +1,7 @@
 import { getUsers } from '@/entities/user'
 import { useMemo } from 'react'
 import { Button } from '@/shared/ui/button'
-import { Edit, Trash } from 'lucide-react'
+import { Edit } from 'lucide-react'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   createColumnHelper,
@@ -10,6 +10,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import type { User } from '@/entities/user/model/types'
+import { DeleteUserButton } from '@/features/delete-user'
 
 const columnHelper = createColumnHelper<User>()
 
@@ -49,14 +50,12 @@ const columns = [
   }),
   columnHelper.display({
     id: 'actions',
-    cell: () => (
+    cell: (info) => (
       <div className="flex items-center justify-end gap-2">
-        <Button variant="outline" size="icon-sm">
-          <Edit className="text-gray-500" />
+        <Button variant="ghost" size="icon">
+          <Edit className="text-muted-foreground h-4 w-4" />
         </Button>
-        <Button variant="outline" size="icon-sm">
-          <Trash className="text-red-500" />
-        </Button>
+        <DeleteUserButton userId={info.row.original.id} />
       </div>
     ),
   }),
@@ -79,8 +78,6 @@ export const UserList = ({
     placeholderData: keepPreviousData,
   })
 
-  // Fix: Ensure data is referentially stable to prevent infinite loops/re-renders
-  // TanStack Table requires stable data.
   const defaultData = useMemo(() => [], [])
 
   // eslint-disable-next-line react-hooks/incompatible-library
