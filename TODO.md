@@ -40,4 +40,4 @@
 - [x] Implement user selection (checkboxes).
 - [x] Implement Bulk Delete.
 - [x] Implement Bulk Export to CSV.
-- [ ] Implement Bulk Role Change.
+- [x] Implement Bulk Role Change.

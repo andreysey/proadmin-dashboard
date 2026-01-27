@@ -1,5 +1,7 @@
-import { Trash2, Download, X } from 'lucide-react'
-import { Button } from '@/shared/ui'
+import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
+import { Button, Select } from '@/shared/ui'
+import { ROLES, type UserRole } from '@/entities/user/model/types'
+import { useState } from 'react'
 
 interface BulkActionsProps {
   selectedCount: number
@@ -7,14 +9,20 @@ interface BulkActionsProps {
   onDelete: () => void
   onExport: () => void
 }
-
 export const BulkActions = ({
   selectedCount,
   onClearSelection,
   onDelete,
   onExport,
+  onRoleChange,
   isDeleting,
-}: BulkActionsProps & { isDeleting?: boolean }) => {
+  isUpdatingRole,
+}: BulkActionsProps & {
+  isDeleting?: boolean
+  isUpdatingRole?: boolean
+  onRoleChange: (role: UserRole) => void
+}) => {
+  const [selectedRole, setSelectedRole] = useState<UserRole | ''>('')
   if (selectedCount === 0) return null
 
   return (
@@ -34,8 +42,43 @@ export const BulkActions = ({
         </Button>
       </div>
 
+      <div className="flex items-center gap-2 border-r pr-4">
+        <Select
+          className="h-8 w-32"
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+        >
+          <option value="" disabled>
+            Change role...
+          </option>
+          {ROLES.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </Select>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          disabled={!selectedRole || isUpdatingRole}
+          onClick={() => {
+            if (selectedRole) onRoleChange(selectedRole)
+          }}
+        >
+          <ShieldAlert className="h-4 w-4" />
+          {isUpdatingRole ? 'Updating...' : 'Apply'}
+        </Button>
+      </div>
+
       <div className="flex items-center gap-2">
-        <Button variant="outline" size="sm" className="gap-2" onClick={onExport}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          onClick={onExport}
+          disabled={isDeleting || isUpdatingRole}
+        >
           <Download className="h-4 w-4" />
           Export CSV
         </Button>
@@ -44,7 +87,7 @@ export const BulkActions = ({
           size="sm"
           className="gap-2"
           onClick={onDelete}
-          disabled={isDeleting}
+          disabled={isDeleting || isUpdatingRole}
         >
           <Trash2 className="h-4 w-4" />
           {isDeleting ? 'Deleting...' : 'Delete'}

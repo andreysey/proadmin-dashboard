@@ -14,7 +14,9 @@ import type { User } from '@/entities/user/model/types'
 import { DeleteUserButton } from '@/features/delete-user'
 import { BulkActions } from './BulkActions'
 import { useBulkDelete } from '../model/useBulkDelete'
+import { useBulkUpdateRole } from '../model/useBulkUpdateRole'
 import { downloadCsv } from '@/shared/lib/downloadCsv'
+import type { UserRole } from '@/entities/user/model/types'
 
 const columnHelper = createColumnHelper<User>()
 
@@ -132,10 +134,16 @@ export const UserList = ({
   })
 
   const { mutate: bulkDelete, isPending: isDeleting } = useBulkDelete()
+  const { mutate: bulkUpdateRole, isPending: isUpdatingRole } = useBulkUpdateRole()
 
   const selectedRows = table.getSelectedRowModel().rows
   const selectedCount = selectedRows.length
 
+  /**
+   * Strategy First:
+   * We handle success by clearing the selection and invalidating queries.
+   * This ensures the UI is consistent with the server state.
+   */
   const handleBulkDelete = () => {
     if (window.confirm(`Are you sure you want to delete ${selectedCount} users?`)) {
       const ids = selectedRows.map((row) => row.original.id)
@@ -143,6 +151,16 @@ export const UserList = ({
         onSuccess: () => setRowSelection({}),
       })
     }
+  }
+
+  const handleBulkUpdateRole = (role: UserRole) => {
+    const ids = selectedRows.map((row) => row.original.id)
+    bulkUpdateRole(
+      { ids, role },
+      {
+        onSuccess: () => setRowSelection({}),
+      }
+    )
   }
 
   const handleBulkExport = () => {
@@ -253,7 +271,9 @@ export const UserList = ({
         onClearSelection={() => setRowSelection({})}
         onDelete={handleBulkDelete}
         onExport={handleBulkExport}
+        onRoleChange={handleBulkUpdateRole}
         isDeleting={isDeleting}
+        isUpdatingRole={isUpdatingRole}
       />
     </div>
   )
