@@ -37,6 +37,7 @@
 
 ### Bulk Actions
 
-- [ ] Implement user selection (checkboxes).
-- [ ] Implement Bulk Delete.
-- [ ] Implement Bulk Export to CSV.
+- [x] Implement user selection (checkboxes).
+- [x] Implement Bulk Delete.
+- [x] Implement Bulk Export to CSV.
+- [ ] Implement Bulk Role Change.

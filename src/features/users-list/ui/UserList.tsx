@@ -1,6 +1,6 @@
 import { getUsers } from '@/entities/user'
-import { useMemo } from 'react'
-import { Button } from '@/shared/ui/button'
+import { useMemo, useState } from 'react'
+import { Button, Checkbox } from '@/shared/ui'
 import { Edit, ArrowUpDown, ChevronUp, ChevronDown } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
@@ -12,10 +12,31 @@ import {
 } from '@tanstack/react-table'
 import type { User } from '@/entities/user/model/types'
 import { DeleteUserButton } from '@/features/delete-user'
+import { BulkActions } from './BulkActions'
+import { useBulkDelete } from '../model/useBulkDelete'
+import { downloadCsv } from '@/shared/lib/downloadCsv'
 
 const columnHelper = createColumnHelper<User>()
 
 const columns = [
+  columnHelper.display({
+    id: 'select',
+    header: ({ table }) => (
+      <Checkbox
+        checked={table.getIsAllPageRowsSelected()}
+        onChange={table.getToggleAllPageRowsSelectedHandler()}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        disabled={!row.getCanSelect()}
+        onChange={row.getToggleSelectedHandler()}
+        aria-label="Select row"
+      />
+    ),
+  }),
   columnHelper.accessor('id', {
     header: 'ID',
     cell: (info) => info.getValue(),
@@ -91,6 +112,8 @@ export const UserList = ({
     placeholderData: keepPreviousData,
   })
 
+  const [rowSelection, setRowSelection] = useState({})
+
   const defaultData = useMemo(() => [], [])
 
   const sorting = useMemo(
@@ -102,10 +125,30 @@ export const UserList = ({
   const table = useReactTable({
     data: data?.users ?? defaultData,
     columns,
-    state: { sorting },
+    state: { sorting, rowSelection },
+    onRowSelectionChange: setRowSelection,
     manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
   })
+
+  const { mutate: bulkDelete, isPending: isDeleting } = useBulkDelete()
+
+  const selectedRows = table.getSelectedRowModel().rows
+  const selectedCount = selectedRows.length
+
+  const handleBulkDelete = () => {
+    if (window.confirm(`Are you sure you want to delete ${selectedCount} users?`)) {
+      const ids = selectedRows.map((row) => row.original.id)
+      bulkDelete(ids, {
+        onSuccess: () => setRowSelection({}),
+      })
+    }
+  }
+
+  const handleBulkExport = () => {
+    const dataToExport = selectedRows.map((row) => row.original)
+    downloadCsv(dataToExport, `users-export-${new Date().toISOString().split('T')[0]}.csv`)
+  }
 
   if (isPending) {
     return <div className="p-4 text-center">Loading users...</div>
@@ -204,6 +247,14 @@ export const UserList = ({
           </Button>
         </div>
       </div>
+
+      <BulkActions
+        selectedCount={selectedCount}
+        onClearSelection={() => setRowSelection({})}
+        onDelete={handleBulkDelete}
+        onExport={handleBulkExport}
+        isDeleting={isDeleting}
+      />
     </div>
   )
 }
