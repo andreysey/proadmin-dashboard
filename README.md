@@ -104,9 +104,9 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
 
 ## Development Workflow
 
-This project follows an **incremental development approach** with regular code reviews:
+This project follows an **incremental development approach** with a transparent planning process:
 
-1. **GitHub Projects/Issues:** Track progress using GitHub's built-in project management.
+1. **[Live Project Board](https://github.com/users/andreysey/projects/2):** I use GitHub Projects to track tasks, manage stages, and visualize progress.
 2. **Feature Branches:** Each feature developed in isolation with descriptive branch names.
 3. **Self-Code Review:** Every PR includes a self-review checklist before merging.
 4. **Documentation-First:** Features documented before implementation to clarify requirements.
