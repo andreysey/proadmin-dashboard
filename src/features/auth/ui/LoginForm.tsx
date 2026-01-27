@@ -17,6 +17,7 @@ import {
   CardContent,
   CardFooter,
 } from '@/shared/ui'
+import { useAuthStore } from '../model/auth.store'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
@@ -27,6 +28,7 @@ type LoginValues = z.infer<typeof loginSchema>
 
 export const LoginForm = () => {
   const navigate = useNavigate()
+  const setAuth = useAuthStore((state) => state.setAuth)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -37,8 +39,8 @@ export const LoginForm = () => {
   } = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: 'kminchelle', // Default for easy testing
-      password: '0lelplR',
+      username: 'andriibutsvin', // Default for easy testing
+      password: 'vawelrfn98rjh4',
     },
   })
 
@@ -52,6 +54,7 @@ export const LoginForm = () => {
 
       if (token) {
         tokenStorage.set(token)
+        setAuth(response.data)
         navigate({ to: '/' })
       }
     } catch (err: unknown) {

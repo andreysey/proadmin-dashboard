@@ -17,6 +17,7 @@ import { useBulkDelete } from '../model/useBulkDelete'
 import { useBulkUpdateRole } from '../model/useBulkUpdateRole'
 import { downloadCsv } from '@/shared/lib/downloadCsv'
 import type { UserRole } from '@/entities/user/model/types'
+import { ProtectedAction } from '@/features/auth'
 
 const columnHelper = createColumnHelper<User>()
 
@@ -85,7 +86,9 @@ const columns = [
             <Edit className="text-muted-foreground h-4 w-4" />
           </Button>
         </Link>
-        <DeleteUserButton userId={info.row.original.id} />
+        <ProtectedAction permission="users:delete">
+          <DeleteUserButton userId={info.row.original.id} />
+        </ProtectedAction>
       </div>
     ),
   }),

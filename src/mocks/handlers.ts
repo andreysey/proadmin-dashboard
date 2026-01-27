@@ -18,11 +18,12 @@ export const handlers = [
 
     return HttpResponse.json({
       id: 15,
-      username: 'kminchelle',
-      email: 'kminchelle@qq.com',
-      firstName: 'Jeanne',
-      lastName: 'Halvorson',
-      gender: 'female',
+      username: 'andriibutsvin',
+      email: 'andreyseynew@gmail.com',
+      firstName: 'Andrii',
+      lastName: 'Butsvin',
+      gender: 'male',
+      role: 'user',
       image: 'https://dummyjson.com/icon/kminchelle/128',
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',

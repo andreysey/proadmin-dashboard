@@ -2,6 +2,7 @@ import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
 import { Button, Select } from '@/shared/ui'
 import { ROLES, type UserRole } from '@/entities/user/model/types'
 import { useState } from 'react'
+import { ProtectedAction } from '@/features/auth'
 
 interface BulkActionsProps {
   selectedCount: number
@@ -82,16 +83,18 @@ export const BulkActions = ({
           <Download className="h-4 w-4" />
           Export CSV
         </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          className="gap-2"
-          onClick={onDelete}
-          disabled={isDeleting || isUpdatingRole}
-        >
-          <Trash2 className="h-4 w-4" />
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </Button>
+        <ProtectedAction permission="users:delete">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="gap-2"
+            onClick={onDelete}
+            disabled={isDeleting || isUpdatingRole}
+          >
+            <Trash2 className="h-4 w-4" />
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </ProtectedAction>
       </div>
     </div>
   )

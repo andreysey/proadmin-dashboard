@@ -41,3 +41,17 @@
 - [x] Implement Bulk Delete.
 - [x] Implement Bulk Export to CSV.
 - [x] Implement Bulk Role Change.
+
+## 3. RBAC (Stage 3)
+
+### Infrastructure
+
+- [x] Define permissions map and types.
+- [x] Create `usePermission` hook.
+- [x] Create `ProtectedAction` component.
+
+### Integration
+
+- [x] Implement `auth.store` (Zustand).
+- [x] Protect User Management actions.
+- [ ] Implement `ProtectedRoute` for edit pages.
