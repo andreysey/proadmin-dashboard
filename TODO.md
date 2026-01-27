@@ -27,9 +27,10 @@
 ### Functionality (Mutations)
 
 - [x] Implement Delete User (with confirmation dialog).
-- [ ] Implement Edit User (navigate to edit page/modal).
+- [x] Implement Edit User (navigate to edit page/modal).
 
 ### Architecture
 
 - [x] Use `features/users-list` slice.
 - [x] Sync table state with URL (useSearch hook).
+- [ ] Implement Sorting (header toggles, URL sync).

@@ -1,9 +1,12 @@
+export const ROLES = ['admin', 'user', 'moderator'] as const
+export type UserRole = (typeof ROLES)[number]
+
 export interface User {
   id: number
   username: string
   firstName: string
   lastName: string
   email: string
-  role: 'amdin' | 'user' | 'moderator'
+  role: UserRole
   image: string
 }

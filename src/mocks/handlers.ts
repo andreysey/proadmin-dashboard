@@ -2,6 +2,7 @@ import type { User } from '@/entities/user/model/types'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
 const deletedUserIds = new Set<number>()
+const updatedUsers = new Map<number, Partial<User>>()
 
 export const handlers = [
   // Mocking DummyJSON login endpoint
@@ -34,12 +35,19 @@ export const handlers = [
     const response = await fetch('https://dummyjson.com/users?limit=0')
     const data = await response.json()
 
-    // Enhance and then filter out deleted ones
+    // Enhance, apply updates, and then filter out deleted ones
     const allUsers = data.users
-      .map((user: User) => ({
-        ...user,
-        role: user.id % 2 === 1 ? 'admin' : 'user',
-      }))
+      .map((user: User) => {
+        const enhanced = {
+          ...user,
+          role: user.id % 2 === 1 ? 'admin' : 'user',
+        }
+        // Apply local updates if any
+        if (updatedUsers.has(user.id)) {
+          return { ...enhanced, ...updatedUsers.get(user.id) }
+        }
+        return enhanced
+      })
       .filter((user: User) => !deletedUserIds.has(user.id))
 
     // Filter by query (q) - using already filtered user list
@@ -62,6 +70,51 @@ export const handlers = [
       total: filteredUsers.length,
       skip,
       limit,
+    })
+  }),
+
+  http.get('https://dummyjson.com/users/:id', async ({ params, request }) => {
+    const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
+    const { id } = params
+    const userId = Number(id)
+
+    if (deletedUserIds.has(userId)) {
+      return new HttpResponse(null, { status: 404, statusText: 'User not found' })
+    }
+
+    const response = await fetch(`https://dummyjson.com/users/${id}?bypass=true`)
+    if (!response.ok) return passthrough()
+
+    const user = await response.json()
+    const enhanced = {
+      ...user,
+      role: userId % 2 === 1 ? 'admin' : 'user',
+    }
+
+    // Apply local updates if any
+    const finalUser = updatedUsers.has(userId)
+      ? { ...enhanced, ...updatedUsers.get(userId) }
+      : enhanced
+
+    return HttpResponse.json(finalUser)
+  }),
+
+  http.put('https://dummyjson.com/users/:id', async ({ params, request }) => {
+    const { id } = params
+    const userId = Number(id)
+    const updates = (await request.json()) as Partial<User>
+
+    await delay(1000)
+
+    // Store the update locally
+    const existingUpdates = updatedUsers.get(userId) ?? {}
+    updatedUsers.set(userId, { ...existingUpdates, ...updates })
+
+    return HttpResponse.json({
+      id: userId,
+      ...updates,
     })
   }),
 

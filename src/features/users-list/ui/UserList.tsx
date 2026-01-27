@@ -2,6 +2,7 @@ import { getUsers } from '@/entities/user'
 import { useMemo } from 'react'
 import { Button } from '@/shared/ui/button'
 import { Edit } from 'lucide-react'
+import { Link } from '@tanstack/react-router'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
   createColumnHelper,
@@ -52,9 +53,11 @@ const columns = [
     id: 'actions',
     cell: (info) => (
       <div className="flex items-center justify-end gap-2">
-        <Button variant="ghost" size="icon">
-          <Edit className="text-muted-foreground h-4 w-4" />
-        </Button>
+        <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
+          <Button variant="ghost" size="icon">
+            <Edit className="text-muted-foreground h-4 w-4" />
+          </Button>
+        </Link>
         <DeleteUserButton userId={info.row.original.id} />
       </div>
     ),
