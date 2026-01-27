@@ -4,19 +4,18 @@ import { Input } from '@/shared/ui/input'
 import { useEffect, useState } from 'react'
 
 export const UsersPage = () => {
-  const { skip, limit, q } = Route.useSearch()
+  const { skip, limit, q, sortBy, order } = Route.useSearch()
   const navigate = Route.useNavigate()
   const [search, setSearch] = useState(q ?? '')
   const [prevQ, setPrevQ] = useState(q)
 
-  // Sync local state with URL param (render-time adjustment)
-  // This avoids cascading renders from useEffect
+  // ... (keep previous q sync logic)
   if (q !== prevQ) {
     setPrevQ(q)
     setSearch(q ?? '')
   }
 
-  // Debounce search update
+  // ... (keep search debounce logic)
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (search === (q ?? '')) return
@@ -35,6 +34,17 @@ export const UsersPage = () => {
     })
   }
 
+  const handleSortChange = (newSortBy: string | undefined, newOrder: 'asc' | 'desc') => {
+    navigate({
+      search: (prev) => ({
+        ...prev,
+        sortBy: newSortBy,
+        order: newOrder,
+        skip: 0, // Reset pagination on sort
+      }),
+    })
+  }
+
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -48,7 +58,15 @@ export const UsersPage = () => {
         </div>
       </div>
 
-      <UserList skip={skip} limit={limit} q={q} onPageChange={handlePageChange} />
+      <UserList
+        skip={skip}
+        limit={limit}
+        q={q}
+        sortBy={sortBy}
+        order={order}
+        onPageChange={handlePageChange}
+        onSortChange={handleSortChange}
+      />
     </div>
   )
 }

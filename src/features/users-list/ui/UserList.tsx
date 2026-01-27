@@ -1,7 +1,7 @@
 import { getUsers } from '@/entities/user'
 import { useMemo } from 'react'
 import { Button } from '@/shared/ui/button'
-import { Edit } from 'lucide-react'
+import { Edit, ArrowUpDown, ChevronUp, ChevronDown } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
@@ -19,6 +19,7 @@ const columns = [
   columnHelper.accessor('id', {
     header: 'ID',
     cell: (info) => info.getValue(),
+    enableSorting: true,
   }),
   columnHelper.accessor((row) => `${row.firstName} ${row.lastName}`, {
     id: 'user',
@@ -36,10 +37,12 @@ const columns = [
         </div>
       </div>
     ),
+    enableSorting: true,
   }),
   columnHelper.accessor('email', {
     header: 'Email',
     cell: (info) => info.getValue(),
+    enableSorting: true,
   }),
   columnHelper.accessor('role', {
     header: 'Role',
@@ -48,6 +51,7 @@ const columns = [
         {info.getValue()}
       </span>
     ),
+    enableSorting: true,
   }),
   columnHelper.display({
     id: 'actions',
@@ -68,25 +72,38 @@ export const UserList = ({
   skip = 0,
   limit = 10,
   q,
+  sortBy,
+  order,
   onPageChange,
+  onSortChange,
 }: {
   skip?: number
   limit?: number
   q?: string
+  sortBy?: string
+  order?: 'asc' | 'desc'
   onPageChange?: (newSkip: number) => void
+  onSortChange?: (sortBy: string | undefined, order: 'asc' | 'desc') => void
 }) => {
   const { data, isPending, isError } = useQuery({
-    queryKey: ['users', { skip, limit, q }],
-    queryFn: () => getUsers({ skip, limit, q }),
+    queryKey: ['users', { skip, limit, q, sortBy, order }],
+    queryFn: () => getUsers({ skip, limit, q, sortBy, order }),
     placeholderData: keepPreviousData,
   })
 
   const defaultData = useMemo(() => [], [])
 
+  const sorting = useMemo(
+    () => (sortBy ? [{ id: sortBy, desc: order === 'desc' }] : []),
+    [sortBy, order]
+  )
+
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: data?.users ?? defaultData,
     columns,
+    state: { sorting },
+    manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
   })
 
@@ -109,13 +126,44 @@ export const UserList = ({
           <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <th key={header.id} className="px-6 py-3">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </th>
-                ))}
+                {headerGroup.headers.map((header) => {
+                  const isSorted = header.column.getIsSorted()
+                  return (
+                    <th
+                      key={header.id}
+                      className={
+                        header.column.getCanSort()
+                          ? 'cursor-pointer px-6 py-3 transition-colors select-none hover:bg-gray-100'
+                          : 'px-6 py-3'
+                      }
+                      onClick={() => {
+                        if (header.column.getCanSort()) {
+                          const nextOrder = isSorted === 'asc' ? 'desc' : 'asc'
+                          const nextSortBy =
+                            isSorted === 'desc' && header.id === sortBy ? undefined : header.id
+                          onSortChange?.(nextSortBy, nextOrder as 'asc' | 'desc')
+                        }
+                      }}
+                    >
+                      <div className="flex items-center gap-2">
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                        {header.column.getCanSort() && (
+                          <span className="text-gray-400">
+                            {isSorted === 'asc' ? (
+                              <ChevronUp className="h-4 w-4" />
+                            ) : isSorted === 'desc' ? (
+                              <ChevronDown className="h-4 w-4" />
+                            ) : (
+                              <ArrowUpDown className="h-4 w-4 opacity-0 group-hover:opacity-100" />
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </th>
+                  )
+                })}
               </tr>
             ))}
           </thead>

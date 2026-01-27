@@ -33,4 +33,10 @@
 
 - [x] Use `features/users-list` slice.
 - [x] Sync table state with URL (useSearch hook).
-- [ ] Implement Sorting (header toggles, URL sync).
+- [x] Implement Sorting (header toggles, URL sync).
+
+### Bulk Actions
+
+- [ ] Implement user selection (checkboxes).
+- [ ] Implement Bulk Delete.
+- [ ] Implement Bulk Export to CSV.

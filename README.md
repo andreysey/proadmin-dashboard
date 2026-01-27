@@ -77,10 +77,10 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Login Page (React Hook Form + Zod)
   - [x] Protected routes (Basic Guard)
   - [x] LocalStorage token management
-- [ ] **User Management (Stage 2):**
-  - Complex tables with server-side pagination, sorting, and filtering
-  - URL-synced table state (shareable filter/sort links)
-  - Bulk actions (delete, export, status change)
+- [/] **User Management (Stage 2):**
+  - [x] Complex tables with server-side pagination, sorting, and filtering
+  - [x] URL-synced table state (shareable filter/sort links)
+  - [ ] Bulk actions (delete, export, status change)
 - [ ] **RBAC (Stage 3):**
   - Declarative permission system (`usePermission`, `<ProtectedAction>`)
   - Type-safe permission definitions

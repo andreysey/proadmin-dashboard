@@ -4,6 +4,12 @@ import { http, HttpResponse, delay, passthrough } from 'msw'
 const deletedUserIds = new Set<number>()
 const updatedUsers = new Map<number, Partial<User>>()
 
+const propertyAccessor = (obj: User, path: string) => {
+  if (path === 'user') return obj.firstName.toLowerCase()
+  const key = path as keyof User
+  return obj[key]?.toString().toLowerCase() ?? ''
+}
+
 export const handlers = [
   // Mocking DummyJSON login endpoint
   http.post('https://dummyjson.com/auth/login', async () => {
@@ -50,8 +56,10 @@ export const handlers = [
       })
       .filter((user: User) => !deletedUserIds.has(user.id))
 
-    // Filter by query (q) - using already filtered user list
     const query = url.searchParams.get('q')?.toLowerCase() ?? ''
+    const sortBy = url.searchParams.get('sortBy')
+    const order = url.searchParams.get('order') ?? 'asc'
+
     const filteredUsers = query
       ? allUsers.filter(
           (user: User) =>
@@ -61,6 +69,18 @@ export const handlers = [
             user.username.toLowerCase().includes(query)
         )
       : allUsers
+
+    // Sort in memory
+    if (sortBy) {
+      filteredUsers.sort((a: User, b: User) => {
+        const fieldA = propertyAccessor(a, sortBy)
+        const fieldB = propertyAccessor(b, sortBy)
+
+        if (fieldA < fieldB) return order === 'asc' ? -1 : 1
+        if (fieldA > fieldB) return order === 'asc' ? 1 : -1
+        return 0
+      })
+    }
 
     // Paginate in memory
     const paginatedUsers = filteredUsers.slice(skip, skip + limit)
