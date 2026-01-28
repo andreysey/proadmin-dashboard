@@ -1,7 +1,19 @@
 import { getUsers } from '@/entities/user'
 import { useMemo, useState } from 'react'
-import { Button, Checkbox } from '@/shared/ui'
-import { Edit, ArrowUpDown, ChevronUp, ChevronDown } from 'lucide-react'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  Button,
+  Checkbox,
+  Skeleton,
+} from '@/shared/ui'
+import { Edit, ArrowUpDown, ChevronUp, ChevronDown, OctagonXIcon } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import {
@@ -96,6 +108,59 @@ const columns = [
   }),
 ]
 
+const UserTableSkeleton = () => {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
+        <table className="w-full text-left text-sm text-gray-500">
+          <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+            <tr>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <th key={i} className="px-6 py-3">
+                  <Skeleton className="h-4 w-20" />
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 bg-white">
+            {Array.from({ length: 5 }).map((_, rowIndex) => (
+              <tr key={rowIndex}>
+                <td className="px-6 py-4">
+                  <Skeleton className="h-4 w-4" />
+                </td>
+                <td className="px-6 py-4">
+                  <Skeleton className="h-4 w-8" />
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <Skeleton className="h-8 w-8 rounded-full" />
+                    <div className="flex flex-col gap-1">
+                      <Skeleton className="h-4 w-24" />
+                      <Skeleton className="h-3 w-16" />
+                    </div>
+                  </div>
+                </td>
+                <td className="px-6 py-4">
+                  <Skeleton className="h-4 w-32" />
+                </td>
+                <td className="px-6 py-4">
+                  <Skeleton className="h-6 w-16 rounded-full" />
+                </td>
+                <td className="px-6 py-4">
+                  <div className="flex items-center justify-end gap-2">
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                    <Skeleton className="h-8 w-8 rounded-md" />
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
+
 export const UserList = ({
   skip = 0,
   limit = 10,
@@ -120,6 +185,7 @@ export const UserList = ({
   })
 
   const [rowSelection, setRowSelection] = useState({})
+  const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false)
 
   const defaultData = useMemo(() => [], [])
 
@@ -150,12 +216,13 @@ export const UserList = ({
    * This ensures the UI is consistent with the server state.
    */
   const handleBulkDelete = () => {
-    if (window.confirm(`Are you sure you want to delete ${selectedCount} users?`)) {
-      const ids = selectedRows.map((row) => row.original.id)
-      bulkDelete(ids, {
-        onSuccess: () => setRowSelection({}),
-      })
-    }
+    const ids = selectedRows.map((row) => row.original.id)
+    bulkDelete(ids, {
+      onSuccess: () => {
+        setRowSelection({})
+        setIsBulkDeleteOpen(false)
+      },
+    })
   }
 
   const handleBulkUpdateRole = (role: UserRole) => {
@@ -174,11 +241,24 @@ export const UserList = ({
   }
 
   if (isPending) {
-    return <div className="p-4 text-center">Loading users...</div>
+    return <UserTableSkeleton />
   }
 
   if (isError) {
-    return <div className="p-4 text-center text-red-500">Error loading users</div>
+    return (
+      <div className="mt-4 flex min-h-[400px] flex-col items-center justify-center rounded-lg border border-dashed p-8 text-center">
+        <div className="bg-destructive/10 text-destructive mb-4 flex h-12 w-12 items-center justify-center rounded-full">
+          <OctagonXIcon className="h-6 w-6" />
+        </div>
+        <h3 className="mb-2 text-lg font-semibold">Failed to load users</h3>
+        <p className="text-muted-foreground mb-4 max-w-xs text-sm">
+          There was an error connecting to the server. Please check your connection and try again.
+        </p>
+        <Button onClick={() => window.location.reload()} variant="outline">
+          Retry Connection
+        </Button>
+      </div>
+    )
   }
 
   const total = data?.total ?? 0
@@ -234,15 +314,30 @@ export const UserList = ({
             ))}
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id} className="hover:bg-gray-50">
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-6 py-4">
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
+            {table.getRowModel().rows.length > 0 ? (
+              table.getRowModel().rows.map((row) => (
+                <tr key={row.id} className="hover:bg-gray-50">
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id} className="px-6 py-4">
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={columns.length} className="h-24 text-center">
+                  <div className="flex flex-col items-center justify-center py-10">
+                    <p className="text-muted-foreground text-sm">No users found.</p>
+                    {q && (
+                      <p className="text-muted-foreground mt-1 text-xs">
+                        Try adjusting your search for "{q}"
+                      </p>
+                    )}
+                  </div>
+                </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>
@@ -274,12 +369,33 @@ export const UserList = ({
       <BulkActions
         selectedCount={selectedCount}
         onClearSelection={() => setRowSelection({})}
-        onDelete={handleBulkDelete}
+        onDelete={() => setIsBulkDeleteOpen(true)}
         onExport={handleBulkExport}
         onRoleChange={handleBulkUpdateRole}
         isDeleting={isDeleting}
         isUpdatingRole={isUpdatingRole}
       />
+
+      <AlertDialog open={isBulkDeleteOpen} onOpenChange={setIsBulkDeleteOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Bulk Delete Users</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete {selectedCount} selected users? This action is
+              irreversible and will remove all associated data.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleBulkDelete}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              {isDeleting ? 'Deleting...' : 'Confirm Bulk Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

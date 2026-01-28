@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { config } from '../config'
 import { tokenStorage } from '../lib/auth'
+import { toast } from 'sonner'
 
 let onUnauthorized: (() => void) | null = null
 let onForbidden: (() => void) | null = null
@@ -99,6 +100,9 @@ api.interceptors.response.use(
           return api(originalRequest)
         } catch (refreshError) {
           console.error('Interceptor: Refresh failed. Redirecting to login.')
+          toast.error('Session expired', {
+            description: 'Please sign in again to continue.',
+          })
           processQueue(refreshError, null)
           onUnauthorized?.()
           return Promise.reject(refreshError)

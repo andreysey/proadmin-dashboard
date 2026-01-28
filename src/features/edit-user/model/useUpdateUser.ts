@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { updateUser } from '@/entities/user/api/user.api'
 import type { User } from '@/entities/user/model/types'
+import { toast } from 'sonner'
 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient()
@@ -12,10 +13,10 @@ export const useUpdateUser = () => {
       queryClient.invalidateQueries({ queryKey: ['users', updatedUser.id] })
       // Invalidate the users list
       queryClient.invalidateQueries({ queryKey: ['users'] })
-      console.log('User updated successfully:', updatedUser)
+      toast.success(`User updated successfully: ${updatedUser.username}`)
     },
-    onError: (error) => {
-      console.error('Failed to update user:', error)
+    onError: () => {
+      toast.error('Failed to update user')
     },
   })
 }
