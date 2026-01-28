@@ -47,8 +47,7 @@ export const UsersPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
+      <div className="flex items-center">
         <div className="w-72">
           <Input
             placeholder="Search users..."
