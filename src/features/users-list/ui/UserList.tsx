@@ -27,8 +27,8 @@ import { DeleteUserButton } from '@/features/delete-user'
 import { BulkActions } from './BulkActions'
 import { useBulkDelete } from '../model/useBulkDelete'
 import { useBulkUpdateRole } from '../model/useBulkUpdateRole'
-import { downloadCsv } from '@/shared/lib/downloadCsv'
-import type { UserRole } from '@/entities/user/model/types'
+import { downloadCsv } from '@/shared/lib'
+import type { UserRole } from '@/entities/user'
 import { ProtectedAction } from '@/features/auth'
 
 const columnHelper = createColumnHelper<User>()

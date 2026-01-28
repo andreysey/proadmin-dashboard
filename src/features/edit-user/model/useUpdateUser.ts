@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateUser } from '@/entities/user/api/user.api'
-import type { User } from '@/entities/user/model/types'
+import { updateUser } from '@/entities/user'
+import type { User } from '@/entities/user'
 import { toast } from 'sonner'
 
 export const useUpdateUser = () => {
