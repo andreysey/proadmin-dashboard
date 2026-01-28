@@ -43,34 +43,36 @@ export const BulkActions = ({
         </Button>
       </div>
 
-      <div className="flex items-center gap-2 border-r pr-4">
-        <Select
-          className="h-8 w-32"
-          value={selectedRole}
-          onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-        >
-          <option value="" disabled>
-            Change role...
-          </option>
-          {ROLES.map((role) => (
-            <option key={role} value={role}>
-              {role}
+      <ProtectedAction permission="users:manage-roles">
+        <div className="flex items-center gap-2 border-r pr-4">
+          <Select
+            className="h-8 w-32"
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+          >
+            <option value="" disabled>
+              Change role...
             </option>
-          ))}
-        </Select>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
-          disabled={!selectedRole || isUpdatingRole}
-          onClick={() => {
-            if (selectedRole) onRoleChange(selectedRole)
-          }}
-        >
-          <ShieldAlert className="h-4 w-4" />
-          {isUpdatingRole ? 'Updating...' : 'Apply'}
-        </Button>
-      </div>
+            {ROLES.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={!selectedRole || isUpdatingRole}
+            onClick={() => {
+              if (selectedRole) onRoleChange(selectedRole)
+            }}
+          >
+            <ShieldAlert className="h-4 w-4" />
+            {isUpdatingRole ? 'Updating...' : 'Apply'}
+          </Button>
+        </div>
+      </ProtectedAction>
 
       <div className="flex items-center gap-2">
         <Button

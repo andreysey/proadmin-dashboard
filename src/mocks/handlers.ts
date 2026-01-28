@@ -23,7 +23,7 @@ export const handlers = [
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
-      role: 'user',
+      role: 'admin',
       image: 'https://dummyjson.com/icon/kminchelle/128',
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',

@@ -81,11 +81,13 @@ const columns = [
     id: 'actions',
     cell: (info) => (
       <div className="flex items-center justify-end gap-2">
-        <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
-          <Button variant="ghost" size="icon">
-            <Edit className="text-muted-foreground h-4 w-4" />
-          </Button>
-        </Link>
+        <ProtectedAction permission="users:edit">
+          <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
+            <Button variant="ghost" size="icon">
+              <Edit className="text-muted-foreground h-4 w-4" />
+            </Button>
+          </Link>
+        </ProtectedAction>
         <ProtectedAction permission="users:delete">
           <DeleteUserButton userId={info.row.original.id} />
         </ProtectedAction>

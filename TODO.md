@@ -54,4 +54,4 @@
 
 - [x] Implement `auth.store` (Zustand).
 - [x] Protect User Management actions.
-- [ ] Implement `ProtectedRoute` for edit pages.
+- [x] Implement `ProtectedRoute` for edit pages.
