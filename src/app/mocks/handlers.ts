@@ -1,4 +1,4 @@
-import type { User } from '@/entities/user/model/types'
+import type { User } from '@/entities/user'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
 const deletedUserIds = new Set<number>()
@@ -13,7 +13,6 @@ const propertyAccessor = (obj: User, path: string) => {
 export const handlers = [
   // Mocking DummyJSON login endpoint
   http.post('https://dummyjson.com/auth/login', async () => {
-    // ... same as before
     await delay(1000)
 
     return HttpResponse.json({
