@@ -11,6 +11,7 @@ import {
   AlertDialogTitle,
   Button,
   Checkbox,
+  Input,
   Skeleton,
 } from '@/shared/ui'
 import { Edit, ArrowUpDown, ChevronUp, ChevronDown, OctagonXIcon } from 'lucide-react'
@@ -169,6 +170,8 @@ export const UserList = ({
   order,
   onPageChange,
   onSortChange,
+  search,
+  onSearchChange,
 }: {
   skip?: number
   limit?: number
@@ -177,6 +180,8 @@ export const UserList = ({
   order?: 'asc' | 'desc'
   onPageChange?: (newSkip: number) => void
   onSortChange?: (sortBy: string | undefined, order: 'asc' | 'desc') => void
+  search: string
+  onSearchChange: (value: string) => void
 }) => {
   const { data, isPending, isError } = useQuery({
     queryKey: ['users', { skip, limit, q, sortBy, order }],
@@ -267,6 +272,33 @@ export const UserList = ({
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center justify-between px-2">
+        <div className="w-72">
+          <Input
+            placeholder="Search users..."
+            value={search}
+            onChange={(e) => onSearchChange(e.target.value)}
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange?.(Math.max(0, skip - limit))}
+            disabled={!hasPrevPage}
+          >
+            Previous
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onPageChange?.(skip + limit)}
+            disabled={!hasNextPage}
+          >
+            Next
+          </Button>
+        </div>
+      </div>
       <div className="border-border bg-card w-full overflow-hidden rounded-lg border shadow-sm">
         <table className="text-muted-foreground w-full text-left text-sm">
           <thead className="bg-muted/50 text-foreground border-border border-b text-xs uppercase">

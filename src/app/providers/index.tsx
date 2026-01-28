@@ -29,7 +29,7 @@ export const Providers = ({ children }: ProvidersProps) => {
     <ThemeProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={router} />
-        <Toaster position="bottom-right" closeButton richColors />
+        <Toaster position="top-center" closeButton richColors />
         <ReactQueryDevtools />
         {children}
       </QueryClientProvider>
