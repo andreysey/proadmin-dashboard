@@ -2,6 +2,7 @@ import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
 import { Button, Select } from '@/shared/ui'
 import { ROLES, type UserRole } from '@/entities/user/model/types'
 import { useState } from 'react'
+import { ProtectedAction } from '@/features/auth'
 
 interface BulkActionsProps {
   selectedCount: number
@@ -42,34 +43,36 @@ export const BulkActions = ({
         </Button>
       </div>
 
-      <div className="flex items-center gap-2 border-r pr-4">
-        <Select
-          className="h-8 w-32"
-          value={selectedRole}
-          onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-        >
-          <option value="" disabled>
-            Change role...
-          </option>
-          {ROLES.map((role) => (
-            <option key={role} value={role}>
-              {role}
+      <ProtectedAction permission="users:manage-roles">
+        <div className="flex items-center gap-2 border-r pr-4">
+          <Select
+            className="h-8 w-32"
+            value={selectedRole}
+            onChange={(e) => setSelectedRole(e.target.value as UserRole)}
+          >
+            <option value="" disabled>
+              Change role...
             </option>
-          ))}
-        </Select>
-        <Button
-          variant="outline"
-          size="sm"
-          className="gap-2"
-          disabled={!selectedRole || isUpdatingRole}
-          onClick={() => {
-            if (selectedRole) onRoleChange(selectedRole)
-          }}
-        >
-          <ShieldAlert className="h-4 w-4" />
-          {isUpdatingRole ? 'Updating...' : 'Apply'}
-        </Button>
-      </div>
+            {ROLES.map((role) => (
+              <option key={role} value={role}>
+                {role}
+              </option>
+            ))}
+          </Select>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2"
+            disabled={!selectedRole || isUpdatingRole}
+            onClick={() => {
+              if (selectedRole) onRoleChange(selectedRole)
+            }}
+          >
+            <ShieldAlert className="h-4 w-4" />
+            {isUpdatingRole ? 'Updating...' : 'Apply'}
+          </Button>
+        </div>
+      </ProtectedAction>
 
       <div className="flex items-center gap-2">
         <Button
@@ -82,16 +85,18 @@ export const BulkActions = ({
           <Download className="h-4 w-4" />
           Export CSV
         </Button>
-        <Button
-          variant="destructive"
-          size="sm"
-          className="gap-2"
-          onClick={onDelete}
-          disabled={isDeleting || isUpdatingRole}
-        >
-          <Trash2 className="h-4 w-4" />
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </Button>
+        <ProtectedAction permission="users:delete">
+          <Button
+            variant="destructive"
+            size="sm"
+            className="gap-2"
+            onClick={onDelete}
+            disabled={isDeleting || isUpdatingRole}
+          >
+            <Trash2 className="h-4 w-4" />
+            {isDeleting ? 'Deleting...' : 'Delete'}
+          </Button>
+        </ProtectedAction>
       </div>
     </div>
   )

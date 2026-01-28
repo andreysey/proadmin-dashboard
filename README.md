@@ -81,10 +81,10 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Complex tables with server-side pagination, sorting, and filtering
   - [x] URL-synced table state (shareable filter/sort links)
   - [x] Bulk actions (delete, export, role change)
-- [ ] **RBAC (Stage 3):**
-  - Declarative permission system (`usePermission`, `<ProtectedAction>`)
-  - Type-safe permission definitions
-  - Role-based route guards
+- [x] **RBAC (Stage 3):**
+  - [x] Declarative permission system (`usePermission`, `<ProtectedAction>`)
+  - [x] Type-safe permission definitions
+  - [x] Role-based route guards
 - [ ] **Advanced Security (Stage 4):**
   - JWT Refresh token rotation
   - HttpOnly cookies integration (requires Backend/Proxy)

@@ -17,6 +17,7 @@ import { useBulkDelete } from '../model/useBulkDelete'
 import { useBulkUpdateRole } from '../model/useBulkUpdateRole'
 import { downloadCsv } from '@/shared/lib/downloadCsv'
 import type { UserRole } from '@/entities/user/model/types'
+import { ProtectedAction } from '@/features/auth'
 
 const columnHelper = createColumnHelper<User>()
 
@@ -80,12 +81,16 @@ const columns = [
     id: 'actions',
     cell: (info) => (
       <div className="flex items-center justify-end gap-2">
-        <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
-          <Button variant="ghost" size="icon">
-            <Edit className="text-muted-foreground h-4 w-4" />
-          </Button>
-        </Link>
-        <DeleteUserButton userId={info.row.original.id} />
+        <ProtectedAction permission="users:edit">
+          <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
+            <Button variant="ghost" size="icon">
+              <Edit className="text-muted-foreground h-4 w-4" />
+            </Button>
+          </Link>
+        </ProtectedAction>
+        <ProtectedAction permission="users:delete">
+          <DeleteUserButton userId={info.row.original.id} />
+        </ProtectedAction>
       </div>
     ),
   }),
