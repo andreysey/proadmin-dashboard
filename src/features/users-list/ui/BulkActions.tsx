@@ -27,12 +27,12 @@ export const BulkActions = ({
   if (selectedCount === 0) return null
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full border border-gray-200 bg-white px-6 py-3 shadow-2xl duration-300">
-      <div className="flex items-center gap-2 border-r pr-4">
-        <span className="bg-primary flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white">
+    <div className="animate-in fade-in slide-in-from-bottom-4 border-border bg-background fixed bottom-8 left-1/2 z-50 flex -translate-x-1/2 items-center gap-4 rounded-full border px-6 py-3 shadow-2xl transition-colors duration-300">
+      <div className="border-border flex items-center gap-2 border-r pr-4">
+        <span className="bg-primary text-primary-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
           {selectedCount}
         </span>
-        <span className="text-sm font-medium text-gray-700">Selected</span>
+        <span className="text-foreground text-sm font-medium">Selected</span>
         <Button
           variant="ghost"
           size="icon"

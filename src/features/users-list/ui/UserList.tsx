@@ -83,7 +83,7 @@ const columns = [
   columnHelper.accessor('role', {
     header: 'Role',
     cell: (info) => (
-      <span className="inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 capitalize">
+      <span className="bg-primary/10 text-primary ring-primary/20 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ring-1 ring-inset">
         {info.getValue()}
       </span>
     ),
@@ -111,9 +111,9 @@ const columns = [
 const UserTableSkeleton = () => {
   return (
     <div className="flex flex-col gap-4">
-      <div className="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
-        <table className="w-full text-left text-sm text-gray-500">
-          <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+      <div className="border-border bg-card w-full overflow-hidden rounded-lg border shadow-sm">
+        <table className="text-muted-foreground w-full text-left text-sm">
+          <thead className="bg-muted/50 text-foreground text-xs uppercase">
             <tr>
               {Array.from({ length: 6 }).map((_, i) => (
                 <th key={i} className="px-6 py-3">
@@ -122,7 +122,7 @@ const UserTableSkeleton = () => {
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
+          <tbody className="divide-border bg-card divide-y">
             {Array.from({ length: 5 }).map((_, rowIndex) => (
               <tr key={rowIndex}>
                 <td className="px-6 py-4">
@@ -267,9 +267,9 @@ export const UserList = ({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="w-full overflow-hidden rounded-lg border border-gray-200 shadow-sm">
-        <table className="w-full text-left text-sm text-gray-500">
-          <thead className="bg-gray-50 text-xs text-gray-700 uppercase">
+      <div className="border-border bg-card w-full overflow-hidden rounded-lg border shadow-sm">
+        <table className="text-muted-foreground w-full text-left text-sm">
+          <thead className="bg-muted/50 text-foreground border-border border-b text-xs uppercase">
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -279,7 +279,7 @@ export const UserList = ({
                       key={header.id}
                       className={
                         header.column.getCanSort()
-                          ? 'cursor-pointer px-6 py-3 transition-colors select-none hover:bg-gray-100'
+                          ? 'hover:bg-muted/50 cursor-pointer px-6 py-3 transition-colors select-none'
                           : 'px-6 py-3'
                       }
                       onClick={() => {
@@ -296,7 +296,7 @@ export const UserList = ({
                           ? null
                           : flexRender(header.column.columnDef.header, header.getContext())}
                         {header.column.getCanSort() && (
-                          <span className="text-gray-400">
+                          <span className="text-muted-foreground/40">
                             {isSorted === 'asc' ? (
                               <ChevronUp className="h-4 w-4" />
                             ) : isSorted === 'desc' ? (
@@ -313,10 +313,10 @@ export const UserList = ({
               </tr>
             ))}
           </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
+          <tbody className="divide-border bg-card divide-y">
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="hover:bg-gray-50">
+                <tr key={row.id} className="hover:bg-muted/30 transition-colors">
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id} className="px-6 py-4">
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -343,7 +343,7 @@ export const UserList = ({
       </div>
 
       <div className="flex items-center justify-between px-2">
-        <div className="text-sm text-gray-500">
+        <div className="text-muted-foreground text-sm">
           Showing {skip + 1} to {Math.min(skip + limit, total)} of {total} users
         </div>
         <div className="flex items-center gap-2">
