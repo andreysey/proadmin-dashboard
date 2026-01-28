@@ -13,15 +13,16 @@ import {
   Card,
   CardHeader,
   CardTitle,
-  CardDescription,
   CardContent,
   CardFooter,
+  Select,
 } from '@/shared/ui'
 import { useAuthStore } from '../model/auth.store'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Username is required'),
   password: z.string().min(1, 'Password is required'),
+  role: z.string().optional(),
 })
 
 type LoginValues = z.infer<typeof loginSchema>
@@ -41,6 +42,7 @@ export const LoginForm = () => {
     defaultValues: {
       username: 'andriibutsvin', // Default for easy testing
       password: 'vawelrfn98rjh4',
+      role: 'admin',
     },
   })
 
@@ -72,7 +74,6 @@ export const LoginForm = () => {
     <Card className="w-[350px]">
       <CardHeader>
         <CardTitle>Login</CardTitle>
-        <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
@@ -89,6 +90,15 @@ export const LoginForm = () => {
             {errors.password && (
               <span className="text-destructive text-sm">{errors.password.message}</span>
             )}
+          </div>
+
+          <div className="flex flex-col space-y-1.5">
+            <Label htmlFor="role">Dev: Login As Role</Label>
+            <Select id="role" {...register('role')}>
+              <option value="admin">Admin (Full Access)</option>
+              <option value="user">User (View Only)</option>
+              <option value="moderator">Moderator (Manage Users)</option>
+            </Select>
           </div>
 
           {error && <div className="text-destructive text-sm font-medium">{error}</div>}

@@ -12,7 +12,8 @@ const propertyAccessor = (obj: User, path: string) => {
 
 export const handlers = [
   // Mocking DummyJSON login endpoint
-  http.post('https://dummyjson.com/auth/login', async () => {
+  http.post('https://dummyjson.com/auth/login', async ({ request }) => {
+    const { role = 'admin' } = (await request.json()) as { role?: string }
     await delay(1000)
 
     return HttpResponse.json({
@@ -22,7 +23,7 @@ export const handlers = [
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
-      role: 'admin',
+      role: role,
       image: 'https://dummyjson.com/icon/kminchelle/128',
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
