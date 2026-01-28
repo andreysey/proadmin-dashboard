@@ -1,6 +1,5 @@
 import { UserList } from '@/features/users-list'
 import { Route } from '@/app/router/routes/_dashboard.users'
-import { Input } from '@/shared/ui/input'
 import { useEffect, useState } from 'react'
 
 export const UsersPage = () => {
@@ -47,17 +46,6 @@ export const UsersPage = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold tracking-tight">Users</h1>
-        <div className="w-72">
-          <Input
-            placeholder="Search users..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-        </div>
-      </div>
-
       <UserList
         skip={skip}
         limit={limit}
@@ -66,6 +54,8 @@ export const UsersPage = () => {
         order={order}
         onPageChange={handlePageChange}
         onSortChange={handleSortChange}
+        search={search}
+        onSearchChange={setSearch}
       />
     </div>
   )

@@ -4,6 +4,8 @@ import { RouterProvider } from '@tanstack/react-router'
 import { useState, type ReactNode } from 'react'
 
 import { router } from '../router'
+import { Toaster } from '@/shared/ui'
+import { ThemeProvider } from '@/shared/lib'
 
 interface ProvidersProps {
   children?: ReactNode
@@ -24,10 +26,13 @@ export const Providers = ({ children }: ProvidersProps) => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <ReactQueryDevtools />
-      {children}
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster position="top-center" closeButton richColors />
+        <ReactQueryDevtools />
+        {children}
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }

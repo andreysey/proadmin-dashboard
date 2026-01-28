@@ -85,18 +85,21 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Declarative permission system (`usePermission`, `<ProtectedAction>`)
   - [x] Type-safe permission definitions
   - [x] Role-based route guards
-- [ ] **Advanced Security (Stage 4):**
-  - JWT Refresh token rotation
-  - HttpOnly cookies integration (requires Backend/Proxy)
-- [ ] **Real-Time Monitoring:**
-  - Live charts with auto-refresh (Recharts/Tremor)
-  - Date range filters
-  - CSV/Excel export functionality
-- [ ] **Testing:**
-  - Unit tests for business logic (Vitest)
-  - Integration tests for critical flows (login, CRUD operations)
-  - MSW handler tests
-  - Target: 70%+ coverage for `features/` and `entities/`
+- [x] **Advanced Security (Stage 4):**
+  - [x] JWT Refresh token rotation & Request Queuing
+  - [x] Global 401/403 interceptors and error handling
+  - [x] Reactive Auth Watcher for seamless redirection
+  - [x] Theme System (Dark Mode) & Premium UI Polish
+  - [ ] HttpOnly cookies integration (Architecture ready, requires Backend)
+- [ ] **Live Analytics & Dashboard (Stage 5):**
+  - [ ] Interactive Dashboard with real-time charts (Recharts)
+  - [ ] Dynamic widgets (User Activity, Revenue, Growth)
+  - [ ] Global Date Range filtering for all reports
+  - [ ] Data Export (CSV/JSON/PDF) for audit logs
+- [ ] **Testing & Quality (Stage 6):**
+  - [ ] Unit tests for business logic (Vitest)
+  - [ ] Integration tests for critical flows (Login, User CRUD)
+  - [ ] Target: 70%+ coverage for `features/` and `entities/`
 - [ ] **Production Deployment:**
   - Deployed to Vercel/Netlify with CI/CD
   - Environment-based configuration

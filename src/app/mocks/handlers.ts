@@ -1,4 +1,4 @@
-import type { User } from '@/entities/user/model/types'
+import type { User } from '@/entities/user'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
 const deletedUserIds = new Set<number>()
@@ -12,8 +12,8 @@ const propertyAccessor = (obj: User, path: string) => {
 
 export const handlers = [
   // Mocking DummyJSON login endpoint
-  http.post('https://dummyjson.com/auth/login', async () => {
-    // ... same as before
+  http.post('https://dummyjson.com/auth/login', async ({ request }) => {
+    const { role = 'admin' } = (await request.json()) as { role?: string }
     await delay(1000)
 
     return HttpResponse.json({
@@ -23,14 +23,34 @@ export const handlers = [
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
-      role: 'admin',
+      role: role,
       image: 'https://dummyjson.com/icon/kminchelle/128',
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     })
   }),
 
+  http.post('https://dummyjson.com/auth/refresh', async ({ request }) => {
+    const { refreshToken } = (await request.json()) as { refreshToken: string }
+
+    if (!refreshToken) {
+      return new HttpResponse(null, { status: 400 })
+    }
+
+    await delay(1000)
+    return HttpResponse.json({
+      token: 'NEW_mock_access_token_' + Date.now(),
+      refreshToken: 'NEW_mock_refresh_token_' + Date.now(),
+    })
+  }),
+
   http.get('https://dummyjson.com/users', async ({ request }) => {
+    const authHeader = request.headers.get('Authorization')
+    if (authHeader === 'Bearer mock-expired-token') {
+      console.log('MSW: Detected poison token, returning 401...')
+      return new HttpResponse(null, { status: 401 })
+    }
+
     const url = new URL(request.url)
     const skip = parseInt(url.searchParams.get('skip') ?? '0')
     const limit = parseInt(url.searchParams.get('limit') ?? '10')
