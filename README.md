@@ -85,9 +85,11 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Declarative permission system (`usePermission`, `<ProtectedAction>`)
   - [x] Type-safe permission definitions
   - [x] Role-based route guards
-- [ ] **Advanced Security (Stage 4):**
-  - JWT Refresh token rotation
-  - HttpOnly cookies integration (requires Backend/Proxy)
+- [x] **Advanced Security (Stage 4):**
+  - [x] JWT Refresh token rotation & Request Queuing
+  - [x] Global 401/403 interceptors and error handling
+  - [x] Reactive Auth Watcher for seamless redirection
+  - [ ] HttpOnly cookies integration (requires Backend/Proxy)
 - [ ] **Real-Time Monitoring:**
   - Live charts with auto-refresh (Recharts/Tremor)
   - Date range filters

@@ -55,3 +55,18 @@
 - [x] Implement `auth.store` (Zustand).
 - [x] Protect User Management actions.
 - [x] Implement `ProtectedRoute` for edit pages.
+
+## 4. Advanced Security (Stage 4)
+
+### Resilience
+
+- [x] Refactor Axios interceptors to use `tokenStorage`.
+- [x] Implement global `401 Unauthorized` handling (auto-logout).
+- [x] Implement global `403 Forbidden` handling (redirect to dashboard).
+- [x] Implement reactive `Auth Watcher` for global redirection.
+
+### Token Management
+
+- [x] Implement Refresh Token rotation logic.
+- [x] Add "Retry Query" mechanism for expired tokens.
+- [x] Handle "Session Expired" UI notification.

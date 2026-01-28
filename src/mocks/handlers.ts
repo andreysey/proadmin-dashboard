@@ -30,7 +30,27 @@ export const handlers = [
     })
   }),
 
+  http.post('https://dummyjson.com/auth/refresh', async ({ request }) => {
+    const { refreshToken } = (await request.json()) as { refreshToken: string }
+
+    if (!refreshToken) {
+      return new HttpResponse(null, { status: 400 })
+    }
+
+    await delay(1000)
+    return HttpResponse.json({
+      token: 'NEW_mock_access_token_' + Date.now(),
+      refreshToken: 'NEW_mock_refresh_token_' + Date.now(),
+    })
+  }),
+
   http.get('https://dummyjson.com/users', async ({ request }) => {
+    const authHeader = request.headers.get('Authorization')
+    if (authHeader === 'Bearer mock-expired-token') {
+      console.log('MSW: Detected poison token, returning 401...')
+      return new HttpResponse(null, { status: 401 })
+    }
+
     const url = new URL(request.url)
     const skip = parseInt(url.searchParams.get('skip') ?? '0')
     const limit = parseInt(url.searchParams.get('limit') ?? '10')

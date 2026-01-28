@@ -1,1 +1,1 @@
-export { api } from './base'
+export { api, setUnauthorizedHandler, setForbiddenHandler } from './base'

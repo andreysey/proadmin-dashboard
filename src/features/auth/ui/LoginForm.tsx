@@ -50,10 +50,10 @@ export const LoginForm = () => {
 
     try {
       const response = await api.post('/auth/login', data)
-      const { token } = response.data
+      const { token, refreshToken } = response.data
 
       if (token) {
-        tokenStorage.set(token)
+        tokenStorage.setTokens({ accessToken: token, refreshToken })
         setAuth(response.data)
         navigate({ to: '/' })
       }

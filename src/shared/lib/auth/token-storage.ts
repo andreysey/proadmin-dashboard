@@ -1,16 +1,27 @@
-const TOKEN_KEY = 'auth_token'
+export interface AuthTokens {
+  accessToken: string
+  refreshToken: string
+}
+
+const ACCESS_TOKEN = 'access_token'
+const REFRESH_TOKEN = 'refresh_token'
 
 // NOTE: In production, tokens should be stored in httpOnly cookies
 // to prevent XSS attacks. localStorage is used here for development
 // simplicity with MSW mock server.
 export const tokenStorage = {
-  get: () => {
-    return localStorage.getItem(TOKEN_KEY)
+  getAccessToken: () => {
+    return localStorage.getItem(ACCESS_TOKEN)
   },
-  set: (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token)
+  getRefreshToken: () => {
+    return localStorage.getItem(REFRESH_TOKEN)
   },
-  remove: () => {
-    localStorage.removeItem(TOKEN_KEY)
+  setTokens: (tokens: AuthTokens) => {
+    localStorage.setItem(ACCESS_TOKEN, tokens.accessToken)
+    localStorage.setItem(REFRESH_TOKEN, tokens.refreshToken)
+  },
+  clear: () => {
+    localStorage.removeItem(ACCESS_TOKEN)
+    localStorage.removeItem(REFRESH_TOKEN)
   },
 }

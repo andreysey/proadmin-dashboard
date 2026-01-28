@@ -1,8 +1,10 @@
-import { tokenStorage } from '@/shared/lib/auth'
+import { useAuthStore } from '@/features/auth'
 import { Link } from '@tanstack/react-router'
 import { Home, Info, LayoutDashboard, LogOut, Users } from 'lucide-react'
 
 export const Sidebar = () => {
+  const logout = useAuthStore((state) => state.logout)
+
   return (
     <aside className="bg-background fixed top-0 left-0 z-40 h-screen w-64 border-r transition-transform">
       <div className="flex h-full flex-col px-3 py-4">
@@ -40,8 +42,7 @@ export const Sidebar = () => {
         <div className="mt-auto border-t pt-4">
           <button
             onClick={() => {
-              tokenStorage.remove()
-              window.location.reload()
+              logout()
             }}
             className="group text-foreground hover:bg-destructive/10 hover:text-destructive flex w-full items-center rounded-lg p-2 transition-colors"
           >
