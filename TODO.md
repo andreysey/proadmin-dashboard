@@ -70,3 +70,48 @@
 - [x] Implement Refresh Token rotation logic.
 - [x] Add "Retry Query" mechanism for expired tokens.
 - [x] Handle "Session Expired" UI notification.
+
+### UI & UX Polish
+
+- [x] Implement Theme System (Dark Mode) with `next-themes`.
+- [x] Refactor User Table for full theme support (CSS variables).
+- [x] Implement `MeshGradient` background for Login page.
+- [x] Enhance `LoginForm` with glassmorphism styling.
+- [x] Add dual-pagination controls (top/bottom) to User List.
+- [x] Clean up Header (dynamic user data, remove unused icons).
+- [x] Implement professional "About" page content.
+
+## 5. Live Analytics & Dashboard (Stage 5)
+
+### Infrastructure
+
+- [ ] Implement Global Error Boundary for app stability.
+- [ ] Implement 500 Internal Server Error global handler (Toast/Redirect).
+- [ ] Setup Analytics API mocks in MSW.
+- [ ] Define types for Dashboard stats and activity data.
+
+### Visualization
+
+- [ ] Implement `StatsOverview` with trend indicators.
+- [ ] Create `UserActivity` area chart (Recharts).
+- [ ] Create `RevenueStream` bar chart.
+- [ ] Implement `RecentActivityFeed` widget.
+
+### Features
+
+- [ ] Implement Global Date Range filtering.
+- [ ] Add "Auto-Refresh" toggle for live data simulation.
+- [ ] Implement CSV/Excel export using `papaparse` or `xlsx`.
+- [ ] Implement PDF export for analytics reports.
+
+## 6. Testing & Quality (Stage 6)
+
+- [ ] Unit testing (Vitest).
+- [ ] Integration testing with Playwright/Cypress.
+- [ ] CI/CD pipeline setup.
+
+## 7. Production Deployment (Stage 7)
+
+- [ ] Automated deployment to Vercel.
+- [ ] Production environment configuration.
+- [ ] Performance monitoring & Global CDN setup.
