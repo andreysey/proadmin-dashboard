@@ -1,5 +1,6 @@
 import { User } from 'lucide-react'
 import { useAuthStore } from '@/features/auth'
+import { ModeToggle } from '@/shared/ui'
 
 export const Header = () => {
   const user = useAuthStore((state) => state.user)
@@ -10,6 +11,7 @@ export const Header = () => {
         <div className="flex items-center" />
 
         <div className="flex items-center gap-4">
+          <ModeToggle />
           <div className="flex items-center gap-3 border-l pl-4">
             <div className="hidden text-right sm:block">
               <p className="text-sm leading-none font-medium">

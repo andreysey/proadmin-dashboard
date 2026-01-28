@@ -5,6 +5,7 @@ import { useState, type ReactNode } from 'react'
 
 import { router } from '../router'
 import { Toaster } from '@/shared/ui'
+import { ThemeProvider } from '@/shared/lib'
 
 interface ProvidersProps {
   children?: ReactNode
@@ -25,11 +26,13 @@ export const Providers = ({ children }: ProvidersProps) => {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster position="bottom-right" closeButton richColors />
-      <ReactQueryDevtools />
-      {children}
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+        <Toaster position="bottom-right" closeButton richColors />
+        <ReactQueryDevtools />
+        {children}
+      </QueryClientProvider>
+    </ThemeProvider>
   )
 }
