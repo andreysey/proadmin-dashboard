@@ -1,11 +1,8 @@
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 import { useNavigate } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
-import { api } from '@/shared/api'
-import { tokenStorage } from '@/shared/lib/auth'
 import {
   Button,
   Input,
@@ -18,14 +15,8 @@ import {
   Select,
 } from '@/shared/ui'
 import { useAuthStore } from '../model/auth.store'
-
-const loginSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required'),
-  role: z.string().optional(),
-})
-
-type LoginValues = z.infer<typeof loginSchema>
+import { loginFormSchema, type LoginFormValues } from '../model/schemas'
+import { login } from '../api/auth.api'
 
 export const LoginForm = () => {
   const navigate = useNavigate()
@@ -37,8 +28,8 @@ export const LoginForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginValues>({
-    resolver: zodResolver(loginSchema),
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       username: 'andriibutsvin', // Default for easy testing
       password: 'vawelrfn98rjh4',
@@ -46,25 +37,14 @@ export const LoginForm = () => {
     },
   })
 
-  const onSubmit = async (data: LoginValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true)
     setError(null)
 
     try {
-      const response = await api.post('/auth/login', data)
-      // Real DummyJSON uses 'accessToken', MSW mock uses 'token'
-      const { accessToken, token, refreshToken } = response.data
-      const authToken = accessToken ?? token
-
-      if (authToken) {
-        tokenStorage.setTokens({ accessToken: authToken, refreshToken })
-        // Fallback role for production API (DummyJSON doesn't return role)
-        setAuth({
-          ...response.data,
-          role: response.data.role ?? 'user',
-        })
-        navigate({ to: '/' })
-      }
+      const user = await login(data)
+      setAuth(user)
+      navigate({ to: '/' })
     } catch (err: unknown) {
       console.error('Login failed', err)
       const errorMessage =
