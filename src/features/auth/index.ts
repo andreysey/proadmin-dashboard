@@ -1,4 +1,4 @@
-export * from './ui/LoginForm'
+export * from './ui/login-form'
 export * from './model/auth.store'
 export * from './model/usePermission'
-export * from './ui/ProtectedAction'
+export * from './ui/protected-action'

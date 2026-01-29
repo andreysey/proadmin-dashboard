@@ -25,7 +25,7 @@ import {
 } from '@tanstack/react-table'
 import type { User } from '@/entities/user/model/types'
 import { DeleteUserButton } from '@/features/delete-user'
-import { BulkActions } from './BulkActions'
+import { BulkActions } from './bulk-actions'
 import { useBulkDelete } from '../model/useBulkDelete'
 import { useBulkUpdateRole } from '../model/useBulkUpdateRole'
 import { downloadCsv } from '@/shared/lib'

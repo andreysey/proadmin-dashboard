@@ -1,2 +1,2 @@
-export { UserForm } from './ui/UserForm'
+export { UserForm } from './ui/user-form'
 export { useUpdateUser } from './model/useUpdateUser'

@@ -1,1 +1,1 @@
-export { EditUserPage } from './ui/EditUserPage'
+export { EditUserPage } from './ui/edit-user-page'
