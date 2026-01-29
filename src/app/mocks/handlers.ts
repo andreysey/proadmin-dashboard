@@ -153,10 +153,18 @@ export const handlers = [
     const existingUpdates = updatedUsers.get(userId) ?? {}
     updatedUsers.set(userId, { ...existingUpdates, ...updates })
 
-    return HttpResponse.json({
-      id: userId,
+    // Fetch the original user to return complete object (for Zod validation)
+    const response = await fetch(`https://dummyjson.com/users/${id}?bypass=true`)
+    const originalUser = await response.json()
+
+    const enhanced = {
+      ...originalUser,
+      role: userId % 2 === 1 ? 'admin' : 'user',
+      ...existingUpdates,
       ...updates,
-    })
+    }
+
+    return HttpResponse.json(enhanced)
   }),
 
   http.delete('https://dummyjson.com/users/:id', async ({ params }) => {
