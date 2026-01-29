@@ -52,11 +52,17 @@ export const LoginForm = () => {
 
     try {
       const response = await api.post('/auth/login', data)
-      const { token, refreshToken } = response.data
+      // Real DummyJSON uses 'accessToken', MSW mock uses 'token'
+      const { accessToken, token, refreshToken } = response.data
+      const authToken = accessToken ?? token
 
-      if (token) {
-        tokenStorage.setTokens({ accessToken: token, refreshToken })
-        setAuth(response.data)
+      if (authToken) {
+        tokenStorage.setTokens({ accessToken: authToken, refreshToken })
+        // Fallback role for production API (DummyJSON doesn't return role)
+        setAuth({
+          ...response.data,
+          role: response.data.role ?? 'user',
+        })
         navigate({ to: '/' })
       }
     } catch (err: unknown) {

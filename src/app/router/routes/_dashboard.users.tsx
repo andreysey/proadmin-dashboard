@@ -1,6 +1,6 @@
-import { UsersPage } from '@/pages/users'
 import { createFileRoute } from '@tanstack/react-router'
 import { z } from 'zod'
+import { UsersPage } from '@/pages/users'
 
 const usersSearchSchema = z.object({
   skip: z.number().optional().default(0),
