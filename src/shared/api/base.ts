@@ -119,6 +119,14 @@ api.interceptors.response.use(
       onForbidden?.()
     }
 
+    // Handle 500 Internal Server Error
+    if (error.response?.status === 500) {
+      console.error('Interceptor: 500 Internal Server Error detected.')
+      toast.error('Server error', {
+        description: 'Something went wrong on our end. Please try again later.',
+      })
+    }
+
     return Promise.reject(error)
   }
 )
