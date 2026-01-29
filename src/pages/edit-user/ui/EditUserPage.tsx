@@ -29,6 +29,7 @@ export const EditUserPage = () => {
             search: (prev) => ({
               skip: prev.skip ?? 0,
               limit: prev.limit ?? 10,
+              order: prev.order ?? 'asc',
               q: prev.q,
             }),
           })
@@ -59,6 +60,7 @@ export const EditUserPage = () => {
                 search: (prev) => ({
                   skip: prev.skip ?? 0,
                   limit: prev.limit ?? 10,
+                  order: prev.order ?? 'asc',
                   q: prev.q,
                 }),
               })

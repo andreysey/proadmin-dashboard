@@ -24,6 +24,7 @@ export const Sidebar = () => {
 
           <Link
             to="/users"
+            search={{ skip: 0, limit: 10, order: 'asc' }}
             className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"
           >
             <Users className="group-hover:text-primary h-5 w-5 transition duration-75" />
