@@ -88,7 +88,7 @@
 - [x] Implement Global Error Boundary for app stability.
 - [x] Implement 500 Internal Server Error global handler (Toast/Redirect).
 - [x] Implement Route-level Code Splitting (TanStack Router lazy loading).
-- [ ] Add Zod runtime validation for API responses (entities layer).
+- [x] Add Zod runtime validation for API responses (entities layer).
 - [ ] Setup Analytics API mocks in MSW.
 - [ ] Define types for Dashboard stats and activity data.
 

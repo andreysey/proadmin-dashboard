@@ -1,4 +1,5 @@
 import type { User } from '@/entities/user'
+import type { DashboardStats, ActivitySeries, RecentEvent } from '@/entities/analytics'
 import { http, HttpResponse, delay, passthrough } from 'msw'
 
 const deletedUserIds = new Set<number>()
@@ -177,5 +178,54 @@ export const handlers = [
       isDeleted: true,
       deletedOn: new Date().toISOString(),
     })
+  }),
+
+  // --- Analytics Dashboard ---
+
+  http.get('https://dummyjson.com/analytics/stats', async () => {
+    await delay(800)
+    const stats: DashboardStats = {
+      totalUsers: 12543,
+      activeNow: 42,
+      totalRevenue: 850400.5,
+      monthlyGrowth: 12.5,
+    }
+    return HttpResponse.json(stats)
+  }),
+
+  http.get('https://dummyjson.com/analytics/activity', async () => {
+    await delay(1200)
+    const now = new Date()
+    const activity: ActivitySeries[] = [
+      {
+        type: 'new_users',
+        data: Array.from({ length: 7 }).map((_, i) => ({
+          timestamp: new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000).toISOString(),
+          value: Math.floor(Math.random() * 100),
+        })),
+      },
+    ]
+    return HttpResponse.json(activity)
+  }),
+
+  http.get('https://dummyjson.com/analytics/recent', async () => {
+    await delay(500)
+    const events: RecentEvent[] = [
+      {
+        id: '1',
+        type: 'user_signup',
+        title: 'New User Registered',
+        description: 'John Doe joined the platform',
+        timestamp: new Date().toISOString(),
+      },
+      {
+        id: '2',
+        type: 'system_alert',
+        title: 'Server Load High',
+        description: 'CPU usage exceeded 90%',
+        timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+      },
+    ]
+    return HttpResponse.json(events)
   }),
 ]

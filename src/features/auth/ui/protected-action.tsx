@@ -1,6 +1,6 @@
 import React from 'react'
 import type { Permission } from '@/entities/user'
-import { usePermission } from '../model/usePermission'
+import { usePermission } from '../model/use-permission'
 
 interface ProtectedActionProps {
   permission: Permission
