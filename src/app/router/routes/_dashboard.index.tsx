@@ -1,13 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { StatsOverview } from '@/widgets/StatsOverview'
 
 export const Route = createFileRoute('/_dashboard/')({
-  component: Index,
+  component: DashboardPage,
 })
 
-function Index() {
+function DashboardPage() {
   return (
-    <div className="p-4">
-      <h1 className="text-4xl font-bold">Welcome to ProAdmin Dashboard!</h1>
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">Welcome back! Here's an overview of your analytics.</p>
+      </div>
+
+      <StatsOverview />
     </div>
   )
 }

@@ -8,7 +8,7 @@ export const DashboardStatsSchema = z.object({
 })
 
 export const ActivityDataPointSchema = z.object({
-  timestamp: z.string().datetime(),
+  timestamp: z.iso.datetime(),
   value: z.number(),
 })
 
@@ -24,7 +24,7 @@ export const RecentEventSchema = z.object({
   type: z.enum(['user_signup', 'user_delete', 'system_alert', 'payment_success']),
   title: z.string(),
   description: z.string(),
-  timestamp: z.string().datetime(),
+  timestamp: z.iso.datetime(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 })
 
