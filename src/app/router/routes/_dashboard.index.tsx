@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { StatsOverview } from '@/widgets/StatsOverview'
 import { ActivityChart } from '@/widgets/ActivityChart'
+import { RecentActivityFeed } from '@/widgets/RecentActivityFeed'
 
 export const Route = createFileRoute('/_dashboard/')({
   component: DashboardPage,
@@ -15,7 +16,15 @@ function DashboardPage() {
       </div>
 
       <StatsOverview />
-      <ActivityChart />
+
+      <div className="grid gap-6 lg:grid-cols-7">
+        <div className="lg:col-span-4">
+          <ActivityChart />
+        </div>
+        <div className="lg:col-span-3">
+          <RecentActivityFeed />
+        </div>
+      </div>
     </div>
   )
 }
