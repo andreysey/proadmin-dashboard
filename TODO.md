@@ -89,15 +89,15 @@
 - [x] Implement 500 Internal Server Error global handler (Toast/Redirect).
 - [x] Implement Route-level Code Splitting (TanStack Router lazy loading).
 - [x] Add Zod runtime validation for API responses (entities layer).
-- [ ] Setup Analytics API mocks in MSW.
-- [ ] Define types for Dashboard stats and activity data.
+- [x] Setup Analytics API mocks in MSW.
+- [x] Define types for Dashboard stats and activity data.
 
 ### Visualization
 
-- [ ] Implement `StatsOverview` with trend indicators.
-- [ ] Create `UserActivity` area chart (Recharts).
-- [ ] Create `RevenueStream` bar chart.
-- [ ] Implement `RecentActivityFeed` widget.
+- [x] Implement `StatsOverview` with trend indicators.
+- [x] Create `UserActivity` area chart (Recharts).
+- [x] Create `RevenueStream` bar chart.
+- [x] Implement `RecentActivityFeed` widget.
 
 ### Features
 

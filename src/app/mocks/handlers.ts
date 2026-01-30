@@ -228,4 +228,15 @@ export const handlers = [
     ]
     return HttpResponse.json(events)
   }),
+
+  http.get('https://dummyjson.com/analytics/revenue', async () => {
+    await delay(900)
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    const revenueData = months.map((month) => ({
+      month,
+      revenue: Math.floor(Math.random() * 50000) + 30000,
+      orders: Math.floor(Math.random() * 300) + 100,
+    }))
+    return HttpResponse.json(revenueData)
+  }),
 ]

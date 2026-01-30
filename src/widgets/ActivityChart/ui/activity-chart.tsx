@@ -61,41 +61,22 @@ export const ActivityChart = () => {
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
-          <AreaChart data={chartData}>
-            <defs>
-              <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" className="stroke-muted" />
-            <XAxis
-              dataKey="date"
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-              className="text-muted-foreground"
-            />
-            <YAxis
-              tick={{ fontSize: 12 }}
-              tickLine={false}
-              axisLine={false}
-              className="text-muted-foreground"
-            />
+          <AreaChart responsive data={chartData}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis width="auto" />
             <Tooltip
               contentStyle={{
-                backgroundColor: 'hsl(var(--card))',
-                border: '1px solid hsl(var(--border))',
-                borderRadius: '8px',
+                backgroundColor: 'var(--foreground)',
               }}
-              labelStyle={{ color: 'hsl(var(--foreground))' }}
+              labelStyle={{ color: 'var(--background)' }}
             />
             <Area
               type="monotone"
               dataKey="value"
-              stroke="hsl(var(--primary))"
+              stroke="var(--chart-1)"
               strokeWidth={2}
-              fill="url(#colorValue)"
+              fill="var(--chart-1)"
             />
           </AreaChart>
         </ResponsiveContainer>

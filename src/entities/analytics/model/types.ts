@@ -25,3 +25,9 @@ export interface RecentEvent {
   timestamp: string
   metadata?: Record<string, unknown>
 }
+
+export interface RevenueDataPoint {
+  month: string
+  revenue: number
+  orders: number
+}

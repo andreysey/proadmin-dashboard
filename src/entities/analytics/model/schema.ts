@@ -30,3 +30,11 @@ export const RecentEventSchema = z.object({
 
 export const AnalyticsActivityResponseSchema = z.array(ActivitySeriesSchema)
 export const RecentEventsResponseSchema = z.array(RecentEventSchema)
+
+export const RevenueDataPointSchema = z.object({
+  month: z.string(),
+  revenue: z.number().min(0),
+  orders: z.number().min(0),
+})
+
+export const RevenueResponseSchema = z.array(RevenueDataPointSchema)

@@ -3,8 +3,9 @@ import {
   DashboardStatsSchema,
   AnalyticsActivityResponseSchema,
   RecentEventsResponseSchema,
+  RevenueResponseSchema,
 } from '../model/schema'
-import type { DashboardStats, ActivitySeries, RecentEvent } from '../model/types'
+import type { DashboardStats, ActivitySeries, RecentEvent, RevenueDataPoint } from '../model/types'
 
 /**
  * Get dashboard statistics.
@@ -31,4 +32,13 @@ export const getActivity = async (): Promise<ActivitySeries[]> => {
 export const getRecentEvents = async (): Promise<RecentEvent[]> => {
   const { data } = await api.get('/analytics/recent')
   return RecentEventsResponseSchema.parse(data)
+}
+
+/**
+ * Get monthly revenue data for bar chart.
+ * Response is validated with Zod schema.
+ */
+export const getRevenueData = async (): Promise<RevenueDataPoint[]> => {
+  const { data } = await api.get('/analytics/revenue')
+  return RevenueResponseSchema.parse(data)
 }
