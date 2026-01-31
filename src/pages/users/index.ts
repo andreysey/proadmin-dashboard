@@ -1,1 +1,1 @@
-export * from './ui/UsersPage'
+export * from './ui/users-page'

@@ -85,26 +85,26 @@
 
 ### Infrastructure
 
-- [ ] Implement Global Error Boundary for app stability.
-- [ ] Implement 500 Internal Server Error global handler (Toast/Redirect).
-- [ ] Implement Route-level Code Splitting (TanStack Router lazy loading).
-- [ ] Add Zod runtime validation for API responses (entities layer).
-- [ ] Setup Analytics API mocks in MSW.
-- [ ] Define types for Dashboard stats and activity data.
+- [x] Implement Global Error Boundary for app stability.
+- [x] Implement 500 Internal Server Error global handler (Toast/Redirect).
+- [x] Implement Route-level Code Splitting (TanStack Router lazy loading).
+- [x] Add Zod runtime validation for API responses (entities layer).
+- [x] Setup Analytics API mocks in MSW.
+- [x] Define types for Dashboard stats and activity data.
 
 ### Visualization
 
-- [ ] Implement `StatsOverview` with trend indicators.
-- [ ] Create `UserActivity` area chart (Recharts).
-- [ ] Create `RevenueStream` bar chart.
-- [ ] Implement `RecentActivityFeed` widget.
+- [x] Implement `StatsOverview` with trend indicators.
+- [x] Create `UserActivity` area chart (Recharts).
+- [x] Create `RevenueStream` bar chart.
+- [x] Implement `RecentActivityFeed` widget.
 
 ### Features
 
-- [ ] Implement Global Date Range filtering.
-- [ ] Add "Auto-Refresh" toggle for live data simulation.
-- [ ] Implement CSV/Excel export using `papaparse` or `xlsx`.
-- [ ] Implement PDF export for analytics reports.
+- [x] Implement Global Date Range filtering (URL state, API integration).
+- [x] Add "Auto-Refresh" toggle for live data simulation (30s polling).
+- [x] Implement CSV/Excel export using `xlsx`.
+- [x] Implement PDF export for analytics reports using `jspdf`.
 
 ## 6. Testing & Quality (Stage 6)
 

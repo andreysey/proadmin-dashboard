@@ -11,7 +11,7 @@ import {
   AlertDialogTrigger,
   Button,
 } from '@/shared/ui'
-import { useDeleteUser } from '../model/useDeleteUser'
+import { useDeleteUser } from '../model/use-delete-user'
 
 interface DeleteUserButtonProps {
   userId: number

@@ -53,6 +53,13 @@
 -   **Isolation**: Deep imports (e.g., `@/features/auth/ui/Form.tsx`) are forbidden. Use `@/features/auth`.
 -   **Direction**: Lower layers cannot import from upper layers (e.g., **entities** cannot import from **features**).
 
+### File Naming Convention
+-   **Use kebab-case** for all file names: `user-list.tsx`, `login-form.tsx`, `edit-user-page.tsx`.
+-   This is the modern frontend standard (Next.js, Remix, shadcn/ui).
+-   Prevents case-sensitivity issues between Windows/macOS and Linux.
+-   Component names inside files remain **PascalCase** (e.g., `export function UserList`).
+
+
 ## 💻 Coding Standards
 
 ### Components

@@ -1,6 +1,7 @@
 import { Outlet } from '@tanstack/react-router'
 import { Header } from '@/widgets/Header'
 import { Sidebar } from '@/widgets/Sidebar'
+import { ErrorBoundary } from '@/shared/ui'
 
 export const DashboardLayout = () => {
   return (
@@ -9,7 +10,9 @@ export const DashboardLayout = () => {
       <div className="flex flex-col">
         <Header />
         <main className="ml-64 p-6 transition-all">
-          <Outlet />
+          <ErrorBoundary>
+            <Outlet />
+          </ErrorBoundary>
         </main>
       </div>
     </div>
