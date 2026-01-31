@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
+    "test:e2e": "playwright test",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -52,6 +53,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.58.1",
     "@tanstack/eslint-plugin-query": "^5.91.3",
     "@tanstack/react-query-devtools": "^5.91.2",
     "@tanstack/router-devtools": "^1.154.14",

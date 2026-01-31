@@ -111,7 +111,7 @@
 ### Infrastructure
 
 - [x] Setup Vitest + React Testing Library.
-- [ ] Setup Playwright for E2E testing.
+- [x] Setup Playwright for E2E testing.
 
 ### Unit & Component (Vitest)
 
@@ -120,7 +120,7 @@
 
 ### Integration (Playwright)
 
-- [ ] Test critical flows (Login, Dashboard, Users).
+- [x] Test critical flows (Login, Dashboard, Users).
 
 ### CI/CD
 

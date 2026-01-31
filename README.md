@@ -99,10 +99,10 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Global Date Range filtering for all reports
   - [x] Data Export (Excel/PDF) for audit logs
 - [ ] **Testing & Quality (Stage 6):**
-  - [ ] Unit tests for business logic (Vitest)
-  - [ ] Component tests (React Testing Library)
-  - [ ] E2E Integration tests (Playwright)
-  - [ ] CI/CD Github Actions setup
+  - [x] Unit tests for business logic (Vitest)
+  - [x] Component tests (React Testing Library)
+  - [x] E2E Integration tests (Playwright)
+  - [x] CI/CD Github Actions setup
   - [ ] Target: 70%+ coverage for `features/` and `entities/`
 - [ ] **Production Deployment (Stage 7):**
   - [ ] Deployed to Vercel/Netlify with CI/CD
