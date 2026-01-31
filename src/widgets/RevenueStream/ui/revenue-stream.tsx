@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
 import { useRevenueData } from '@/entities/analytics'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import type { DateRangeValue } from '@/features/dashboard-filters'
 
 const RevenueStreamSkeleton = () => {
   return (
@@ -15,8 +16,12 @@ const RevenueStreamSkeleton = () => {
   )
 }
 
-export const RevenueStream = () => {
-  const { data, isPending, isError } = useRevenueData()
+interface RevenueStreamProps {
+  dateRange: DateRangeValue
+}
+
+export const RevenueStream = ({ dateRange }: RevenueStreamProps) => {
+  const { data, isPending, isError } = useRevenueData(dateRange)
 
   if (isPending) {
     return <RevenueStreamSkeleton />

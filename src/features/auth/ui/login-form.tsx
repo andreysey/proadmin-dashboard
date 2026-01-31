@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useNavigate } from '@tanstack/react-router'
+import { useRouter } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 import {
   Button,
@@ -13,13 +13,23 @@ import {
   CardContent,
   CardFooter,
   Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from '@/shared/ui'
 import { useAuthStore } from '../model/auth.store'
 import { loginFormSchema, type LoginFormValues } from '../model/schemas'
 import { login } from '../api/auth.api'
 
+const ROLE_OPTIONS = [
+  { value: 'admin', label: 'Admin (Full Access)' },
+  { value: 'user', label: 'User (View Only)' },
+  { value: 'moderator', label: 'Moderator (Manage Users)' },
+] as const
+
 export const LoginForm = () => {
-  const navigate = useNavigate()
+  const router = useRouter()
   const setAuth = useAuthStore((state) => state.setAuth)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -27,6 +37,7 @@ export const LoginForm = () => {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -44,7 +55,8 @@ export const LoginForm = () => {
     try {
       const user = await login(data)
       setAuth(user)
-      navigate({ to: '/' })
+      // @ts-expect-error - TanStack Router types with catch() are not fully inferred
+      void router.navigate({ to: '/' })
     } catch (err: unknown) {
       console.error('Login failed', err)
       const errorMessage =
@@ -80,11 +92,24 @@ export const LoginForm = () => {
 
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="role">Dev: Login As Role</Label>
-            <Select id="role" {...register('role')}>
-              <option value="admin">Admin (Full Access)</option>
-              <option value="user">User (View Only)</option>
-              <option value="moderator">Moderator (Manage Users)</option>
-            </Select>
+            <Controller
+              name="role"
+              control={control}
+              render={({ field }) => (
+                <Select value={field.value} onValueChange={field.onChange}>
+                  <SelectTrigger id="role">
+                    <SelectValue placeholder="Select role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {ROLE_OPTIONS.map((option) => (
+                      <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            />
           </div>
 
           {error && <div className="text-destructive text-sm font-medium">{error}</div>}

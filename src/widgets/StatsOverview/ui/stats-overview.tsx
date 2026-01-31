@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
 import { useAnalyticsStats } from '@/entities/analytics'
 import { Users, Activity, DollarSign, TrendingUp } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import type { DateRangeValue } from '@/features/dashboard-filters'
 
 interface StatCardProps {
   title: string
@@ -50,8 +51,12 @@ const StatsOverviewSkeleton = () => {
   )
 }
 
-export const StatsOverview = () => {
-  const { data, isPending, isError } = useAnalyticsStats()
+interface StatsOverviewProps {
+  dateRange: DateRangeValue
+}
+
+export const StatsOverview = ({ dateRange }: StatsOverviewProps) => {
+  const { data, isPending, isError } = useAnalyticsStats(dateRange)
 
   if (isPending) {
     return <StatsOverviewSkeleton />

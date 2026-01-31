@@ -182,56 +182,90 @@ export const handlers = [
 
   // --- Analytics Dashboard ---
 
-  http.get('https://dummyjson.com/analytics/stats', async () => {
+  http.get('https://dummyjson.com/analytics/stats', async ({ request }) => {
+    const url = new URL(request.url)
+    const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(800)
+
+    // Vary stats based on dateRange for simulation
+    const multiplier = dateRange === '24h' ? 0.1 : dateRange === '7d' ? 1 : 3
     const stats: DashboardStats = {
-      totalUsers: 12543,
-      activeNow: 42,
-      totalRevenue: 850400.5,
-      monthlyGrowth: 12.5,
+      totalUsers: Math.floor(12543 * multiplier),
+      activeNow: Math.floor(42 * (multiplier > 1 ? 1 : multiplier)),
+      totalRevenue: Math.floor(850400.5 * multiplier),
+      monthlyGrowth: dateRange === '24h' ? 2.1 : dateRange === '7d' ? 12.5 : 8.3,
     }
     return HttpResponse.json(stats)
   }),
 
-  http.get('https://dummyjson.com/analytics/activity', async () => {
+  http.get('https://dummyjson.com/analytics/activity', async ({ request }) => {
+    const url = new URL(request.url)
+    const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(1200)
+
     const now = new Date()
+    // Generate different number of data points based on dateRange
+    const pointCount = dateRange === '24h' ? 24 : dateRange === '7d' ? 7 : 30
+    const intervalMs =
+      dateRange === '24h'
+        ? 60 * 60 * 1000 // 1 hour
+        : 24 * 60 * 60 * 1000 // 1 day
+
     const activity: ActivitySeries[] = [
       {
         type: 'new_users',
-        data: Array.from({ length: 7 }).map((_, i) => ({
-          timestamp: new Date(now.getTime() - (6 - i) * 24 * 60 * 60 * 1000).toISOString(),
-          value: Math.floor(Math.random() * 100),
+        data: Array.from({ length: pointCount }).map((_, i) => ({
+          timestamp: new Date(now.getTime() - (pointCount - 1 - i) * intervalMs).toISOString(),
+          value: Math.floor(Math.random() * 100) + 10,
         })),
       },
     ]
     return HttpResponse.json(activity)
   }),
 
-  http.get('https://dummyjson.com/analytics/recent', async () => {
+  http.get('https://dummyjson.com/analytics/recent', async ({ request }) => {
+    const url = new URL(request.url)
+    const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(500)
-    const events: RecentEvent[] = [
-      {
-        id: '1',
-        type: 'user_signup',
-        title: 'New User Registered',
-        description: 'John Doe joined the platform',
-        timestamp: new Date().toISOString(),
-      },
-      {
-        id: '2',
-        type: 'system_alert',
-        title: 'Server Load High',
-        description: 'CPU usage exceeded 90%',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      },
+
+    // More events for longer date ranges
+    const eventCount = dateRange === '24h' ? 2 : dateRange === '7d' ? 5 : 10
+    const eventTypes: RecentEvent['type'][] = [
+      'user_signup',
+      'system_alert',
+      'payment_success',
+      'user_delete',
     ]
+    const eventTitles: Record<RecentEvent['type'], string> = {
+      user_signup: 'New User Registered',
+      user_delete: 'User Account Deleted',
+      system_alert: 'Server Load High',
+      payment_success: 'Payment Received',
+    }
+
+    const events: RecentEvent[] = Array.from({ length: eventCount }).map((_, i) => {
+      const type = eventTypes[i % eventTypes.length]
+      return {
+        id: String(i + 1),
+        type,
+        title: eventTitles[type],
+        description: `Event ${i + 1} description`,
+        timestamp: new Date(Date.now() - i * 1000 * 60 * 30).toISOString(),
+      }
+    })
     return HttpResponse.json(events)
   }),
 
-  http.get('https://dummyjson.com/analytics/revenue', async () => {
+  http.get('https://dummyjson.com/analytics/revenue', async ({ request }) => {
+    const url = new URL(request.url)
+    const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(900)
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+
+    // Different periods based on dateRange
+    const monthCount = dateRange === '24h' ? 1 : dateRange === '7d' ? 3 : 6
+    const allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun']
+    const months = allMonths.slice(0, monthCount)
+
     const revenueData = months.map((month) => ({
       month,
       revenue: Math.floor(Math.random() * 50000) + 30000,

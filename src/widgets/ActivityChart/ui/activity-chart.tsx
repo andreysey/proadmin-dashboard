@@ -9,6 +9,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import type { DateRangeValue } from '@/features/dashboard-filters'
 
 const ActivityChartSkeleton = () => {
   return (
@@ -23,8 +24,12 @@ const ActivityChartSkeleton = () => {
   )
 }
 
-export const ActivityChart = () => {
-  const { data, isPending, isError } = useAnalyticsActivity()
+interface ActivityChartProps {
+  dateRange: DateRangeValue
+}
+
+export const ActivityChart = ({ dateRange }: ActivityChartProps) => {
+  const { data, isPending, isError } = useAnalyticsActivity(dateRange)
 
   if (isPending) {
     return <ActivityChartSkeleton />

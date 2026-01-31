@@ -43,12 +43,12 @@ function DashboardPage() {
         </div>
       </div>
 
-      <StatsOverview />
+      <StatsOverview dateRange={dateRange} />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <RecentActivityFeed />
-        <RevenueStream />
-        <ActivityChart />
+        <RecentActivityFeed dateRange={dateRange} />
+        <RevenueStream dateRange={dateRange} />
+        <ActivityChart dateRange={dateRange} />
       </div>
     </div>
   )

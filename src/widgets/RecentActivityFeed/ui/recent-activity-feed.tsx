@@ -3,6 +3,7 @@ import { useRecentEvents } from '@/entities/analytics'
 import type { RecentEvent } from '@/entities/analytics'
 import { UserPlus, UserMinus, AlertTriangle, CreditCard } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
+import type { DateRangeValue } from '@/features/dashboard-filters'
 
 const eventIcons: Record<RecentEvent['type'], React.ReactNode> = {
   user_signup: <UserPlus className="h-4 w-4 text-green-500" />,
@@ -65,8 +66,12 @@ const RecentActivityFeedSkeleton = () => {
   )
 }
 
-export const RecentActivityFeed = () => {
-  const { data, isPending, isError } = useRecentEvents()
+interface RecentActivityFeedProps {
+  dateRange: DateRangeValue
+}
+
+export const RecentActivityFeed = ({ dateRange }: RecentActivityFeedProps) => {
+  const { data, isPending, isError } = useRecentEvents(dateRange)
 
   if (isPending) {
     return <RecentActivityFeedSkeleton />

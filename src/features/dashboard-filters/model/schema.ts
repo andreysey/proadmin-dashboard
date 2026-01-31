@@ -3,6 +3,8 @@ import { z } from 'zod'
 /**
  * Single Source of Truth for dashboard filters.
  * Types are derived from schemas using z.infer<>.
+ *
+ * Using .catch() provides fallback for missing or invalid values.
  */
 
 // Date Range
@@ -13,10 +15,13 @@ export type DateRangeValue = z.infer<typeof dateRangeSchema>
 export const autoRefreshSchema = z.boolean()
 export type AutoRefreshValue = z.infer<typeof autoRefreshSchema>
 
-// Full dashboard search params schema
+// Full dashboard search params schema (strict - for reading)
 export const dashboardSearchSchema = z.object({
-  dateRange: dateRangeSchema.optional().default('7d'),
-  autoRefresh: autoRefreshSchema.optional().default(false),
+  dateRange: dateRangeSchema.catch('7d'),
+  autoRefresh: autoRefreshSchema.catch(false),
 })
 
 export type DashboardSearchParams = z.infer<typeof dashboardSearchSchema>
+
+// Partial schema for navigation (optional - for navigation)
+export type DashboardSearchInput = Partial<DashboardSearchParams>
