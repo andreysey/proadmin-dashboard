@@ -70,6 +70,17 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
 - **Date Range Filtering:** Interactive date pickers for custom report periods.
 - **Data Export:** Client-side CSV/Excel generation using `papaparse` or `xlsx`.
 
+### 7. Automated Release Management
+
+- **Conventional Commits:** Standardized commit messages trigger automated versioning.
+- **Release Please (Google):** Automated creation of GitHub releases, changelogs, and version bumps.
+- **Dynamic Versioning:** Application version is injected at build-time from `package.json` and displayed in the UI.
+
+### 8. Bundle Optimization
+
+- **Strategic Code Splitting:** Using `manualChunks` in Vite/Rollup to isolate large vendors (React, TanStack).
+- **Size Reduction:** Achieved ~36% reduction in main bundle chunks, improving initial load performance.
+
 ## Features (Roadmap)
 
 - [x] **Auth System (Stage 1 - MVP):**
@@ -98,17 +109,17 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Dynamic widgets (User Activity, Revenue, Growth)
   - [x] Global Date Range filtering for all reports
   - [x] Data Export (Excel/PDF) for audit logs
-- [ ] **Testing & Quality (Stage 6):**
+- [x] **Testing & Quality (Stage 6):**
   - [x] Unit tests for business logic (Vitest)
   - [x] Component tests (React Testing Library)
   - [x] E2E Integration tests (Playwright)
   - [x] CI/CD Github Actions setup
   - [x] Target: 70%+ coverage for `features/` and `entities/` (Critical paths covered: Auth, UserList, DeleteUser)
-- [ ] **Production Deployment (Stage 7):**
-  - [ ] Deployed to Vercel/Netlify with CI/CD
-  - [ ] Environment-based configuration (Production/Staging)
-  - [ ] Performance monitoring & Analytics integration
-  - [ ] Final project walkthrough & Handover documentation
+- [/] **Production Deployment & Optimization (Stage 7):**
+  - [x] Bundle Size Optimization (Manual Chunks - reduced by ~36%)
+  - [x] Automated Semantic Versioning (Release Please)
+  - [x] CI/CD Pipeline Stabilized
+  - [ ] Final Vercel Deployment & Performance Monitoring
 
 ## Development Workflow
 

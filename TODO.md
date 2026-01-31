@@ -126,8 +126,17 @@
 
 - [x] Configure GitHub Actions workflow.
 
-## 7. Production Deployment (Stage 7)
+## 7. Production Deployment & Optimization (Stage 7)
 
+- [x] Bundle Size Optimization (Manual Chunks).
+- [x] Automated Semantic Versioning (Release Please).
+- [ ] UI/UX Polish: Final fallback handling & console cleanup.
 - [ ] Automated deployment to Vercel.
 - [ ] Production environment configuration.
 - [ ] Performance monitoring & Global CDN setup.
+
+## 8. Maintenance & Future (Post-Release)
+
+- [ ] Sentry Error Tracking integration.
+- [ ] Storybook for component documentation.
+- [ ] Full i18n localization support.
