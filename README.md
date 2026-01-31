@@ -103,7 +103,7 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Component tests (React Testing Library)
   - [x] E2E Integration tests (Playwright)
   - [x] CI/CD Github Actions setup
-  - [ ] Target: 70%+ coverage for `features/` and `entities/`
+  - [x] Target: 70%+ coverage for `features/` and `entities/` (Critical paths covered: Auth, UserList, DeleteUser)
 - [ ] **Production Deployment (Stage 7):**
   - [ ] Deployed to Vercel/Netlify with CI/CD
   - [ ] Environment-based configuration (Production/Staging)
