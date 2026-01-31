@@ -26,12 +26,11 @@ export const EditUserPage = () => {
         onSuccess: () => {
           navigate({
             to: '/users',
-            search: (prev) => ({
-              skip: prev.skip ?? 0,
-              limit: prev.limit ?? 10,
-              order: prev.order ?? 'asc',
-              q: prev.q,
-            }),
+            search: {
+              skip: 0,
+              limit: 10,
+              order: 'asc',
+            },
           })
         },
       }
@@ -57,12 +56,12 @@ export const EditUserPage = () => {
             onCancel={() =>
               navigate({
                 to: '/users',
-                search: (prev) => ({
-                  skip: prev.skip ?? 0,
-                  limit: prev.limit ?? 10,
-                  order: prev.order ?? 'asc',
-                  q: prev.q,
-                }),
+                search: {
+                  skip: 0,
+                  limit: 10,
+                  order: 'asc',
+                  q: undefined,
+                },
               })
             }
           />

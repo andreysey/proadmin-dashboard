@@ -8,7 +8,7 @@ export const Route = createFileRoute('/_dashboard/users_/$userId/edit')({
     const user = useAuthStore.getState().user
 
     if (!checkPermission(user, 'users:edit')) {
-      throw redirect({ to: '/' })
+      throw redirect({ to: '/', search: { dateRange: '7d', autoRefresh: false } })
     }
   },
   component: EditUserPage,

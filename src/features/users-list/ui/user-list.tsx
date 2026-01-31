@@ -63,11 +63,20 @@ const columns = [
     header: 'User',
     cell: (info) => (
       <div className="flex items-center gap-3">
-        <img
-          src={info.row.original.image}
-          alt={info.getValue()}
-          className="h-8 w-8 rounded-full object-cover"
-        />
+        {info.row.original.image ? (
+          <img
+            src={info.row.original.image}
+            alt={info.getValue()}
+            className="h-8 w-8 rounded-full object-cover"
+          />
+        ) : (
+          <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
+            <span className="text-muted-foreground text-xs font-medium">
+              {info.row.original.firstName[0]}
+              {info.row.original.lastName[0]}
+            </span>
+          </div>
+        )}
         <div className="flex flex-col">
           <span className="font-medium">{info.getValue()}</span>
           <span className="text-xs text-gray-500">@{info.row.original.username}</span>

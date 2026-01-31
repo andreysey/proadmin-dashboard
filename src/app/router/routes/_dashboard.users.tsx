@@ -10,6 +10,8 @@ const usersSearchSchema = z.object({
   order: z.enum(['asc', 'desc']).optional().default('asc'),
 })
 
+export type UsersSearch = z.infer<typeof usersSearchSchema>
+
 export const Route = createFileRoute('/_dashboard/users')({
   validateSearch: (search) => usersSearchSchema.parse(search),
   component: UsersPage,

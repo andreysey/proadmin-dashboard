@@ -55,10 +55,14 @@ export const LoginForm = () => {
     try {
       const user = await login(data)
       setAuth(user)
-      // @ts-expect-error - TanStack Router types with catch() are not fully inferred
-      void router.navigate({ to: '/' })
+      void router.navigate({
+        to: '/',
+        search: { dateRange: '7d', autoRefresh: false },
+      })
     } catch (err: unknown) {
-      console.error('Login failed', err)
+      if (import.meta.env.MODE !== 'test') {
+        console.error('Login failed', err)
+      }
       const errorMessage =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
         'Invalid credentials'
@@ -121,7 +125,7 @@ export const LoginForm = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <p className="text-muted-foreground text-xs">ProAdmin Dashboard v0.1</p>
+        <p className="text-muted-foreground text-xs">ProAdmin Dashboard v{__APP_VERSION__}</p>
       </CardFooter>
     </Card>
   )

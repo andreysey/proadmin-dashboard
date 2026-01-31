@@ -8,6 +8,7 @@ import {
   AutoRefreshToggle,
   type DateRangeValue,
   dashboardSearchSchema,
+  type DashboardSearchParams,
 } from '@/features/dashboard-filters'
 import { ExportButton } from '@/features/export-dashboard'
 import { useAnalyticsStats, useRecentEvents } from '@/entities/analytics'
@@ -30,14 +31,14 @@ function DashboardPage() {
   // Handler: Update URL when date range changes
   const handleDateRangeChange = (newRange: DateRangeValue) => {
     navigate({
-      search: (prev) => ({ ...prev, dateRange: newRange }),
+      search: (prev: DashboardSearchParams) => ({ ...prev, dateRange: newRange }),
     })
   }
 
   // Handler: Update URL when auto-refresh toggle changes
   const handleAutoRefreshChange = (enabled: boolean) => {
     navigate({
-      search: (prev) => ({ ...prev, autoRefresh: enabled }),
+      search: (prev: DashboardSearchParams) => ({ ...prev, autoRefresh: enabled }),
     })
   }
 

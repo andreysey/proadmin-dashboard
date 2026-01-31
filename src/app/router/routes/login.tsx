@@ -7,7 +7,7 @@ export const Route = createFileRoute('/login')({
     const isAuthenticated = tokenStorage.getAccessToken()
 
     if (isAuthenticated) {
-      throw redirect({ to: '/' })
+      throw redirect({ to: '/', search: { dateRange: '7d', autoRefresh: false } })
     }
   },
   component: LoginPage,

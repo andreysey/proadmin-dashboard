@@ -1,5 +1,5 @@
 import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
-import { Button, Select } from '@/shared/ui'
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui'
 import { ROLES, type UserRole } from '@/entities/user/model/types'
 import { useState } from 'react'
 import { ProtectedAction } from '@/features/auth'
@@ -45,19 +45,17 @@ export const BulkActions = ({
 
       <ProtectedAction permission="users:manage-roles">
         <div className="flex items-center gap-2 border-r pr-4">
-          <Select
-            className="h-8 w-32"
-            value={selectedRole}
-            onChange={(e) => setSelectedRole(e.target.value as UserRole)}
-          >
-            <option value="" disabled>
-              Change role...
-            </option>
-            {ROLES.map((role) => (
-              <option key={role} value={role}>
-                {role}
-              </option>
-            ))}
+          <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
+            <SelectTrigger className="h-8 w-32">
+              <SelectValue placeholder="Change role..." />
+            </SelectTrigger>
+            <SelectContent>
+              {ROLES.map((role) => (
+                <SelectItem key={role} value={role}>
+                  {role}
+                </SelectItem>
+              ))}
+            </SelectContent>
           </Select>
           <Button
             variant="outline"

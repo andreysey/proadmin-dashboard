@@ -12,7 +12,10 @@ setUnauthorizedHandler(() => {
 
 setForbiddenHandler(() => {
   // For now, just redirect to home. Later we can add a Toast notification.
-  router.navigate({ to: '/' })
+  router.navigate({
+    to: '/',
+    search: { dateRange: '7d', autoRefresh: false },
+  })
 })
 
 async function enableMocking() {
