@@ -101,10 +101,10 @@
 
 ### Features
 
-- [ ] Implement Global Date Range filtering.
-- [ ] Add "Auto-Refresh" toggle for live data simulation.
-- [ ] Implement CSV/Excel export using `papaparse` or `xlsx`.
-- [ ] Implement PDF export for analytics reports.
+- [x] Implement Global Date Range filtering (URL state, API integration).
+- [x] Add "Auto-Refresh" toggle for live data simulation (30s polling).
+- [x] Implement CSV/Excel export using `xlsx`.
+- [x] Implement PDF export for analytics reports using `jspdf`.
 
 ## 6. Testing & Quality (Stage 6)
 

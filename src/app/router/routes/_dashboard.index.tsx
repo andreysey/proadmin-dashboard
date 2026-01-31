@@ -9,6 +9,8 @@ import {
   type DateRangeValue,
   dashboardSearchSchema,
 } from '@/features/dashboard-filters'
+import { ExportButton } from '@/features/export-dashboard'
+import { useAnalyticsStats, useRecentEvents } from '@/entities/analytics'
 
 export const Route = createFileRoute('/_dashboard/')({
   validateSearch: (search) => dashboardSearchSchema.parse(search),
@@ -20,6 +22,10 @@ function DashboardPage() {
   const { dateRange, autoRefresh } = Route.useSearch()
   // Step 2: Get navigate function to update URL
   const navigate = Route.useNavigate()
+
+  // Data for export (React Query returns cached data if already fetched)
+  const { data: stats } = useAnalyticsStats(dateRange, autoRefresh)
+  const { data: events } = useRecentEvents(dateRange, autoRefresh)
 
   // Handler: Update URL when date range changes
   const handleDateRangeChange = (newRange: DateRangeValue) => {
@@ -48,6 +54,7 @@ function DashboardPage() {
         <div className="flex items-center gap-4">
           <AutoRefreshToggle enabled={autoRefresh} onChange={handleAutoRefreshChange} />
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
+          <ExportButton stats={stats} events={events} dateRange={dateRange} />
         </div>
       </div>
 
