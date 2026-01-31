@@ -110,13 +110,13 @@
 
 ### Infrastructure
 
-- [ ] Setup Vitest + React Testing Library.
+- [x] Setup Vitest + React Testing Library.
 - [ ] Setup Playwright for E2E testing.
 
 ### Unit & Component (Vitest)
 
-- [ ] Test Business Logic (Zod Schemas, Hooks).
-- [ ] Test UI Components (Widgets, Features).
+- [x] Test Business Logic (Zod Schemas, Hooks).
+- [x] Test UI Components (Widgets, Features).
 
 ### Integration (Playwright)
 
@@ -124,7 +124,7 @@
 
 ### CI/CD
 
-- [ ] Configure GitHub Actions workflow.
+- [x] Configure GitHub Actions workflow.
 
 ## 7. Production Deployment (Stage 7)
 
