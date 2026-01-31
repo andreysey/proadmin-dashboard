@@ -3,8 +3,8 @@ import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import { defineConfig } from 'vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
-
 import { visualizer } from 'rollup-plugin-visualizer'
+import pkg from './package.json'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -27,6 +27,9 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+  },
+  define: {
+    __APP_VERSION__: JSON.stringify(pkg.version),
   },
   build: {
     rollupOptions: {

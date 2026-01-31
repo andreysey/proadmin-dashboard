@@ -89,7 +89,7 @@ export const AboutPage = () => {
 
       <div className="flex justify-center pt-4">
         <p className="text-muted-foreground text-xs font-medium">
-          ProAdmin Dashboard • Version 0.1.0 • Built with ❤️ and Precision
+          ProAdmin Dashboard • Version {__APP_VERSION__} • Built with ❤️ and Precision
         </p>
       </div>
     </div>
