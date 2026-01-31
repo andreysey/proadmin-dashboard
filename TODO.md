@@ -108,9 +108,23 @@
 
 ## 6. Testing & Quality (Stage 6)
 
-- [ ] Unit testing (Vitest).
-- [ ] Integration testing with Playwright/Cypress.
-- [ ] CI/CD pipeline setup.
+### Infrastructure
+
+- [ ] Setup Vitest + React Testing Library.
+- [ ] Setup Playwright for E2E testing.
+
+### Unit & Component (Vitest)
+
+- [ ] Test Business Logic (Zod Schemas, Hooks).
+- [ ] Test UI Components (Widgets, Features).
+
+### Integration (Playwright)
+
+- [ ] Test critical flows (Login, Dashboard, Users).
+
+### CI/CD
+
+- [ ] Configure GitHub Actions workflow.
 
 ## 7. Production Deployment (Stage 7)
 

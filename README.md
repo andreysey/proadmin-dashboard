@@ -93,14 +93,16 @@ No `any` policy. All API responses are validated via Zod schemas at the network 
   - [x] Enhanced Navigation (Dual Pagination & Search alignment)
   - [x] Professional "About" page implementation
   - [ ] HttpOnly cookies integration (Architecture ready, requires Backend)
-- [ ] **Live Analytics & Dashboard (Stage 5):**
-  - [ ] Interactive Dashboard with real-time charts (Recharts)
-  - [ ] Dynamic widgets (User Activity, Revenue, Growth)
-  - [ ] Global Date Range filtering for all reports
-  - [ ] Data Export (CSV/JSON/PDF) for audit logs
+- [x] **Live Analytics & Dashboard (Stage 5):**
+  - [x] Interactive Dashboard with real-time charts (Recharts)
+  - [x] Dynamic widgets (User Activity, Revenue, Growth)
+  - [x] Global Date Range filtering for all reports
+  - [x] Data Export (Excel/PDF) for audit logs
 - [ ] **Testing & Quality (Stage 6):**
   - [ ] Unit tests for business logic (Vitest)
-  - [ ] Integration tests for critical flows (Login, User CRUD)
+  - [ ] Component tests (React Testing Library)
+  - [ ] E2E Integration tests (Playwright)
+  - [ ] CI/CD Github Actions setup
   - [ ] Target: 70%+ coverage for `features/` and `entities/`
 - [ ] **Production Deployment (Stage 7):**
   - [ ] Deployed to Vercel/Netlify with CI/CD
@@ -141,7 +143,7 @@ I use AI as a **Technical Partner**, not a code generator.
 - **Technical Skills:** JavaScript (ES6+), TypeScript, React, Vue 3.
 - **Languages:**
   - German (B1 - Actively progressing to B2)
-  - English (B1 - Actively progressing to B2)
+  - English (B2)
   - Ukrainian (Native)
   - Russian (Native)
 - **Work Status:** Resident in Germany (§24), Full Work Permit.
