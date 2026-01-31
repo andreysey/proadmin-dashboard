@@ -26,10 +26,11 @@ const ActivityChartSkeleton = () => {
 
 interface ActivityChartProps {
   dateRange: DateRangeValue
+  autoRefresh?: boolean
 }
 
-export const ActivityChart = ({ dateRange }: ActivityChartProps) => {
-  const { data, isPending, isError } = useAnalyticsActivity(dateRange)
+export const ActivityChart = ({ dateRange, autoRefresh = false }: ActivityChartProps) => {
+  const { data, isPending, isError } = useAnalyticsActivity(dateRange, autoRefresh)
 
   if (isPending) {
     return <ActivityChartSkeleton />

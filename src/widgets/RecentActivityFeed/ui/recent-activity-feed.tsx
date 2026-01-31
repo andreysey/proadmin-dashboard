@@ -68,10 +68,11 @@ const RecentActivityFeedSkeleton = () => {
 
 interface RecentActivityFeedProps {
   dateRange: DateRangeValue
+  autoRefresh?: boolean
 }
 
-export const RecentActivityFeed = ({ dateRange }: RecentActivityFeedProps) => {
-  const { data, isPending, isError } = useRecentEvents(dateRange)
+export const RecentActivityFeed = ({ dateRange, autoRefresh = false }: RecentActivityFeedProps) => {
+  const { data, isPending, isError } = useRecentEvents(dateRange, autoRefresh)
 
   if (isPending) {
     return <RecentActivityFeedSkeleton />

@@ -97,7 +97,7 @@ export const LoginForm = () => {
               control={control}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="role">
+                  <SelectTrigger id="role" className="w-full">
                     <SelectValue placeholder="Select role" />
                   </SelectTrigger>
                   <SelectContent>

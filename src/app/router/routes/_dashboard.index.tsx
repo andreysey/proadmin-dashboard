@@ -5,6 +5,7 @@ import { RecentActivityFeed } from '@/widgets/RecentActivityFeed'
 import { RevenueStream } from '@/widgets/RevenueStream'
 import {
   DateRangePicker,
+  AutoRefreshToggle,
   type DateRangeValue,
   dashboardSearchSchema,
 } from '@/features/dashboard-filters'
@@ -16,7 +17,7 @@ export const Route = createFileRoute('/_dashboard/')({
 
 function DashboardPage() {
   // Step 1: Read URL state
-  const { dateRange } = Route.useSearch()
+  const { dateRange, autoRefresh } = Route.useSearch()
   // Step 2: Get navigate function to update URL
   const navigate = Route.useNavigate()
 
@@ -24,6 +25,13 @@ function DashboardPage() {
   const handleDateRangeChange = (newRange: DateRangeValue) => {
     navigate({
       search: (prev) => ({ ...prev, dateRange: newRange }),
+    })
+  }
+
+  // Handler: Update URL when auto-refresh toggle changes
+  const handleAutoRefreshChange = (enabled: boolean) => {
+    navigate({
+      search: (prev) => ({ ...prev, autoRefresh: enabled }),
     })
   }
 
@@ -37,18 +45,18 @@ function DashboardPage() {
             Welcome back! Here's an overview of your analytics.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
+          <AutoRefreshToggle enabled={autoRefresh} onChange={handleAutoRefreshChange} />
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
-          {/* Auto-refresh toggle will go here */}
         </div>
       </div>
 
-      <StatsOverview dateRange={dateRange} />
+      <StatsOverview dateRange={dateRange} autoRefresh={autoRefresh} />
 
       <div className="grid gap-6 lg:grid-cols-3">
-        <RecentActivityFeed dateRange={dateRange} />
-        <RevenueStream dateRange={dateRange} />
-        <ActivityChart dateRange={dateRange} />
+        <RecentActivityFeed dateRange={dateRange} autoRefresh={autoRefresh} />
+        <RevenueStream dateRange={dateRange} autoRefresh={autoRefresh} />
+        <ActivityChart dateRange={dateRange} autoRefresh={autoRefresh} />
       </div>
     </div>
   )

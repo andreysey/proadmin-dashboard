@@ -53,10 +53,11 @@ const StatsOverviewSkeleton = () => {
 
 interface StatsOverviewProps {
   dateRange: DateRangeValue
+  autoRefresh?: boolean
 }
 
-export const StatsOverview = ({ dateRange }: StatsOverviewProps) => {
-  const { data, isPending, isError } = useAnalyticsStats(dateRange)
+export const StatsOverview = ({ dateRange, autoRefresh = false }: StatsOverviewProps) => {
+  const { data, isPending, isError } = useAnalyticsStats(dateRange, autoRefresh)
 
   if (isPending) {
     return <StatsOverviewSkeleton />

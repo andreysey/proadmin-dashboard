@@ -18,10 +18,11 @@ const RevenueStreamSkeleton = () => {
 
 interface RevenueStreamProps {
   dateRange: DateRangeValue
+  autoRefresh?: boolean
 }
 
-export const RevenueStream = ({ dateRange }: RevenueStreamProps) => {
-  const { data, isPending, isError } = useRevenueData(dateRange)
+export const RevenueStream = ({ dateRange, autoRefresh = false }: RevenueStreamProps) => {
+  const { data, isPending, isError } = useRevenueData(dateRange, autoRefresh)
 
   if (isPending) {
     return <RevenueStreamSkeleton />
