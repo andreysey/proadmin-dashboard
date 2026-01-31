@@ -27,4 +27,5 @@ dist-ssr
 .tanstack
 routeTree.gen.ts
 coverage
+coverage*.txt
 

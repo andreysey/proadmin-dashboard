@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest'
 import React from 'react'
-import { render, screen, waitFor, fireEvent } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { UserForm } from './user-form'
 
@@ -49,20 +49,21 @@ describe('UserForm', () => {
     })
   })
 
-  it.skip('should submit valid data', async () => {
+  it('should submit valid data', async () => {
+    const user = userEvent.setup()
     const onSubmit = vi.fn()
     render(<UserForm {...defaultProps} onSubmit={onSubmit} />)
 
-    fireEvent.change(screen.getByLabelText(/first name/i), { target: { value: 'John' } })
-    fireEvent.change(screen.getByLabelText(/last name/i), { target: { value: 'Doe' } })
-    fireEvent.change(screen.getByLabelText(/email/i), { target: { value: 'john.doe@example.com' } })
-    fireEvent.change(screen.getByLabelText(/username/i), { target: { value: 'johndoe' } })
+    await user.type(screen.getByLabelText(/first name/i), 'John')
+    await user.type(screen.getByLabelText(/last name/i), 'Doe')
+    await user.type(screen.getByLabelText(/email/i), 'john.doe@example.com')
+    await user.type(screen.getByLabelText(/username/i), 'johndoe')
 
-    // Explicitly select role
-    fireEvent.change(screen.getByLabelText(/role/i), { target: { value: 'admin' } })
+    // Expect role to be available and select it
+    await user.selectOptions(screen.getByLabelText(/role/i), 'admin')
 
     const submitBtn = screen.getByRole('button', { name: /save/i })
-    fireEvent.click(submitBtn)
+    await user.click(submitBtn)
 
     await waitFor(() => {
       expect(onSubmit).toHaveBeenCalledWith(
@@ -72,7 +73,8 @@ describe('UserForm', () => {
           email: 'john.doe@example.com',
           username: 'johndoe',
           role: 'admin',
-        })
+        }),
+        expect.anything() // Event object is the second argument
       )
     })
   })
