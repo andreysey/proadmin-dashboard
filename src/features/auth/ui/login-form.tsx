@@ -60,7 +60,9 @@ export const LoginForm = () => {
         search: { dateRange: '7d', autoRefresh: false },
       })
     } catch (err: unknown) {
-      console.error('Login failed', err)
+      if (import.meta.env.MODE !== 'test') {
+        console.error('Login failed', err)
+      }
       const errorMessage =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
         'Invalid credentials'
@@ -123,7 +125,7 @@ export const LoginForm = () => {
         </form>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <p className="text-muted-foreground text-xs">ProAdmin Dashboard v0.1</p>
+        <p className="text-muted-foreground text-xs">ProAdmin Dashboard v{__APP_VERSION__}</p>
       </CardFooter>
     </Card>
   )
