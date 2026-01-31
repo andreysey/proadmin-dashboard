@@ -22,7 +22,7 @@ export function NotFound() {
       </p>
 
       <Button asChild>
-        <Link to="/">
+        <Link to="/" search={{ dateRange: '7d', autoRefresh: false }}>
           <Home className="mr-2 h-4 w-4" />
           Back to Dashboard
         </Link>

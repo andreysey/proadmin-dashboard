@@ -55,8 +55,10 @@ export const LoginForm = () => {
     try {
       const user = await login(data)
       setAuth(user)
-      // @ts-expect-error - TanStack Router types with catch() are not fully inferred
-      void router.navigate({ to: '/' })
+      void router.navigate({
+        to: '/',
+        search: { dateRange: '7d', autoRefresh: false },
+      })
     } catch (err: unknown) {
       console.error('Login failed', err)
       const errorMessage =

@@ -16,6 +16,7 @@ export const Sidebar = () => {
         <nav className="flex-1 space-y-1">
           <Link
             to="/"
+            search={{ dateRange: '7d', autoRefresh: false }}
             className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"
           >
             <Home className="group-hover:text-primary h-5 w-5 transition duration-75" />

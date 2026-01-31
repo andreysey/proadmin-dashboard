@@ -20,7 +20,11 @@ export const UsersPage = () => {
       if (search === (q ?? '')) return
 
       navigate({
-        search: (prev) => ({ ...prev, q: search || undefined, skip: 0 }), // Reset skip on search
+        search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
+          ...prev,
+          q: search || undefined,
+          skip: 0,
+        }), // Reset skip on search
       })
     }, 500)
 
@@ -29,13 +33,16 @@ export const UsersPage = () => {
 
   const handlePageChange = (newSkip: number) => {
     navigate({
-      search: (prev) => ({ ...prev, skip: newSkip }),
+      search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
+        ...prev,
+        skip: newSkip,
+      }),
     })
   }
 
   const handleSortChange = (newSortBy: string | undefined, newOrder: 'asc' | 'desc') => {
     navigate({
-      search: (prev) => ({
+      search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
         ...prev,
         sortBy: newSortBy,
         order: newOrder,
