@@ -10,7 +10,24 @@ vi.mock('@/features/auth', () => ({
 
 vi.mock('@/shared/ui', () => ({
   Button: (props: React.ButtonHTMLAttributes<HTMLButtonElement>) => <button {...props} />,
-  Select: (props: React.SelectHTMLAttributes<HTMLSelectElement>) => <select {...props} />,
+  Select: ({
+    onValueChange,
+    children,
+  }: {
+    onValueChange: (val: string) => void
+    children: React.ReactNode
+  }) => (
+    <div data-testid="select">
+      <button data-testid="select-option-admin" onClick={() => onValueChange('admin')}>
+        Select Admin
+      </button>
+      {children}
+    </div>
+  ),
+  SelectTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SelectValue: () => <span>Select Value</span>,
+  SelectContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SelectItem: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }))
 
 describe('BulkActions', () => {
@@ -39,16 +56,6 @@ describe('BulkActions', () => {
     const user = userEvent.setup()
     render(<BulkActions {...defaultProps} selectedCount={2} />)
 
-    // Clear Selection
-    // The code uses an X icon button. We can find by icon or class or index.
-    // It's the first button with "ghost" variant.
-    // Let's use getByRole('button') logic.
-    // There are multiple buttons.
-    // 1. Clear (X icon)
-    // 2. Apply Role
-    // 3. Export
-    // 4. Delete
-
     // Export
     await user.click(screen.getByRole('button', { name: /export/i }))
     expect(defaultProps.onExport).toHaveBeenCalled()
@@ -62,21 +69,8 @@ describe('BulkActions', () => {
     const user = userEvent.setup()
     render(<BulkActions {...defaultProps} selectedCount={2} />)
 
-    // Logic: Select role -> Click Apply
-    // The component uses <Select>...<option>...
-    // If it's a native select, we use user.selectOptions
-    // If it's a custom component that accepts children options but renders custom UI, we might need specific tests.
-    // Assuming it acts like a select with accessible role "combobox" or similar.
-    // The code uses: <Select ... onChange={(e) => ...}>
-    // This strongly implies it wraps a native <select> because custom Radix selects use onValueChange.
-
-    // Let's try finding the generic combobox or select element.
-    // If it's native select, we can find by role 'combobox'.
-    const select = screen.getByRole('combobox') // Shadcn `Select` trigger also has this role usually? No, shadcn uses a div/button trigger.
-    // IF it is native select, `userEvent.selectOptions` works.
-    // The verify: `value={selectedRole} onChange={(e) => ...}` standard React input pattern.
-
-    await user.selectOptions(select, 'admin')
+    // Select role using our mock button
+    await user.click(screen.getByTestId('select-option-admin'))
 
     // Click Apply
     await user.click(screen.getByRole('button', { name: /apply/i }))

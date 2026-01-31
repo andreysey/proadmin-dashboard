@@ -50,9 +50,12 @@ vi.mock('@/entities/analytics', () => ({
 
 // Mock auth store
 vi.mock('@/features/auth', () => ({
-  useAuthStore: {
-    getState: vi.fn(() => ({ user: { role: 'admin' } })),
-  },
+  useAuthStore: Object.assign(
+    vi.fn(() => ({ user: { role: 'admin' } })), // Mock as hook
+    {
+      getState: vi.fn(() => ({ user: { role: 'admin' } })), // Mock static method
+    }
+  ),
 }))
 
 // Mock tokenStorage

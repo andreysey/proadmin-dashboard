@@ -1,3 +1,29 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Dist / Build
+dist
+dist-ssr
+build
+stats.html
+
+# Environment
+.env
+.env.local
+.env.*.local
+*.local
+
+# Testing
+coverage
+coverage*.txt
+playwright-report/
+test-results/
+
+# TanStack Router
+.tanstack
+routeTree.gen.ts
+
 # Logs
 logs
 *.log
@@ -7,14 +33,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# Editor / IDE
 .vscode/*
 !.vscode/extensions.json
+!.vscode/settings.json
 .idea
 .DS_Store
 *.suo
@@ -22,10 +44,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# TanStack Router
-.tanstack
-routeTree.gen.ts
-coverage
-coverage*.txt
-

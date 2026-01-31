@@ -96,7 +96,10 @@ describe('LoginForm', () => {
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {
-      expect(navigateMock).toHaveBeenCalledWith({ to: '/' })
+      expect(navigateMock).toHaveBeenCalledWith({
+        to: '/',
+        search: { dateRange: '7d', autoRefresh: false },
+      })
     })
   })
 
