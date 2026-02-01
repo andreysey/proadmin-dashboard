@@ -100,10 +100,10 @@ describe('UserList', () => {
     } as unknown as ReturnType<typeof reactQuery.useQuery>)
 
     render(<UserList search="" onSearchChange={vi.fn()} />)
-    expect(screen.getByText('John Doe')).toBeInTheDocument()
-    expect(screen.getByText('Jane Smith')).toBeInTheDocument()
-    expect(screen.getByText('@johndoe')).toBeInTheDocument()
-    expect(screen.getByText('admin')).toBeInTheDocument()
+    expect(screen.getAllByText('John Doe')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('Jane Smith')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('@johndoe')[0]).toBeInTheDocument()
+    expect(screen.getAllByText('admin')[0]).toBeInTheDocument()
   })
 
   it('should render empty state', () => {

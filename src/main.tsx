@@ -19,15 +19,20 @@ setForbiddenHandler(() => {
 })
 
 async function enableMocking() {
-  if (!import.meta.env.DEV) {
-    return
+  if (import.meta.env.PROD && !import.meta.env.VITE_ENABLE_MOCKS) {
+    // Optional: Add a flag if we ever want to disable it in prod
   }
 
   const { worker } = await import('./app/mocks/browser')
 
-  // `worker.start()` returns a Promise that resolves
-  // once the Service Worker is up and ready to intercept requests.
-  return worker.start()
+  // On production, we need to register the Service Worker explicitly
+  // because Vite's dev server handles it differently.
+  return worker.start({
+    onUnhandledRequest: 'bypass',
+    serviceWorker: {
+      url: '/mockServiceWorker.js',
+    },
+  })
 }
 
 enableMocking().then(() => {

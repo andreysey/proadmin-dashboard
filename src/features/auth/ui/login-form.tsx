@@ -73,7 +73,7 @@ export const LoginForm = () => {
   }
 
   return (
-    <Card className="border-border/50 bg-background/60 w-[380px] shadow-2xl backdrop-blur-xl">
+    <Card className="border-border/50 bg-background/60 w-full shadow-2xl backdrop-blur-xl">
       <CardHeader>
         <CardTitle>Login</CardTitle>
       </CardHeader>

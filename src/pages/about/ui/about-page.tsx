@@ -36,9 +36,9 @@ export const AboutPage = () => {
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Powered by TanStack Query for high-speed data fetching and synchronization. Features
-              smooth loading skeletons, instant notifications via Sonner, and a highly responsive
-              design that feels premium.
+              Powered by TanStack Query for high-speed data fetching. Features smooth loading
+              skeletons, instant notifications, and a <strong>mobile-first</strong> responsive
+              design that adapts seamlessly to any device.
             </p>
           </CardContent>
         </Card>
@@ -66,7 +66,7 @@ export const AboutPage = () => {
             <ul className="text-muted-foreground space-y-1 text-sm">
               <li>• React 19 + TypeScript</li>
               <li>• TanStack Router & Query</li>
-              <li>• Tailwind CSS + shadcn/ui</li>
+              <li>• Tailwind CSS v4 + shadcn/ui</li>
               <li>• MSW for robust API Mocking</li>
             </ul>
           </CardContent>
