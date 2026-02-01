@@ -30,7 +30,11 @@ const preview: Preview = {
         document.body.classList.add('bg-background', 'text-foreground')
       }, [theme])
 
-      return <Story />
+      return (
+        <div className="bg-background text-foreground w-full rounded-md border p-6 text-left">
+          <Story />
+        </div>
+      )
     },
   ],
   parameters: {
