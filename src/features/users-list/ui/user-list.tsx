@@ -1,5 +1,5 @@
 import { getUsers } from '@/entities/user'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, Fragment } from 'react'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,8 +12,11 @@ import {
   Button,
   Checkbox,
   Input,
+  Card,
+  CardContent,
   Skeleton,
 } from '@/shared/ui'
+import { cn } from '@/shared/lib/utils'
 import { Edit, ArrowUpDown, ChevronUp, ChevronDown, OctagonXIcon } from 'lucide-react'
 import { Link } from '@tanstack/react-router'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
@@ -22,6 +25,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getExpandedRowModel,
+  type ExpandedState,
 } from '@tanstack/react-table'
 import type { User } from '@/entities/user/model/types'
 import { DeleteUserButton } from '@/features/delete-user'
@@ -35,6 +40,29 @@ import { ProtectedAction } from '@/features/auth'
 const columnHelper = createColumnHelper<User>()
 
 const columns = [
+  columnHelper.display({
+    id: 'expander',
+    header: () => null,
+    cell: ({ row }) => {
+      return (
+        row.getCanExpand() && (
+          <button
+            {...{
+              onClick: row.getToggleExpandedHandler(),
+              style: { cursor: 'pointer' },
+            }}
+            className="hover:bg-muted flex h-6 w-6 items-center justify-center rounded-sm p-0"
+          >
+            {row.getIsExpanded() ? (
+              <ChevronDown className="h-4 w-4" />
+            ) : (
+              <ChevronUp className="h-4 w-4" />
+            )}
+          </button>
+        )
+      )
+    },
+  }),
   columnHelper.display({
     id: 'select',
     header: ({ table }) => (
@@ -199,6 +227,7 @@ export const UserList = ({
   })
 
   const [rowSelection, setRowSelection] = useState({})
+  const [expanded, setExpanded] = useState<ExpandedState>({})
   const [isBulkDeleteOpen, setIsBulkDeleteOpen] = useState(false)
 
   const defaultData = useMemo(() => [], [])
@@ -212,10 +241,13 @@ export const UserList = ({
   const table = useReactTable({
     data: data?.users ?? defaultData,
     columns,
-    state: { sorting, rowSelection },
+    state: { sorting, rowSelection, expanded },
     onRowSelectionChange: setRowSelection,
+    onExpandedChange: setExpanded,
     manualSorting: true,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
+    getRowCanExpand: () => true,
   })
 
   const { mutate: bulkDelete, isPending: isDeleting } = useBulkDelete()
@@ -308,7 +340,74 @@ export const UserList = ({
           </Button>
         </div>
       </div>
-      <div className="border-border bg-card w-full overflow-hidden rounded-lg border shadow-sm">
+      {/* Mobile Card View */}
+      <div className="space-y-4 md:hidden">
+        {table.getRowModel().rows.map((row) => (
+          <Card key={row.id}>
+            <CardContent className="space-y-4 p-4">
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <Checkbox
+                    checked={row.getIsSelected()}
+                    onChange={row.getToggleSelectedHandler()}
+                    aria-label="Select row"
+                  />
+                  <div className="flex items-center gap-3">
+                    {row.original.image ? (
+                      <img
+                        src={row.original.image}
+                        alt={`${row.original.firstName} ${row.original.lastName}`}
+                        className="h-10 w-10 rounded-full object-cover"
+                      />
+                    ) : (
+                      <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-full">
+                        <span className="text-muted-foreground text-sm font-medium">
+                          {row.original.firstName[0]}
+                          {row.original.lastName[0]}
+                        </span>
+                      </div>
+                    )}
+                    <div>
+                      <p className="font-medium">
+                        {row.original.firstName} {row.original.lastName}
+                      </p>
+                      <p className="text-muted-foreground text-xs">{row.original.email}</p>
+                    </div>
+                  </div>
+                </div>
+                <span className="bg-primary/10 text-primary ring-primary/20 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ring-1 ring-inset">
+                  {row.original.role}
+                </span>
+              </div>
+              <div className="border-border flex items-center justify-between border-t pt-4">
+                <div className="text-muted-foreground text-xs">
+                  <span className="font-medium">ID:</span> {row.original.id}
+                </div>
+                <div className="flex items-center gap-2">
+                  <ProtectedAction permission="users:edit">
+                    <Link
+                      to="/users/$userId/edit"
+                      params={{ userId: row.original.id.toString() }}
+                      className="w-full"
+                    >
+                      <Button variant="outline" size="sm" className="h-8 w-full gap-2">
+                        <Edit className="h-3.5 w-3.5" />
+                        Edit
+                      </Button>
+                    </Link>
+                  </ProtectedAction>
+                  <ProtectedAction permission="users:delete">
+                    <DeleteUserButton userId={row.original.id} />
+                  </ProtectedAction>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Desktop Table View */}
+      <div className="border-border bg-card hidden w-full overflow-x-auto rounded-lg border shadow-sm md:block">
         <table className="text-muted-foreground w-full text-left text-sm">
           <thead className="bg-muted/50 text-foreground border-border border-b text-xs uppercase">
             {table.getHeaderGroups().map((headerGroup) => (
@@ -318,11 +417,15 @@ export const UserList = ({
                   return (
                     <th
                       key={header.id}
-                      className={
+                      className={cn(
                         header.column.getCanSort()
                           ? 'hover:bg-muted/50 cursor-pointer px-6 py-3 transition-colors select-none'
-                          : 'px-6 py-3'
-                      }
+                          : 'px-6 py-3',
+                        header.id === 'id' && 'hidden xl:table-cell',
+                        header.id === 'email' && 'hidden lg:table-cell',
+                        header.id === 'role' && 'hidden md:table-cell',
+                        header.id === 'expander' && 'xl:hidden'
+                      )}
                       onClick={() => {
                         if (header.column.getCanSort()) {
                           const nextOrder = isSorted === 'asc' ? 'desc' : 'asc'
@@ -357,13 +460,52 @@ export const UserList = ({
           <tbody className="divide-border bg-card divide-y">
             {table.getRowModel().rows.length > 0 ? (
               table.getRowModel().rows.map((row) => (
-                <tr key={row.id} className="hover:bg-muted/30 transition-colors">
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-6 py-4">
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
+                <Fragment key={row.id}>
+                  <tr className="hover:bg-muted/30 transition-colors">
+                    {row.getVisibleCells().map((cell) => (
+                      <td
+                        key={cell.id}
+                        className={cn(
+                          'px-6 py-4',
+                          cell.column.id === 'id' && 'hidden xl:table-cell',
+                          cell.column.id === 'email' && 'hidden lg:table-cell',
+                          cell.column.id === 'role' && 'hidden md:table-cell',
+                          cell.column.id === 'expander' && 'xl:hidden'
+                        )}
+                      >
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </td>
+                    ))}
+                  </tr>
+                  {row.getIsExpanded() && (
+                    <tr className="bg-muted/30 xl:hidden">
+                      <td colSpan={row.getVisibleCells().length} className="px-6 py-4">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                          <div className="space-y-1">
+                            <span className="text-muted-foreground text-xs font-medium uppercase">
+                              ID
+                            </span>
+                            <p className="font-medium">{row.original.id}</p>
+                          </div>
+                          <div className="space-y-1">
+                            <span className="text-muted-foreground text-xs font-medium uppercase">
+                              Email
+                            </span>
+                            <p className="font-medium">{row.original.email}</p>
+                          </div>
+                          <div className="space-y-1 md:hidden">
+                            <span className="text-muted-foreground text-xs font-medium uppercase">
+                              Role
+                            </span>
+                            <p className="bg-primary/10 text-primary inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize">
+                              {row.original.role}
+                            </p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
               ))
             ) : (
               <tr>
