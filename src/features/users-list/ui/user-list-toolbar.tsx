@@ -1,4 +1,5 @@
 import { Button, Input } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 
 interface UserListToolbarProps {
   search: string
@@ -17,6 +18,7 @@ export const UserListToolbar = ({
   total,
   onPageChange,
 }: UserListToolbarProps) => {
+  const { t } = useTranslation()
   const hasNextPage = skip + limit < total
   const hasPrevPage = skip > 0
 
@@ -24,7 +26,7 @@ export const UserListToolbar = ({
     <div className="flex items-center justify-between px-2">
       <div className="w-72">
         <Input
-          placeholder="Search users..."
+          placeholder={t('users.search_placeholder')}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}
         />
@@ -36,7 +38,7 @@ export const UserListToolbar = ({
           onClick={() => onPageChange?.(Math.max(0, skip - limit))}
           disabled={!hasPrevPage}
         >
-          Previous
+          {t('users.pagination.previous')}
         </Button>
         <Button
           variant="outline"
@@ -44,7 +46,7 @@ export const UserListToolbar = ({
           onClick={() => onPageChange?.(skip + limit)}
           disabled={!hasNextPage}
         >
-          Next
+          {t('users.pagination.next')}
         </Button>
       </div>
     </div>

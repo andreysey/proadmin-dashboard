@@ -6,6 +6,7 @@ import { setForbiddenHandler, setUnauthorizedHandler } from './shared/api'
 import { useAuthStore } from './features/auth'
 import { router } from './app'
 import { initSentry } from './shared/config/sentry'
+import './shared/config/i18n'
 
 initSentry()
 

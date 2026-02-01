@@ -1,0 +1,152 @@
+{
+  "app": {
+    "title": "ProAdmin Dashboard",
+    "welcome": "Willkommen zurück",
+    "guest": "Gastbenutzer"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "Benutzer",
+    "settings": "Einstellungen",
+    "about": "Über uns"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Etwas ist schief gelaufen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "logout": "Abmelden"
+  },
+  "theme": {
+    "toggle": "Thema wechseln",
+    "light": "Hell",
+    "dark": "Dunkel",
+    "system": "System"
+  },
+  "users": {
+    "title": "Benutzerliste",
+    "search_placeholder": "Benutzer suchen...",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "status": "Status",
+      "created_at": "Erstellt am"
+    },
+    "pagination": {
+      "showing": "Zeige {{from}} bis {{to}} von {{total}} Benutzern",
+      "previous": "Vorherige",
+      "next": "Nächste"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "Benutzer",
+      "moderator": "Moderator"
+    },
+    "bulk_actions": {
+      "selected": "Ausgewählt",
+      "role_placeholder": "Rolle...",
+      "updating": "Aktualisieren...",
+      "apply": "Anwenden",
+      "export": "Exportieren",
+      "deleting": "Löschen...",
+      "delete": "Löschen"
+    },
+    "state": {
+      "error_title": "Fehler beim Laden der Benutzer",
+      "error_desc": "Es gab einen Fehler bei der Verbindung zum Server. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "retry": "Verbindung wiederholen",
+      "empty": "Keine Benutzer gefunden.",
+      "empty_search": "Versuchen Sie Ihre Suche nach \"{{query}}\" anzupassen"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "role_label": "Dev: Anmelden als Rolle",
+      "role_placeholder": "Rolle auswählen",
+      "submit": "Anmelden",
+      "error_credentials": "Ungültige Anmeldedaten",
+      "roles": {
+        "admin": "Admin (Voller Zugriff)",
+        "user": "Benutzer (Nur Lesen)",
+        "moderator": "Moderator (Benutzer verwalten)"
+      }
+    }
+  },
+  "dashboard": {
+    "stats": {
+      "total_users": "Gesamtbenutzer",
+      "active_now": "Jetzt aktiv",
+      "total_revenue": "Gesamtumsatz",
+      "monthly_growth": "Monatliches Wachstum",
+      "last_month": "vom letzten Monat",
+      "error": "Statistiken konnten nicht geladen werden"
+    },
+    "revenue": {
+      "title": "Umsatzentwicklung",
+      "tooltip": "Umsatz",
+      "error": "Umsatzdaten konnten nicht geladen werden"
+    },
+    "activity": {
+      "title": "Letzte Aktivitäten",
+      "chart_title": "Benutzeraktivität",
+      "error": "Aktivitäten konnten nicht geladen werden",
+      "chart_error": "Aktivitätsdaten konnten nicht geladen werden",
+      "empty": "Keine letzten Aktivitäten",
+      "time": {
+        "just_now": "Gerade eben",
+        "minutes_ago": "vor {{count}} Min.",
+        "hours_ago": "vor {{count}} Std.",
+        "days_ago": "vor {{count}} Tagen"
+      },
+      "events": {
+        "user_signup": {
+          "title": "Neuer Benutzer registriert",
+          "description": "Ein neuer Benutzer hat sich angemeldet."
+        },
+        "user_delete": {
+          "title": "Benutzerkonto gelöscht",
+          "description": "Ein Benutzerkonto wurde entfernt."
+        },
+        "system_alert": {
+          "title": "Systemwarnung",
+          "description": "Hohe Systemlast erkannt."
+        },
+        "payment_success": {
+          "title": "Zahlung erhalten",
+          "description": "Zahlung erfolgreich verarbeitet."
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "Über ProAdmin Dashboard",
+    "description": "Eine leistungsstarke, widerstandsfähige und architektonisch solide Verwaltungsplattform für moderne Geschäftsanforderungen.",
+    "security": {
+      "title": "Sicherheit Zuerst",
+      "desc": "Implementiert mit robuster JWT Silent Refresh Logik, sicherer Token-Speicherung und einem proaktiven Wiederholungsmechanismus. Ihre Sitzungen werden automatisch geschützt und ohne Unterbrechung Ihres Workflows verwaltet."
+    },
+    "ux": {
+      "title": "Optimierte UX",
+      "desc": "Angetrieben von TanStack Query für schnelles Datenladen. Bietet flüssige Lade-Skelette, sofortige Benachrichtigungen und ein <1>Mobile-First</1> responsives Design, das sich nahtlos an jedes Gerät anpasst."
+    },
+    "arch": {
+      "title": "Solide Architektur",
+      "desc": "Folgt streng den Prinzipien des <1>Feature-Sliced Design (FSD)</1>. Dies gewährleistet hohe Kohäsion und geringe Kopplung, wodurch die Codebasis hoch skalierbar, wartbar und für große Teams leicht zu bearbeiten ist."
+    },
+    "tech": {
+      "title": "Moderner Tech Stack"
+    },
+    "mission": {
+      "title": "System Mission",
+      "desc": "Die Mission von ProAdmin ist es, ein standardisiertes Toolset für die Verwaltung von Benutzern, Berechtigungen und Analysen mit absoluter Zuverlässigkeit bereitzustellen. Durch die Kombination modernster Frontend-Technologien mit professionellen Architekturmustern liefern wir ein unternehmenstaugliches Dashboard-Erlebnis."
+    },
+    "footer": "ProAdmin Dashboard • Version {{version}} • Mit ❤️ und Präzision gebaut"
+  }
+}

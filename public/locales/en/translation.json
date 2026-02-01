@@ -1,0 +1,152 @@
+{
+  "app": {
+    "title": "ProAdmin Dashboard",
+    "welcome": "Welcome back",
+    "guest": "Guest User"
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "Users",
+    "settings": "Settings",
+    "about": "About"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "actions": "Actions",
+    "logout": "Logout"
+  },
+  "theme": {
+    "toggle": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "users": {
+    "title": "Users List",
+    "search_placeholder": "Search users...",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status",
+      "created_at": "Created At"
+    },
+    "pagination": {
+      "showing": "Showing {{from}} to {{to}} of {{total}} users",
+      "previous": "Previous",
+      "next": "Next"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "User",
+      "moderator": "Moderator"
+    },
+    "bulk_actions": {
+      "selected": "Selected",
+      "role_placeholder": "Role...",
+      "updating": "Updating...",
+      "apply": "Apply",
+      "export": "Export",
+      "deleting": "Deleting...",
+      "delete": "Delete"
+    },
+    "state": {
+      "error_title": "Failed to load users",
+      "error_desc": "There was an error connecting to the server. Please check your connection and try again.",
+      "retry": "Retry Connection",
+      "empty": "No users found.",
+      "empty_search": "Try adjusting your search for \"{{query}}\""
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "username": "Username",
+      "password": "Password",
+      "role_label": "Dev: Login As Role",
+      "role_placeholder": "Select role",
+      "submit": "Sign In",
+      "error_credentials": "Invalid credentials",
+      "roles": {
+        "admin": "Admin (Full Access)",
+        "user": "User (View Only)",
+        "moderator": "Moderator (Manage Users)"
+      }
+    }
+  },
+  "dashboard": {
+    "stats": {
+      "total_users": "Total Users",
+      "active_now": "Active Now",
+      "total_revenue": "Total Revenue",
+      "monthly_growth": "Monthly Growth",
+      "last_month": "from last month",
+      "error": "Failed to load statistics"
+    },
+    "revenue": {
+      "title": "Revenue Stream",
+      "tooltip": "Revenue",
+      "error": "Failed to load revenue data"
+    },
+    "activity": {
+      "title": "Recent Activity",
+      "chart_title": "User Activity",
+      "error": "Failed to load recent activity",
+      "chart_error": "Failed to load activity data",
+      "empty": "No recent activity",
+      "time": {
+        "just_now": "Just now",
+        "minutes_ago": "{{count}}m ago",
+        "hours_ago": "{{count}}h ago",
+        "days_ago": "{{count}}d ago"
+      },
+      "events": {
+        "user_signup": {
+          "title": "New User Registered",
+          "description": "A new user has signed up."
+        },
+        "user_delete": {
+          "title": "User Account Deleted",
+          "description": "A user account has been removed."
+        },
+        "system_alert": {
+          "title": "System Alert",
+          "description": "High system load detected."
+        },
+        "payment_success": {
+          "title": "Payment Received",
+          "description": "Payment processed successfully."
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "About ProAdmin Dashboard",
+    "description": "A high-performance, resilient, and architecturally sound administration platform built for modern business needs.",
+    "security": {
+      "title": "Security First",
+      "desc": "Implemented with robust JWT silent refresh logic, secure token storage, and a proactive request retry mechanism. Your sessions are automatically protected and managed with zero interruption to your workflow."
+    },
+    "ux": {
+      "title": "Optimized UX",
+      "desc": "Powered by TanStack Query for high-speed data fetching. Features smooth loading skeletons, instant notifications, and a <1>mobile-first</1> responsive design that adapts seamlessly to any device."
+    },
+    "arch": {
+      "title": "Solid Architecture",
+      "desc": "Strictly follows <1>Feature-Sliced Design (FSD)</1> principles. This ensures high cohesion and low coupling, making the codebase highly scalable, maintainable, and easy for large teams to collaborate on."
+    },
+    "tech": {
+      "title": "Modern Tech Stack"
+    },
+    "mission": {
+      "title": "System Mission",
+      "desc": "The mission of ProAdmin is to provide a standardized toolset for managing users, permissions, and analytics with absolute reliability. By combining cutting-edge frontend technologies with professional architectural patterns, we deliver an enterprise-ready dashboard experience."
+    },
+    "footer": "ProAdmin Dashboard • Version {{version}} • Built with ❤️ and Precision"
+  }
+}

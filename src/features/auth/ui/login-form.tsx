@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
@@ -33,6 +34,7 @@ export const LoginForm = () => {
   const setAuth = useAuthStore((state) => state.setAuth)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { t } = useTranslation()
 
   const {
     register,
@@ -65,29 +67,43 @@ export const LoginForm = () => {
       }
       const errorMessage =
         (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-        'Invalid credentials'
+        t('auth.login.error_credentials')
       setError(errorMessage)
     } finally {
       setIsLoading(false)
     }
   }
 
+  // Helper to get translated label for role
+  const getRoleLabel = (role: string) => {
+    switch (role) {
+      case 'admin':
+        return t('auth.login.roles.admin')
+      case 'user':
+        return t('auth.login.roles.user')
+      case 'moderator':
+        return t('auth.login.roles.moderator')
+      default:
+        return role
+    }
+  }
+
   return (
     <Card className="border-border/50 bg-background/60 w-full shadow-2xl backdrop-blur-xl">
       <CardHeader>
-        <CardTitle>Login</CardTitle>
+        <CardTitle>{t('auth.login.title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="username">Username</Label>
+            <Label htmlFor="username">{t('auth.login.username')}</Label>
             <Input id="username" placeholder="kminchelle" {...register('username')} />
             {errors.username && (
               <span className="text-destructive text-sm">{errors.username.message}</span>
             )}
           </div>
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t('auth.login.password')}</Label>
             <Input id="password" type="password" placeholder="•••••••" {...register('password')} />
             {errors.password && (
               <span className="text-destructive text-sm">{errors.password.message}</span>
@@ -95,19 +111,19 @@ export const LoginForm = () => {
           </div>
 
           <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="role">Dev: Login As Role</Label>
+            <Label htmlFor="role">{t('auth.login.role_label')}</Label>
             <Controller
               name="role"
               control={control}
               render={({ field }) => (
                 <Select value={field.value} onValueChange={field.onChange}>
                   <SelectTrigger id="role" className="w-full">
-                    <SelectValue placeholder="Select role" />
+                    <SelectValue placeholder={t('auth.login.role_placeholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {ROLE_OPTIONS.map((option) => (
                       <SelectItem key={option.value} value={option.value}>
-                        {option.label}
+                        {getRoleLabel(option.value)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -120,12 +136,14 @@ export const LoginForm = () => {
 
           <Button type="submit" disabled={isLoading} className="mt-2 w-full">
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Sign In
+            {t('auth.login.submit')}
           </Button>
         </form>
       </CardContent>
       <CardFooter className="flex justify-center">
-        <p className="text-muted-foreground text-xs">ProAdmin Dashboard v{__APP_VERSION__}</p>
+        <p className="text-muted-foreground text-xs">
+          {t('about.footer', { version: __APP_VERSION__ })}
+        </p>
       </CardFooter>
     </Card>
   )

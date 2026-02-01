@@ -1,30 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui'
 import { Info, ShieldCheck, Zap, Layers } from 'lucide-react'
+import { useTranslation, Trans } from 'react-i18next'
 
 export const AboutPage = () => {
+  const { t } = useTranslation()
+
   return (
     <div className="container mx-auto max-w-4xl space-y-8 p-6">
       <div className="flex flex-col items-center space-y-4 text-center">
-        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
-          About ProAdmin Dashboard
-        </h1>
-        <p className="text-muted-foreground max-w-[700px] text-lg">
-          A high-performance, resilient, and architecturally sound administration platform built for
-          modern business needs.
-        </p>
+        <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">{t('about.title')}</h1>
+        <p className="text-muted-foreground max-w-[700px] text-lg">{t('about.description')}</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
         <Card>
           <CardHeader className="flex flex-row items-center space-x-4">
             <ShieldCheck className="text-primary h-8 w-8" />
-            <CardTitle>Security First</CardTitle>
+            <CardTitle>{t('about.security.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Implemented with robust JWT silent refresh logic, secure token storage, and a
-              proactive request retry mechanism. Your sessions are automatically protected and
-              managed with zero interruption to your workflow.
+              {t('about.security.desc')}
             </p>
           </CardContent>
         </Card>
@@ -32,13 +28,15 @@ export const AboutPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center space-x-4">
             <Zap className="text-primary h-8 w-8" />
-            <CardTitle>Optimized UX</CardTitle>
+            <CardTitle>{t('about.ux.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Powered by TanStack Query for high-speed data fetching. Features smooth loading
-              skeletons, instant notifications, and a <strong>mobile-first</strong> responsive
-              design that adapts seamlessly to any device.
+              <Trans i18nKey="about.ux.desc">
+                Powered by TanStack Query for high-speed data fetching. Features smooth loading
+                skeletons, instant notifications, and a <strong>mobile-first</strong> responsive
+                design that adapts seamlessly to any device.
+              </Trans>
             </p>
           </CardContent>
         </Card>
@@ -46,13 +44,15 @@ export const AboutPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center space-x-4">
             <Layers className="text-primary h-8 w-8" />
-            <CardTitle>Solid Architecture</CardTitle>
+            <CardTitle>{t('about.arch.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-muted-foreground text-sm leading-relaxed">
-              Strictly follows <strong>Feature-Sliced Design (FSD)</strong> principles. This ensures
-              high cohesion and low coupling, making the codebase highly scalable, maintainable, and
-              easy for large teams to collaborate on.
+              <Trans i18nKey="about.arch.desc">
+                Strictly follows <strong>Feature-Sliced Design (FSD)</strong> principles. This
+                ensures high cohesion and low coupling, making the codebase highly scalable,
+                maintainable, and easy for large teams to collaborate on.
+              </Trans>
             </p>
           </CardContent>
         </Card>
@@ -60,7 +60,7 @@ export const AboutPage = () => {
         <Card>
           <CardHeader className="flex flex-row items-center space-x-4">
             <Info className="text-primary h-8 w-8" />
-            <CardTitle>Modern Tech Stack</CardTitle>
+            <CardTitle>{t('about.tech.title')}</CardTitle>
           </CardHeader>
           <CardContent>
             <ul className="text-muted-foreground space-y-1 text-sm">
@@ -75,21 +75,16 @@ export const AboutPage = () => {
 
       <Card className="bg-primary/5 border-primary/20">
         <CardHeader>
-          <CardTitle>System Mission</CardTitle>
+          <CardTitle>{t('about.mission.title')}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-sm leading-relaxed">
-            The mission of ProAdmin is to provide a standardized toolset for managing users,
-            permissions, and analytics with absolute reliability. By combining cutting-edge frontend
-            technologies with professional architectural patterns, we deliver an enterprise-ready
-            dashboard experience.
-          </p>
+          <p className="text-sm leading-relaxed">{t('about.mission.desc')}</p>
         </CardContent>
       </Card>
 
       <div className="flex justify-center pt-4">
         <p className="text-muted-foreground text-xs font-medium">
-          ProAdmin Dashboard • Version {__APP_VERSION__} • Built with ❤️ and Precision
+          {t('about.footer', { version: __APP_VERSION__ })}
         </p>
       </div>
     </div>

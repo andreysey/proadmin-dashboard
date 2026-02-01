@@ -11,7 +11,10 @@ interface UserListTableProps {
   onSortChange?: (sortBy: string | undefined, order: 'asc' | 'desc') => void
 }
 
+import { useTranslation } from 'react-i18next'
+
 export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableProps) => {
+  const { t } = useTranslation()
   return (
     <div className="border-border bg-card hidden w-full overflow-x-auto rounded-lg border shadow-sm md:block">
       <table className="text-muted-foreground w-full text-left text-sm">
@@ -89,22 +92,22 @@ export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableP
                       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         <div className="space-y-1">
                           <span className="text-muted-foreground text-xs font-medium uppercase">
-                            ID
+                            {t('users.columns.id')}
                           </span>
                           <p className="font-medium">{row.original.id}</p>
                         </div>
                         <div className="space-y-1">
                           <span className="text-muted-foreground text-xs font-medium uppercase">
-                            Email
+                            {t('users.columns.email')}
                           </span>
                           <p className="font-medium">{row.original.email}</p>
                         </div>
                         <div className="space-y-1 md:hidden">
                           <span className="text-muted-foreground text-xs font-medium uppercase">
-                            Role
+                            {t('users.columns.role')}
                           </span>
                           <p className="bg-primary/10 text-primary inline-flex rounded-full px-2 py-0.5 text-xs font-medium capitalize">
-                            {row.original.role}
+                            {t(`users.roles.${row.original.role.toLowerCase()}`)}
                           </p>
                         </div>
                       </div>
@@ -117,10 +120,10 @@ export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableP
             <tr>
               <td colSpan={table.getAllColumns().length} className="h-24 text-center">
                 <div className="flex flex-col items-center justify-center py-10">
-                  <p className="text-muted-foreground text-sm">No users found.</p>
+                  <p className="text-muted-foreground text-sm">{t('users.state.empty')}</p>
                   {q && (
                     <p className="text-muted-foreground mt-1 text-xs">
-                      Try adjusting your search for "{q}"
+                      {t('users.state.empty_search', { query: q })}
                     </p>
                   )}
                 </div>

@@ -8,7 +8,7 @@ import { ChevronDown, ChevronUp, Edit } from 'lucide-react'
 
 const columnHelper = createColumnHelper<User>()
 
-export const getUserListColumns = () => [
+export const getUserListColumns = (t: (key: string) => string) => [
   columnHelper.display({
     id: 'expander',
     header: () => null,
@@ -38,7 +38,7 @@ export const getUserListColumns = () => [
       <Checkbox
         checked={table.getIsAllPageRowsSelected()}
         onChange={table.getToggleAllPageRowsSelectedHandler()}
-        aria-label="Select all"
+        aria-label={t('users.aria.select_all')}
       />
     ),
     cell: ({ row }) => (
@@ -46,18 +46,18 @@ export const getUserListColumns = () => [
         checked={row.getIsSelected()}
         disabled={!row.getCanSelect()}
         onChange={row.getToggleSelectedHandler()}
-        aria-label="Select row"
+        aria-label={t('users.aria.select_row')}
       />
     ),
   }),
   columnHelper.accessor('id', {
-    header: 'ID',
+    header: t('users.columns.id'),
     cell: (info) => info.getValue(),
     enableSorting: true,
   }),
   columnHelper.accessor((row) => `${row.firstName} ${row.lastName}`, {
     id: 'user',
-    header: 'User',
+    header: t('users.columns.name'),
     cell: (info) => (
       <div className="flex items-center gap-3">
         {info.row.original.image ? (
@@ -83,15 +83,15 @@ export const getUserListColumns = () => [
     enableSorting: true,
   }),
   columnHelper.accessor('email', {
-    header: 'Email',
+    header: t('users.columns.email'),
     cell: (info) => info.getValue(),
     enableSorting: true,
   }),
   columnHelper.accessor('role', {
-    header: 'Role',
+    header: t('users.columns.role'),
     cell: (info) => (
       <span className="bg-primary/10 text-primary ring-primary/20 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ring-1 ring-inset">
-        {info.getValue()}
+        {t(`users.roles.${info.getValue().toLowerCase()}`)}
       </span>
     ),
     enableSorting: true,

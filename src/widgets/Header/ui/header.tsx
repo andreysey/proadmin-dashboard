@@ -1,12 +1,15 @@
 import { LayoutDashboard, Menu, User } from 'lucide-react'
 import { useAuthStore } from '@/features/auth'
-import { ModeToggle, Sheet, SheetContent, SheetTrigger } from '@/shared/ui'
+import { LanguageSwitcher, ModeToggle, Sheet, SheetContent, SheetTrigger } from '@/shared/ui'
 import { Sidebar } from '@/widgets/Sidebar'
 import { useState } from 'react'
+
+import { useTranslation } from 'react-i18next'
 
 export const Header = () => {
   const user = useAuthStore((state) => state.user)
   const [open, setOpen] = useState(false)
+  const { t } = useTranslation()
 
   return (
     <header className="bg-background/95 sticky top-0 z-50 flex h-16 w-full items-center border-b px-4 backdrop-blur">
@@ -14,7 +17,7 @@ export const Header = () => {
         <div className="flex items-center">
           <div className="hidden items-center md:flex md:w-64">
             <LayoutDashboard className="text-primary mr-2 h-6 w-6" />
-            <span className="text-xl font-bold tracking-tight">ProAdmin</span>
+            <span className="text-xl font-bold tracking-tight">{t('app.title', 'ProAdmin')}</span>
           </div>
 
           <Sheet open={open} onOpenChange={setOpen}>
@@ -31,11 +34,12 @@ export const Header = () => {
         </div>
 
         <div className="flex items-center gap-4">
+          <LanguageSwitcher />
           <ModeToggle />
           <div className="flex items-center gap-3 border-l pl-4">
             <div className="hidden text-right sm:block">
               <p className="text-sm leading-none font-medium">
-                {user ? `${user.firstName} ${user.lastName}` : 'Guest User'}
+                {user ? `${user.firstName} ${user.lastName}` : t('app.guest', 'Guest User')}
               </p>
               <p className="text-muted-foreground mt-1 text-xs">
                 {user?.email ?? 'guest@proadmin.com'}
