@@ -1,182 +1,69 @@
 # ProAdmin Dashboard (React Edition)
 
-A professional-grade administrative interface built with a focus on engineering excellence, scalability, and maintainable architecture.
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Vercel-black?style=for-the-badge&logo=vercel)](https://proadmin-dashboard.vercel.app/)
+[![Project Board](https://img.shields.io/badge/Project_Board-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/users/andreysey/projects/2)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/andrii-butsvin-136899264/)
 
-This project serves as a demonstration of a **Junior+ to Middle** transition, moving beyond simple coding to system design.
+A production-grade administrative interface designed to demonstrate a **Junior+ to Middle** transition. This project focuses on engineering excellence, scalability, and maintainable architecture rather than just UI.
 
-## Project Goals
+## Key Capabilities
 
-The primary objective is to incrementally build build a production-oriented dashboard that solves real-world engineering challenges:
+### 🛡️ Robust Architecture
 
-- **Scalability:** Using Feature-Sliced Design (FSD) to prevent "spaghetti code".
-- **Type Safety:** 100% TypeScript coverage with strict mode.
-- **Data Integrity:** Runtime validation of API responses and form inputs.
-- **Team Readiness:** Clean documentation, linting, and modular structure.
+- **Feature-Sliced Design (FSD)**: Strict separation of concerns (entities, features, widgets) to prevent technical debt.
+- **Strict Type Safety**: 100% TypeScript coverage with `noAny` policy and runtime validation via **Zod**.
+- **Scalable State Management**: Hybrid approach using **TanStack Query** (server state) and **Zustand** (client state).
+
+### 🚀 Performance First
+
+- **Optimization**: Route-level code splitting, manual chunking (~36% reduction), and debounced search.
+- **Real-Time Analytics**: Live dashboard with auto-refreshing charts (Recharts) and global date filtering.
+- **Smart Loading**: Skeleton screens and optimistic UI updates for a perceived "zero-latency" feel.
+
+### 🔒 Security & RBAC
+
+- **Role-Based Access Control**: Declarative permission gates (`<ProtectedAction>`) and route guards.
+- **Resilient Auth**: JWT rotation, auto-logout on 401, and redirect safety.
+- **Error Handling**: Global Error Boundaries and interceptors for graceful failure recovery.
+
+### 📦 Production Quality
+
+- **Automated CI/CD**: Semantic versioning and release automation via GitHub Actions & Release Please.
+- **Monitoring**: Integrated Vercel Analytics and Speed Insights.
+- **Testing**: Comprehensive suite with **Vitest** (Unit) and **Playwright** (E2E).
 
 ## Tech Stack
 
-- **Core:** React 19 + Vite
-- **Language:** TypeScript (Strict Mode)
-- **State Management:** - **TanStack Query (v5):** Server state, caching, and synchronization.
-- **Zustand:** Lightweight client-side UI state.
-- **Forms & Validation:** React Hook Form + **Zod** (Schema-based validation).
-- **UI & Styling:** Tailwind CSS + **shadcn/ui** (Accessible Radix-based components).
-- **Networking:** Axios with custom interceptors for error handling.
-- **Mocking:** MSW (Mock Service Worker) for realistic API simulation (Stage 1).
-
-## Architecture: Feature-Sliced Design (FSD)
-
-The project follows the FSD methodology to ensure a clear separation of concerns:
-
-- **app/** — Global providers (QueryClient, Auth), global styles, and routing setup.
-- **pages/** — Composition layer; assembles widgets into full-screen views.
-- **widgets/** — Self-contained, complex UI blocks (e.g., `UserTable`, `AnalyticsDashboard`).
-- **features/** — User-centric actions with business value (e.g., `UpdateUserStatus`, `ExportReport`).
-- **entities/** — Domain-specific logic, types, and simple components (e.g., `User`, `Order`).
-- **shared/** — Reusable UI-kit, API clients, utility functions, and constants.
-
-## Engineering Focus Areas
-
-### 1. Robust Error Handling
-
-Implementation of **Global Error Boundaries** and Axios interceptors to handle 401/403/500 errors gracefully with user-friendly notifications.
-
-### 2. Performance Optimization
-
-- **Code Splitting:** Dynamic imports for route-level components.
-- **Render Optimization:** Strategic use of `useMemo` and `useCallback` for heavy list computations.
-- **Resilient Data Synchronization:** Leveraging TanStack Query's invalidation patterns to ensure the UI always reflects the source of truth after mutations.
-
-### 3. Strict Type Safety
-
-No `any` policy. All API responses are validated via Zod schemas at the network boundary to ensure the frontend never processes "garbage" data.
-
-### 4. Role-Based Access Control (RBAC)
-
-- **Declarative Permissions API:** `<ProtectedAction permission="users:delete" />` and `usePermission('orders:edit')` hooks.
-- **Type-Safe Permissions:** All permissions defined as TypeScript literal types to prevent typos.
-- **Route-Level Guards:** Automatic redirection based on user role and required permissions.
-
-### 5. Advanced Data Management
-
-- **Server-Side Operations:** Pagination, sorting, and filtering handled on the backend.
-- **URL State Synchronization:** Query parameters persist table state for shareable links.
-- **Debounced Search:** Optimized search input with 300ms debounce to reduce API calls.
-- **Smart Loading States:** Skeleton UI components instead of generic spinners.
-
-### 6. Real-Time Analytics
-
-- **Live Dashboard:** Auto-refreshing charts using TanStack Query's `refetchInterval`.
-- **Date Range Filtering:** Interactive date pickers for custom report periods.
-- **Data Export:** Client-side CSV/Excel generation using `papaparse` or `xlsx`.
-
-### 7. Automated Release Management
-
-- **Conventional Commits:** Standardized commit messages trigger automated versioning.
-- **Release Please (Google):** Automated creation of GitHub releases, changelogs, and version bumps.
-- **Dynamic Versioning:** Application version is injected at build-time from `package.json` and displayed in the UI.
-
-### 8. Bundle Optimization
-
-- **Strategic Code Splitting:** Using `manualChunks` in Vite/Rollup to isolate large vendors (React, TanStack).
-- **Size Reduction:** Achieved ~36% reduction in main bundle chunks, improving initial load performance.
-
-## Features (Roadmap)
-
-- [x] **Auth System (Stage 1 - MVP):**
-  - [x] MSW handlers for login (mocking DummyJSON)
-  - [x] Login Page (React Hook Form + Zod)
-  - [x] Protected routes (Basic Guard)
-  - [x] LocalStorage token management
-- [x] **User Management (Stage 2):**
-  - [x] Complex tables with server-side pagination, sorting, and filtering
-  - [x] URL-synced table state (shareable filter/sort links)
-  - [x] Bulk actions (delete, export, role change)
-- [x] **RBAC (Stage 3):**
-  - [x] Declarative permission system (`usePermission`, `<ProtectedAction>`)
-  - [x] Type-safe permission definitions
-  - [x] Role-based route guards
-- [x] **Advanced Security & UX (Stage 4):**
-  - [x] JWT Refresh token rotation & Request Queuing
-  - [x] Global 401/403 interceptors and error handling
-  - [x] Reactive Auth Watcher for seamless redirection
-  - [x] Theme System (Dark Mode) & Premium UI Polish
-  - [x] Enhanced Navigation (Dual Pagination & Search alignment)
-  - [x] Professional "About" page implementation
-  - [ ] HttpOnly cookies integration (Architecture ready, requires Backend)
-- [x] **Live Analytics & Dashboard (Stage 5):**
-  - [x] Interactive Dashboard with real-time charts (Recharts)
-  - [x] Dynamic widgets (User Activity, Revenue, Growth)
-  - [x] Global Date Range filtering for all reports
-  - [x] Data Export (Excel/PDF) for audit logs
-- [x] **Testing & Quality (Stage 6):**
-  - [x] Unit tests for business logic (Vitest)
-  - [x] Component tests (React Testing Library)
-  - [x] E2E Integration tests (Playwright)
-  - [x] CI/CD Github Actions setup
-  - [x] Target: 70%+ coverage for `features/` and `entities/` (Critical paths covered: Auth, UserList, DeleteUser)
-- [/] **Production Deployment & Optimization (Stage 7):**
-  - [x] Bundle Size Optimization (Manual Chunks - reduced by ~36%)
-  - [x] Automated Semantic Versioning (Release Please)
-  - [x] CI/CD Pipeline Stabilized
-  - [ ] Final Vercel Deployment & Performance Monitoring
-
-## Development Workflow
-
-This project follows an **incremental development approach** with a transparent planning process:
-
-1. **[Live Project Board](https://github.com/users/andreysey/projects/2):** I use GitHub Projects to track tasks, manage stages, and visualize progress.
-2. **Feature Branches:** Each feature developed in isolation with descriptive branch names.
-3. **Self-Code Review:** Every PR includes a self-review checklist before merging.
-4. **Documentation-First:** Features documented before implementation to clarify requirements.
-
-## Deployment
-
-**Live Demo:** [Coming Soon - Vercel Deployment]
-
-The project will be deployed to **Vercel** (free tier) with automatic deployments on every push to `main`. This provides:
-
-- Shareable link for recruiters/interviewers
-- Real performance metrics
-- Production-like environment testing
-
-## AI Policy
-
-I use AI as a **Technical Partner**, not a code generator.
-
-- **Usage:** Architecture brainstorming, brainstorming edge cases in TypeScript, and generating mock data.
-- **Constraint:** Every line of code is manually reviewed, refactored, and integrated with a full understanding of its impact on the system.
-
-## Author
-
-**Andrii Butsvin** _Frontend Developer based in Germany_
-
-- **Technical Skills:** JavaScript (ES6+), TypeScript, React, Vue 3.
-- **Languages:**
-  - German (B1 - Actively progressing to B2)
-  - English (B2)
-  - Ukrainian (Native)
-  - Russian (Native)
-- **Work Status:** Resident in Germany (§24), Full Work Permit.
-
-## Available Scripts
-
-Common commands for development and maintenance:
-
-- **`pnpm dev`**: Start the development server.
-- **`pnpm build`**: Run full type-check and production build.
-- **`pnpm typecheck`**: Fast TypeScript validation without building.
-- **`pnpm lint:fix`**: Auto-fix code style issues (ESLint).
-- **`pnpm format`**: Format all files with Prettier.
-- **`pnpm tsr:generate`**: Regulate TanStack Router route tree.
-- **`pnpm test`**: Run unit tests (Vitest).
+| Category    | Technologies               |
+| ----------- | -------------------------- |
+| **Core**    | React 19, Vite, TypeScript |
+| **State**   | TanStack Query v5, Zustand |
+| **Styling** | Tailwind CSS v4, shadcn/ui |
+| **Forms**   | React Hook Form, Zod       |
+| **Testing** | Vitest, Playwright, MSW    |
+| **Infra**   | Vercel, GitHub Actions     |
 
 ## Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/andreysey/proadmin-dashboard.git
+
 # Install dependencies
 pnpm install
 
-# Start the development server (with MSW auto-start)
+# Start development server (MSW mock backend included)
 pnpm dev
 ```
+
+### Available Scripts
+
+- `pnpm build`: Production build with type checks.
+- `pnpm typecheck`: Fast TypeScript validation.
+- `pnpm lint:fix`: Auto-fix ESLint issues.
+- `pnpm test`: Run unit tests.
+
+## Author
+
+**Andrii Butsvin** — Frontend Developer (Germany)
+_Focusing on Modern Frontend (React, Vue) and System Design._
