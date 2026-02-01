@@ -28,9 +28,6 @@ vi.mock('@/widgets/RecentActivityFeed', () => ({ RecentActivityFeed: () => <div>
 vi.mock('@/widgets/RevenueStream', () => ({ RevenueStream: () => <div>Revenue</div> }))
 
 // Mock DevTools
-vi.mock('@tanstack/router-devtools', () => ({
-  TanStackRouterDevtools: () => null,
-}))
 vi.mock('@tanstack/react-router-devtools', () => ({
   TanStackRouterDevtools: () => null,
 }))

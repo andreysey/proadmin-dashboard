@@ -5,16 +5,18 @@ import { toast } from 'sonner'
 export const useDeleteUser = () => {
   const queryClient = useQueryClient()
 
+  // Note: Optimistic UI is handled in UserListTable using the 'UI-driven' pattern via useMutationState.
   return useMutation({
+    mutationKey: ['deleteUser'],
     mutationFn: (id: number) => deleteUser(id),
     onSuccess: (_, id) => {
-      // Invalidate users list to trigger refetch
-      queryClient.invalidateQueries({ queryKey: ['users'] })
-
       toast.success(`User #${id} deleted successfully`)
     },
-    onError: (error) => {
-      toast.error(error instanceof Error ? error.message : 'Failed to delete user')
+    onError: (err) => {
+      toast.error(err instanceof Error ? err.message : 'Failed to delete user')
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] })
     },
   })
 }

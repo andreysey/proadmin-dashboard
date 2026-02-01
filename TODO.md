@@ -137,9 +137,9 @@
 
 ## 8. Maintenance & Future (Post-Release)
 
-- [ ] Sentry Error Tracking integration.
-- [ ] Storybook for component documentation (Learning & Setup).
-- [ ] Full i18n localization support.
-- [ ] Accessibility (a11y) Audit & Fixes using `axe-core`.
-- [ ] Optimistic UI Updates (Instant feedback for mutations).
-- [ ] Architecture Decision Records (ADRs) - Documenting key tech choices.
+- [x] Sentry Error Tracking integration.
+- [x] Storybook for component documentation (Learning & Setup).
+- [x] Full i18n localization support.
+- [x] Accessibility (a11y) Audit & Fixes using `axe-core`.
+- [x] Optimistic UI Updates (Instant feedback for mutations).
+- [x] Architecture Decision Records (ADRs) - Documenting key tech choices.

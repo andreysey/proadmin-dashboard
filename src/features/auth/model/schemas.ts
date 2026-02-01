@@ -29,10 +29,11 @@ export type LoginResponse = z.infer<typeof loginResponseSchema>
  * Login form input schema.
  * Used for form validation with react-hook-form.
  */
-export const loginFormSchema = z.object({
-  username: z.string().min(1, 'Username is required'),
-  password: z.string().min(1, 'Password is required'),
-  role: z.string().optional(),
-})
+export const createLoginFormSchema = (t: (key: string) => string) =>
+  z.object({
+    username: z.string().min(1, t('validation.required')),
+    password: z.string().min(1, t('validation.required')),
+    role: z.string().optional(),
+  })
 
-export type LoginFormValues = z.infer<typeof loginFormSchema>
+export type LoginFormValues = z.infer<ReturnType<typeof createLoginFormSchema>>

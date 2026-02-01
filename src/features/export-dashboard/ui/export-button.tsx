@@ -1,4 +1,5 @@
 import { Download, FileSpreadsheet, FileText } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   DropdownMenu,
@@ -24,24 +25,26 @@ interface ExportButtonProps {
  * PDF: Exports branded report with stats summary
  */
 export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButtonProps) => {
+  const { t } = useTranslation()
+
   const handleExportExcel = async () => {
     if (!stats) return
 
     const statsSheet = [
       {
-        Metric: 'Total Users',
+        Metric: t('dashboard.export.stats.total_users'),
         Value: stats.totalUsers,
       },
       {
-        Metric: 'Active Now',
+        Metric: t('dashboard.export.stats.active_now'),
         Value: stats.activeNow,
       },
       {
-        Metric: 'Total Revenue (EUR)',
+        Metric: t('dashboard.export.stats.total_revenue'),
         Value: stats.totalRevenue,
       },
       {
-        Metric: 'Monthly Growth (%)',
+        Metric: t('dashboard.export.stats.monthly_growth'),
         Value: stats.monthlyGrowth,
       },
     ]
@@ -59,8 +62,8 @@ export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButto
     exportToExcel({
       filename: `dashboard-export-${dateRange}`,
       sheets: [
-        { name: 'Statistics', data: statsSheet },
-        { name: 'Recent Events', data: eventsSheet },
+        { name: t('dashboard.export.excel_sheets.stats'), data: statsSheet },
+        { name: t('dashboard.export.excel_sheets.events'), data: eventsSheet },
       ],
     })
   }
@@ -72,6 +75,7 @@ export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButto
     exportToPdf({
       stats,
       dateRange,
+      t,
     })
   }
 
@@ -82,17 +86,17 @@ export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButto
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm" disabled={isDisabled}>
           <Download className="mr-2 h-4 w-4" />
-          Export
+          {t('dashboard.export.button')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={handleExportExcel}>
           <FileSpreadsheet className="mr-2 h-4 w-4" />
-          Export to Excel
+          {t('dashboard.export.excel')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleExportPdf}>
           <FileText className="mr-2 h-4 w-4" />
-          Export to PDF
+          {t('dashboard.export.pdf')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

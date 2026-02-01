@@ -1,5 +1,6 @@
 import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 import { ROLES, type UserRole } from '@/entities/user/model/types'
 import { useState } from 'react'
 import { ProtectedAction } from '@/features/auth'
@@ -24,6 +25,7 @@ export const BulkActions = ({
   onRoleChange: (role: UserRole) => void
 }) => {
   const [selectedRole, setSelectedRole] = useState<UserRole | ''>('')
+  const { t } = useTranslation()
   if (selectedCount === 0) return null
 
   return (
@@ -32,7 +34,9 @@ export const BulkActions = ({
         <span className="bg-primary text-primary-foreground flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold">
           {selectedCount}
         </span>
-        <span className="text-foreground hidden text-sm font-medium sm:inline">Selected</span>
+        <span className="text-foreground hidden text-sm font-medium sm:inline">
+          {t('users.bulk_actions.selected')}
+        </span>
         <Button
           variant="ghost"
           size="icon"
@@ -47,12 +51,12 @@ export const BulkActions = ({
         <div className="flex items-center gap-2 border-r pr-2 sm:pr-4">
           <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
             <SelectTrigger className="h-8 w-28 sm:w-32">
-              <SelectValue placeholder="Role..." />
+              <SelectValue placeholder={t('users.bulk_actions.role_placeholder')} />
             </SelectTrigger>
             <SelectContent>
               {ROLES.map((role) => (
                 <SelectItem key={role} value={role}>
-                  {role}
+                  {t(`users.roles.${role.toLowerCase()}`)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -67,7 +71,9 @@ export const BulkActions = ({
             }}
           >
             <ShieldAlert className="h-4 w-4" />
-            <span className="hidden sm:inline">{isUpdatingRole ? 'Updating...' : 'Apply'}</span>
+            <span className="hidden sm:inline">
+              {isUpdatingRole ? t('users.bulk_actions.updating') : t('users.bulk_actions.apply')}
+            </span>
           </Button>
         </div>
       </ProtectedAction>
@@ -81,7 +87,7 @@ export const BulkActions = ({
           disabled={isDeleting || isUpdatingRole}
         >
           <Download className="h-4 w-4" />
-          <span className="hidden sm:inline">Export</span>
+          <span className="hidden sm:inline">{t('users.bulk_actions.export')}</span>
         </Button>
         <ProtectedAction permission="users:delete">
           <Button
@@ -92,7 +98,9 @@ export const BulkActions = ({
             disabled={isDeleting || isUpdatingRole}
           >
             <Trash2 className="h-4 w-4" />
-            <span className="hidden sm:inline">{isDeleting ? 'Deleting...' : 'Delete'}</span>
+            <span className="hidden sm:inline">
+              {isDeleting ? t('users.bulk_actions.deleting') : t('users.bulk_actions.delete')}
+            </span>
           </Button>
         </ProtectedAction>
       </div>

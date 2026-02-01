@@ -21,6 +21,7 @@ import {
 } from '@tanstack/react-table'
 import { OctagonXIcon } from 'lucide-react'
 import { useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useBulkDelete } from '../model/use-bulk-delete'
 import { useBulkUpdateRole } from '../model/use-bulk-update-role'
 import { BulkActions } from './bulk-actions'
@@ -68,7 +69,8 @@ export const UserList = ({
     [sortBy, order]
   )
 
-  const columns = useMemo(() => getUserListColumns(), [])
+  const { t } = useTranslation()
+  const columns = useMemo(() => getUserListColumns(t), [t])
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
@@ -154,7 +156,11 @@ export const UserList = ({
 
       <div className="flex items-center justify-between px-2">
         <div className="text-muted-foreground text-sm">
-          Showing {skip + 1} to {Math.min(skip + limit, total)} of {total} users
+          {t('users.pagination.info', {
+            from: skip + 1,
+            to: Math.min(skip + limit, total),
+            total,
+          })}
         </div>
         <div className="flex items-center gap-2">
           <Button
@@ -163,7 +169,7 @@ export const UserList = ({
             onClick={() => onPageChange?.(Math.max(0, skip - limit))}
             disabled={skip === 0}
           >
-            Previous
+            {t('users.pagination.previous')}
           </Button>
           <Button
             variant="outline"
@@ -171,7 +177,7 @@ export const UserList = ({
             onClick={() => onPageChange?.(skip + limit)}
             disabled={skip + limit >= total}
           >
-            Next
+            {t('users.pagination.next')}
           </Button>
         </div>
       </div>
@@ -189,19 +195,18 @@ export const UserList = ({
       <AlertDialog open={isBulkDeleteOpen} onOpenChange={setIsBulkDeleteOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Bulk Delete Users</AlertDialogTitle>
+            <AlertDialogTitle>{t('users.bulk_delete.title')}</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete {selectedCount} selected users? This action is
-              irreversible and will remove all associated data.
+              {t('users.bulk_delete.description', { count: selectedCount })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>{t('users.bulk_delete.cancel')}</AlertDialogCancel>
             <AlertDialogAction
               onClick={handleBulkDelete}
               className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
             >
-              {isDeleting ? 'Deleting...' : 'Confirm Bulk Delete'}
+              {isDeleting ? t('users.bulk_delete.deleting') : t('users.bulk_delete.confirm')}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

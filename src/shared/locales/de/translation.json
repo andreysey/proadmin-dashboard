@@ -1,0 +1,237 @@
+{
+  "app": {
+    "title": "ProAdmin Dashboard",
+    "welcome": "Willkommen zurück",
+    "guest": "Gastbenutzer"
+  },
+  "header": {
+    "dropdown": {
+      "profile": "Profil",
+      "settings": "Einstellungen",
+      "logout": "Abmelden"
+    }
+  },
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "users": "Benutzer",
+    "settings": "Einstellungen",
+    "about": "Über uns"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Etwas ist schief gelaufen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "actions": "Aktionen",
+    "logout": "Abmelden",
+    "error_boundary": {
+      "title": "Etwas ist schief gelaufen",
+      "subtitle": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
+      "retry": "Erneut versuchen"
+    },
+    "not_found": {
+      "title": "404 - Seite nicht gefunden",
+      "subtitle": "Hoppla! Es scheint, als hätten Sie sich verirrt.",
+      "desc": "Die von Ihnen gesuchte Seite wurde möglicherweise entfernt, umbenannt oder ist vorübergehend nicht verfügbar.",
+      "home": "Zurück zum Dashboard"
+    },
+    "theme": {
+      "toggle": "Thema umschalten",
+      "current": "Aktuelles Thema: {{theme}}",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    }
+  },
+  "users": {
+    "title": "Benutzerliste",
+    "search_placeholder": "Benutzer suchen...",
+    "aria": {
+      "select_all": "Alle auswählen",
+      "select_row": "Zeile auswählen",
+      "expand_row": "Zeile erweitern",
+      "collapse_row": "Zeile reduzieren"
+    },
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "email": "E-Mail",
+      "role": "Rolle",
+      "status": "Status",
+      "created_at": "Erstellt am"
+    },
+    "pagination": {
+      "info": "Zeige {{from}} bis {{to}} von {{total}} Benutzern",
+      "previous": "Vorherige",
+      "next": "Nächste"
+    },
+    "roles": {
+      "admin": "Admin",
+      "user": "Benutzer",
+      "moderator": "Moderator"
+    },
+    "bulk_actions": {
+      "selected": "Ausgewählt",
+      "role_placeholder": "Rolle...",
+      "updating": "Aktualisieren...",
+      "apply": "Anwenden",
+      "export": "Exportieren",
+      "deleting": "Löschen...",
+      "delete": "Löschen"
+    },
+    "bulk_delete": {
+      "title": "Sind Sie sicher?",
+      "description": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird die {{count}} ausgewählten Benutzer dauerhaft löschen.",
+      "cancel": "Abbrechen",
+      "confirm": "Löschen",
+      "deleting": "Löschen..."
+    },
+    "state": {
+      "error_title": "Fehler beim Laden der Benutzer",
+      "error_desc": "Es gab einen Fehler bei der Verbindung zum Server. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+      "retry": "Verbindung wiederholen",
+      "empty": "Keine Benutzer gefunden.",
+      "empty_search": "Versuchen Sie Ihre Suche nach \"{{query}}\" anzupassen"
+    },
+    "edit": {
+      "title": "Benutzer bearbeiten: {{name}}",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "username": "Benutzername",
+      "save": "Änderungen speichern",
+      "saving": "Speichern...",
+      "cancel": "Abbrechen",
+      "success": "Benutzer erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren des Benutzers"
+    }
+  },
+  "validation": {
+    "required": "Dieses Feld ist erforderlich",
+    "email": "Ungültige E-Mail-Adresse",
+    "min_length": "Muss mindestens {{count}} Zeichen lang sein",
+    "username_min": "Benutzername muss mindestens 3 Zeichen lang sein"
+  },
+  "auth": {
+    "login": {
+      "title": "Anmelden",
+      "username": "Benutzername",
+      "password": "Passwort",
+      "role_label": "Dev: Anmelden als Rolle",
+      "role_placeholder": "Rolle auswählen",
+      "submit": "Anmelden",
+      "error_credentials": "Ungültige Anmeldedaten",
+      "roles": {
+        "admin": "Admin (Voller Zugriff)",
+        "user": "Benutzer (Nur Lesen)",
+        "moderator": "Moderator (Benutzer verwalten)"
+      }
+    }
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Willkommen zurück! Hier ist ein Überblick über Ihre Analysen.",
+    "stats": {
+      "total_users": "Gesamtbenutzer",
+      "active_now": "Jetzt aktiv",
+      "total_revenue": "Gesamtumsatz",
+      "monthly_growth": "Monatliches Wachstum",
+      "last_month": "vom letzten Monat",
+      "error": "Statistiken konnten nicht geladen werden"
+    },
+    "revenue": {
+      "title": "Umsatzentwicklung",
+      "tooltip": "Umsatz",
+      "error": "Umsatzdaten konnten nicht geladen werden"
+    },
+    "filters": {
+      "auto_refresh": "Automatisch aktualisieren",
+      "date_range": {
+        "24h": "Letzte 24 Stunden",
+        "7d": "Letzte 7 Tage",
+        "30d": "Letzte 30 Tage",
+        "placeholder": "Zeitraum wählen"
+      }
+    },
+    "export": {
+      "button": "Exportieren",
+      "excel": "Als Excel exportieren",
+      "pdf": "Als PDF exportieren",
+      "report_title": "ProAdmin Dashboard Bericht",
+      "date_range": "Zeitraum: {{value}}",
+      "generated": "Erstellt am: {{date}}",
+      "overview": "Statistik Übersicht",
+      "footer": "Erstellt vom ProAdmin Dashboard",
+      "excel_sheets": {
+        "stats": "Statistiken",
+        "events": "Letzte Aktivitäten"
+      },
+      "stats": {
+        "total_users": "Gesamtbenutzer",
+        "active_now": "Jetzt aktiv",
+        "total_revenue": "Gesamtumsatz",
+        "monthly_growth": "Monatliches Wachstum"
+      }
+    },
+    "activity": {
+      "title": "Letzte Aktivitäten",
+      "chart_title": "Benutzeraktivität",
+      "error": "Aktivitäten konnten nicht geladen werden",
+      "chart_error": "Aktivitätsdaten konnten nicht geladen werden",
+      "empty": "Keine letzten Aktivitäten",
+      "time": {
+        "just_now": "Gerade eben",
+        "minutes_ago": "vor {{count}} Min.",
+        "hours_ago": "vor {{count}} Std.",
+        "days_ago": "vor {{count}} Tagen"
+      },
+      "events": {
+        "user_signup": {
+          "title": "Neuer Benutzer registriert",
+          "description": "Ein neuer Benutzer hat sich angemeldet."
+        },
+        "user_delete": {
+          "title": "Benutzerkonto gelöscht",
+          "description": "Ein Benutzerkonto wurde entfernt."
+        },
+        "system_alert": {
+          "title": "Systemwarnung",
+          "description": "Hohe Systemlast erkannt."
+        },
+        "payment_success": {
+          "title": "Zahlung erhalten",
+          "description": "Zahlung erfolgreich verarbeitet."
+        }
+      }
+    }
+  },
+  "about": {
+    "title": "Über ProAdmin Dashboard",
+    "description": "Eine leistungsstarke, widerstandsfähige und architektonisch solide Verwaltungsplattform für moderne Geschäftsanforderungen.",
+    "security": {
+      "title": "Sicherheit Zuerst",
+      "desc": "Implementiert mit robuster JWT Silent Refresh Logik, sicherer Token-Speicherung und einem proaktiven Wiederholungsmechanismus. Ihre Sitzungen werden automatisch geschützt und ohne Unterbrechung Ihres Workflows verwaltet."
+    },
+    "ux": {
+      "title": "Optimierte UX",
+      "desc": "Angetrieben von TanStack Query für schnelles Datenladen. Bietet flüssige Lade-Skelette, sofortige Benachrichtigungen und ein <1>Mobile-First</1> responsives Design, das sich nahtlos an jedes Gerät anpasst."
+    },
+    "arch": {
+      "title": "Solide Architektur",
+      "desc": "Folgt streng den Prinzipien des <1>Feature-Sliced Design (FSD)</1>. Dies gewährleistet hohe Kohäsion und geringe Kopplung, wodurch die Codebasis hoch skalierbar, wartbar und für große Teams leicht zu bearbeiten ist."
+    },
+    "tech": {
+      "title": "Moderner Tech Stack"
+    },
+    "mission": {
+      "title": "System Mission",
+      "desc": "Die Mission von ProAdmin ist es, ein standardisiertes Toolset für die Verwaltung von Benutzern, Berechtigungen und Analysen mit absoluter Zuverlässigkeit bereitzustellen. Durch die Kombination modernster Frontend-Technologien mit professionellen Architekturmustern liefern wir ein unternehmenstaugliches Dashboard-Erlebnis."
+    },
+    "connect": {
+      "title": "Kontakt aufnehmen",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
+    "footer": "ProAdmin Dashboard • Version {{version}} • Mit ❤️ und PräзISION gebaut"
+  }
+}

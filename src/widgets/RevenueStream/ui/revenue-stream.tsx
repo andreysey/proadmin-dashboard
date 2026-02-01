@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 import { useRevenueData } from '@/entities/analytics'
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import type { DateRangeValue } from '@/features/dashboard-filters'
@@ -23,6 +24,7 @@ interface RevenueStreamProps {
 
 export const RevenueStream = ({ dateRange, autoRefresh = false }: RevenueStreamProps) => {
   const { data, isPending, isError } = useRevenueData(dateRange, autoRefresh)
+  const { t } = useTranslation()
 
   if (isPending) {
     return <RevenueStreamSkeleton />
@@ -32,11 +34,11 @@ export const RevenueStream = ({ dateRange, autoRefresh = false }: RevenueStreamP
     return (
       <Card>
         <CardHeader>
-          <CardTitle>Revenue Stream</CardTitle>
+          <CardTitle>{t('dashboard.revenue.title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex h-[300px] items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">Failed to load revenue data</p>
+            <p className="text-muted-foreground">{t('dashboard.revenue.error')}</p>
           </div>
         </CardContent>
       </Card>
@@ -54,7 +56,7 @@ export const RevenueStream = ({ dateRange, autoRefresh = false }: RevenueStreamP
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Revenue Stream</CardTitle>
+        <CardTitle>{t('dashboard.revenue.title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
@@ -63,7 +65,7 @@ export const RevenueStream = ({ dateRange, autoRefresh = false }: RevenueStreamP
             <XAxis dataKey="month" />
             <YAxis width="auto" tickFormatter={(value) => `€${value / 1000}k`} />
             <Tooltip
-              formatter={(value) => [formatCurrency(Number(value)), 'Revenue']}
+              formatter={(value) => [formatCurrency(Number(value)), t('dashboard.revenue.tooltip')]}
               contentStyle={{
                 backgroundColor: 'var(--foreground)',
               }}

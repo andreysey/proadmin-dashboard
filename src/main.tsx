@@ -5,6 +5,10 @@ import './app/styles/index.css'
 import { setForbiddenHandler, setUnauthorizedHandler } from './shared/api'
 import { useAuthStore } from './features/auth'
 import { router } from './app'
+import { initSentry } from './shared/config/sentry'
+import './shared/config/i18n'
+
+initSentry()
 
 setUnauthorizedHandler(() => {
   useAuthStore.getState().logout()
@@ -35,7 +39,7 @@ async function enableMocking() {
   })
 }
 
-enableMocking().then(() => {
+enableMocking().then(async () => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <Providers />

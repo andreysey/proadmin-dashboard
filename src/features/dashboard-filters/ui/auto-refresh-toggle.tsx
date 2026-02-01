@@ -1,4 +1,5 @@
 import { Label } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 import { RefreshCw } from 'lucide-react'
 
 interface AutoRefreshToggleProps {
@@ -13,6 +14,7 @@ interface AutoRefreshToggleProps {
  * When enabled, data will refetch every 30 seconds.
  */
 export const AutoRefreshToggle = ({ enabled, onChange }: AutoRefreshToggleProps) => {
+  const { t } = useTranslation()
   return (
     <div className="flex items-center gap-2">
       <input
@@ -24,7 +26,7 @@ export const AutoRefreshToggle = ({ enabled, onChange }: AutoRefreshToggleProps)
       />
       <Label htmlFor="auto-refresh" className="flex cursor-pointer items-center gap-1.5 text-sm">
         <RefreshCw className={`h-3.5 w-3.5 ${enabled ? 'animate-spin' : ''}`} />
-        Auto-refresh
+        {t('dashboard.filters.auto_refresh')}
       </Label>
     </div>
   )

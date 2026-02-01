@@ -11,3 +11,5 @@ export const config = {
     baseUrl: env.VITE_API_URL,
   },
 } as const
+
+export * from './links'

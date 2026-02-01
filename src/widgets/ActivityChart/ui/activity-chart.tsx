@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 import { useAnalyticsActivity } from '@/entities/analytics'
 import {
   Area,
@@ -31,6 +32,7 @@ interface ActivityChartProps {
 
 export const ActivityChart = ({ dateRange, autoRefresh = false }: ActivityChartProps) => {
   const { data, isPending, isError } = useAnalyticsActivity(dateRange, autoRefresh)
+  const { t } = useTranslation()
 
   if (isPending) {
     return <ActivityChartSkeleton />
@@ -40,11 +42,11 @@ export const ActivityChart = ({ dateRange, autoRefresh = false }: ActivityChartP
     return (
       <Card>
         <CardHeader>
-          <CardTitle>User Activity</CardTitle>
+          <CardTitle>{t('dashboard.activity.chart_title')}</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex h-[300px] items-center justify-center rounded-lg border border-dashed">
-            <p className="text-muted-foreground">Failed to load activity data</p>
+            <p className="text-muted-foreground">{t('dashboard.activity.chart_error')}</p>
           </div>
         </CardContent>
       </Card>
@@ -63,7 +65,7 @@ export const ActivityChart = ({ dateRange, autoRefresh = false }: ActivityChartP
   return (
     <Card>
       <CardHeader>
-        <CardTitle>User Activity</CardTitle>
+        <CardTitle>{t('dashboard.activity.chart_title')}</CardTitle>
       </CardHeader>
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>

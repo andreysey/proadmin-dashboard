@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { useTranslation } from 'react-i18next'
 import { StatsOverview } from '@/widgets/StatsOverview'
 import { ActivityChart } from '@/widgets/ActivityChart'
 import { RecentActivityFeed } from '@/widgets/RecentActivityFeed'
@@ -12,6 +13,9 @@ import {
 } from '@/features/dashboard-filters'
 import { ExportButton } from '@/features/export-dashboard'
 import { useAnalyticsStats, useRecentEvents } from '@/entities/analytics'
+import { usePullToRefresh } from '@/shared/lib/hooks/use-pull-to-refresh'
+import { RefreshIndicator } from '@/shared/ui/refresh-indicator'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/_dashboard/')({
   validateSearch: (search) => dashboardSearchSchema.parse(search),
@@ -19,6 +23,7 @@ export const Route = createFileRoute('/_dashboard/')({
 })
 
 function DashboardPage() {
+  const { t } = useTranslation()
   // Step 1: Read URL state
   const { dateRange, autoRefresh } = Route.useSearch()
   // Step 2: Get navigate function to update URL
@@ -42,15 +47,22 @@ function DashboardPage() {
     })
   }
 
+  const queryClient = useQueryClient()
+  const { pullDistance, isRefreshing: isPTR } = usePullToRefresh({
+    onRefresh: async () => {
+      await queryClient.refetchQueries({ queryKey: ['analytics'] })
+      await queryClient.refetchQueries({ queryKey: ['events'] })
+    },
+  })
+
   return (
     <div className="space-y-6 p-4 md:p-0">
+      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} />
       {/* Header with filters */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Welcome back! Here's an overview of your analytics.
-          </p>
+          <h1 className="text-3xl font-bold tracking-tight">{t('dashboard.title')}</h1>
+          <p className="text-muted-foreground">{t('dashboard.subtitle')}</p>
         </div>
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <AutoRefreshToggle enabled={autoRefresh} onChange={handleAutoRefreshChange} />
