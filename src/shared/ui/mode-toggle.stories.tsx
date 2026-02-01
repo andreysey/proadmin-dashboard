@@ -13,4 +13,14 @@ const meta: Meta<typeof ModeToggle> = {
 export default meta
 type Story = StoryObj<typeof ModeToggle>
 
-export const Default: Story = {}
+import { ThemeProvider } from 'next-themes'
+
+export const Default: Story = {
+  decorators: [
+    (Story) => (
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
+}
