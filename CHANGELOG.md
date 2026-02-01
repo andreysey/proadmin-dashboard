@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/andreysey/proadmin-dashboard/compare/v1.2.0...v1.2.1) (2026-02-01)
+
+
+### Bug Fixes
+
+* **i18n:** fix typo in German footer translation ([d22ccd6](https://github.com/andreysey/proadmin-dashboard/commit/d22ccd6d3009ce8b2d0b657a8c539b9621e44c26))
+
 ## [1.2.0](https://github.com/andreysey/proadmin-dashboard/compare/v1.1.0...v1.2.0) (2026-02-01)
 
 
