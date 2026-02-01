@@ -6,8 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/shared/ui'
-import { exportToExcel } from '../lib/export-to-excel'
-import { exportToPdf } from '../lib/export-to-pdf'
+
 import type { DashboardStats, RecentEvent } from '@/entities/analytics'
 import type { DateRangeValue } from '@/features/dashboard-filters'
 
@@ -25,7 +24,7 @@ interface ExportButtonProps {
  * PDF: Exports branded report with stats summary
  */
 export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButtonProps) => {
-  const handleExportExcel = () => {
+  const handleExportExcel = async () => {
     if (!stats) return
 
     const statsSheet = [
@@ -56,6 +55,7 @@ export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButto
         Timestamp: new Date(event.timestamp).toLocaleString('de-DE'),
       })) ?? []
 
+    const { exportToExcel } = await import('../lib/export-to-excel')
     exportToExcel({
       filename: `dashboard-export-${dateRange}`,
       sheets: [
@@ -65,9 +65,10 @@ export const ExportButton = ({ stats, events, dateRange, disabled }: ExportButto
     })
   }
 
-  const handleExportPdf = () => {
+  const handleExportPdf = async () => {
     if (!stats) return
 
+    const { exportToPdf } = await import('../lib/export-to-pdf')
     exportToPdf({
       stats,
       dateRange,

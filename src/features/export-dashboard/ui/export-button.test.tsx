@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import { ExportButton } from './export-button'
 import { exportToExcel } from '../lib/export-to-excel'
 import { exportToPdf } from '../lib/export-to-pdf'
@@ -13,7 +13,7 @@ vi.mock('../lib/export-to-pdf', () => ({
   exportToPdf: vi.fn(),
 }))
 
-// Mock UI components to avoid Radix complexity in unit tests
+// ... existing mocks for UI components ...
 vi.mock('@/shared/ui', () => ({
   Button: ({
     children,
@@ -38,7 +38,7 @@ vi.mock('@/shared/ui', () => ({
   ),
 }))
 
-// Sample Data
+// ... existing sample data ...
 const mockStats = {
   totalUsers: 100,
   activeNow: 20,
@@ -76,7 +76,7 @@ describe('ExportButton', () => {
     expect(button).toBeEnabled()
   })
 
-  it('should call exportToExcel when Excel option is clicked', () => {
+  it('should call exportToExcel when Excel option is clicked', async () => {
     render(<ExportButton {...defaultProps} />)
 
     // Open dropdown
@@ -87,19 +87,21 @@ describe('ExportButton', () => {
     const excelOption = screen.getByText('Export to Excel')
     fireEvent.click(excelOption)
 
-    expect(exportToExcel).toHaveBeenCalledTimes(1)
-    expect(exportToExcel).toHaveBeenCalledWith(
-      expect.objectContaining({
-        filename: 'dashboard-export-7d',
-        sheets: expect.arrayContaining([
-          expect.objectContaining({ name: 'Statistics' }),
-          expect.objectContaining({ name: 'Recent Events' }),
-        ]),
-      })
-    )
+    await waitFor(() => {
+      expect(exportToExcel).toHaveBeenCalledTimes(1)
+      expect(exportToExcel).toHaveBeenCalledWith(
+        expect.objectContaining({
+          filename: 'dashboard-export-7d',
+          sheets: expect.arrayContaining([
+            expect.objectContaining({ name: 'Statistics' }),
+            expect.objectContaining({ name: 'Recent Events' }),
+          ]),
+        })
+      )
+    })
   })
 
-  it('should call exportToPdf when PDF option is clicked', () => {
+  it('should call exportToPdf when PDF option is clicked', async () => {
     render(<ExportButton {...defaultProps} />)
 
     // Open dropdown
@@ -110,10 +112,12 @@ describe('ExportButton', () => {
     const pdfOption = screen.getByText('Export to PDF')
     fireEvent.click(pdfOption)
 
-    expect(exportToPdf).toHaveBeenCalledTimes(1)
-    expect(exportToPdf).toHaveBeenCalledWith({
-      stats: mockStats,
-      dateRange: '7d',
+    await waitFor(() => {
+      expect(exportToPdf).toHaveBeenCalledTimes(1)
+      expect(exportToPdf).toHaveBeenCalledWith({
+        stats: mockStats,
+        dateRange: '7d',
+      })
     })
   })
 })

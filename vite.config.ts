@@ -6,6 +6,19 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { visualizer } from 'rollup-plugin-visualizer'
 import pkg from './package.json'
 
+const vendorGroups = {
+  'vendor-core': ['react', 'react-dom', 'scheduler', '@tanstack'],
+  'vendor-charts': ['recharts'],
+  'vendor-forms': ['react-hook-form', '@hookform', 'zod'],
+  'vendor-ui': [
+    '@radix-ui', // Keep this group together
+    'lucide-react',
+    'class-variance-authority',
+    'clsx',
+    'tailwind-merge',
+    'sonner',
+  ],
+}
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -34,23 +47,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          'react-vendor': ['react', 'react-dom'],
-          'tanstack-vendor': ['@tanstack/react-router', '@tanstack/react-query'],
-          'ui-vendor': [
-            '@radix-ui/react-alert-dialog',
-            '@radix-ui/react-dropdown-menu',
-            '@radix-ui/react-label',
-            '@radix-ui/react-select',
-            '@radix-ui/react-slot',
-            'lucide-react',
-            'class-variance-authority',
-            'clsx',
-            'tailwind-merge',
-            'sonner',
-          ],
-          'chart-vendor': ['recharts'],
-          'form-vendor': ['react-hook-form', '@hookform/resolvers', 'zod'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            for (const [chunkName, keywords] of Object.entries(vendorGroups)) {
+              if (keywords.some((keyword) => id.includes(keyword))) {
+                return chunkName
+              }
+            }
+          }
         },
       },
     },
