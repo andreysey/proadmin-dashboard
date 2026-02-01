@@ -48,7 +48,11 @@ function DashboardPage() {
   }
 
   const queryClient = useQueryClient()
-  const { pullDistance, isRefreshing: isPTR } = usePullToRefresh({
+  const {
+    pullDistance,
+    isRefreshing: isPTR,
+    isDragging,
+  } = usePullToRefresh({
     onRefresh: async () => {
       await queryClient.refetchQueries({ queryKey: ['analytics'] })
       await queryClient.refetchQueries({ queryKey: ['events'] })
@@ -56,8 +60,8 @@ function DashboardPage() {
   })
 
   return (
-    <div className="space-y-6 p-4 md:p-0">
-      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} />
+    <div className="relative space-y-6 p-4 md:p-0">
+      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} isDragging={isDragging} />
       {/* Header with filters */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

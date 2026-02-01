@@ -7,7 +7,11 @@ import { RefreshIndicator } from '@/shared/ui'
 
 export const UsersPage = () => {
   const queryClient = useQueryClient()
-  const { pullDistance, isRefreshing: isPTR } = usePullToRefresh({
+  const {
+    pullDistance,
+    isRefreshing: isPTR,
+    isDragging,
+  } = usePullToRefresh({
     onRefresh: async () => {
       await queryClient.refetchQueries({ queryKey: ['users'] })
     },
@@ -62,8 +66,8 @@ export const UsersPage = () => {
   }
 
   return (
-    <div className="space-y-4 p-4 md:p-0">
-      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} />
+    <div className="relative space-y-4 p-4 md:p-0">
+      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} isDragging={isDragging} />
       <UserList
         skip={skip}
         limit={limit}

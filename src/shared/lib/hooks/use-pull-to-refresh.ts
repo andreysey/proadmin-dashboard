@@ -13,6 +13,7 @@ export const usePullToRefresh = ({
 }: PullToRefreshOptions) => {
   const [pullDistance, setPullDistance] = useState(0)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isDragging, setIsDragging] = useState(false)
   const startYRef = useRef(0)
   const isPullingRef = useRef(false)
 
@@ -21,6 +22,7 @@ export const usePullToRefresh = ({
       if (disabled || isRefreshing || window.scrollY > 0) return
       startYRef.current = e.touches[0].clientY
       isPullingRef.current = true
+      setIsDragging(true)
     },
     [disabled, isRefreshing]
   )
@@ -40,6 +42,7 @@ export const usePullToRefresh = ({
         if (e.cancelable) e.preventDefault()
       } else {
         isPullingRef.current = false
+        setIsDragging(false)
         setPullDistance(0)
       }
     },
@@ -49,6 +52,7 @@ export const usePullToRefresh = ({
   const handleTouchEnd = useCallback(async () => {
     if (!isPullingRef.current) return
     isPullingRef.current = false
+    setIsDragging(false)
 
     if (pullDistance >= threshold) {
       setIsRefreshing(true)
@@ -79,6 +83,7 @@ export const usePullToRefresh = ({
   return {
     pullDistance,
     isRefreshing,
+    isDragging,
     progress: Math.min(pullDistance / threshold, 1),
   }
 }
