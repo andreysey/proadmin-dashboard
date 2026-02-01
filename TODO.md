@@ -138,7 +138,7 @@
 ## 8. Maintenance & Future (Post-Release)
 
 - [x] Sentry Error Tracking integration.
-- [ ] Storybook for component documentation (Learning & Setup).
+- [x] Storybook for component documentation (Learning & Setup).
 - [ ] Full i18n localization support.
 - [ ] Accessibility (a11y) Audit & Fixes using `axe-core`.
 - [ ] Optimistic UI Updates (Instant feedback for mutations).
