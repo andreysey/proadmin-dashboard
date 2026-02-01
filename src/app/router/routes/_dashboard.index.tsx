@@ -13,6 +13,9 @@ import {
 } from '@/features/dashboard-filters'
 import { ExportButton } from '@/features/export-dashboard'
 import { useAnalyticsStats, useRecentEvents } from '@/entities/analytics'
+import { usePullToRefresh } from '@/shared/lib/hooks/use-pull-to-refresh'
+import { RefreshIndicator } from '@/shared/ui/refresh-indicator'
+import { useQueryClient } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/_dashboard/')({
   validateSearch: (search) => dashboardSearchSchema.parse(search),
@@ -44,8 +47,17 @@ function DashboardPage() {
     })
   }
 
+  const queryClient = useQueryClient()
+  const { pullDistance, isRefreshing: isPTR } = usePullToRefresh({
+    onRefresh: async () => {
+      await queryClient.refetchQueries({ queryKey: ['analytics'] })
+      await queryClient.refetchQueries({ queryKey: ['events'] })
+    },
+  })
+
   return (
     <div className="space-y-6 p-4 md:p-0">
+      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} />
       {/* Header with filters */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>

@@ -1,8 +1,18 @@
 import { UserList } from '@/features/users-list'
 import { Route } from '@/app/router/routes/_dashboard.users'
 import { useEffect, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { usePullToRefresh } from '@/shared/lib/hooks/use-pull-to-refresh'
+import { RefreshIndicator } from '@/shared/ui'
 
 export const UsersPage = () => {
+  const queryClient = useQueryClient()
+  const { pullDistance, isRefreshing: isPTR } = usePullToRefresh({
+    onRefresh: async () => {
+      await queryClient.refetchQueries({ queryKey: ['users'] })
+    },
+  })
+
   const { skip, limit, q, sortBy, order } = Route.useSearch()
   const navigate = Route.useNavigate()
   const [search, setSearch] = useState(q ?? '')
@@ -52,7 +62,8 @@ export const UsersPage = () => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 p-4 md:p-0">
+      <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} />
       <UserList
         skip={skip}
         limit={limit}

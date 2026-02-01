@@ -1,6 +1,15 @@
 import { LayoutDashboard, Menu, User } from 'lucide-react'
 import { useAuthStore } from '@/features/auth'
-import { LanguageSwitcher, ModeToggle, Sheet, SheetContent, SheetTrigger } from '@/shared/ui'
+import {
+  LanguageSwitcher,
+  ModeToggle,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetTrigger,
+} from '@/shared/ui'
 import { Sidebar } from '@/widgets/Sidebar'
 import { useState } from 'react'
 
@@ -28,6 +37,10 @@ export const Header = () => {
               </button>
             </SheetTrigger>
             <SheetContent side="left" className="p-0">
+              <SheetHeader className="sr-only">
+                <SheetTitle>{t('app.title')}</SheetTitle>
+                <SheetDescription>Navigation Menu</SheetDescription>
+              </SheetHeader>
               <Sidebar className="w-full border-none" onNavigate={() => setOpen(false)} />
             </SheetContent>
           </Sheet>
