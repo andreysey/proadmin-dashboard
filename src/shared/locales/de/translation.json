@@ -4,6 +4,13 @@
     "welcome": "Willkommen zurück",
     "guest": "Gastbenutzer"
   },
+  "header": {
+    "dropdown": {
+      "profile": "Profil",
+      "settings": "Einstellungen",
+      "logout": "Abmelden"
+    }
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "users": "Benutzer",
@@ -55,10 +62,9 @@
       "created_at": "Erstellt am"
     },
     "pagination": {
-      "showing": "Zeige {{from}} bis {{to}} von {{total}} Benutzern",
+      "info": "Zeige {{from}} bis {{to}} von {{total}} Benutzern",
       "previous": "Vorherige",
-      "next": "Nächste",
-      "info": "Seite {{page}} von {{totalPages}}"
+      "next": "Nächste"
     },
     "roles": {
       "admin": "Admin",
@@ -76,9 +82,10 @@
     },
     "bulk_delete": {
       "title": "Sind Sie sicher?",
-      "description": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird die ausgewählten Benutzer dauerhaft löschen.",
+      "description": "Diese Aktion kann nicht rückgängig gemacht werden. Dies wird die {{count}} ausgewählten Benutzer dauerhaft löschen.",
       "cancel": "Abbrechen",
-      "confirm": "Löschen"
+      "confirm": "Löschen",
+      "deleting": "Löschen..."
     },
     "state": {
       "error_title": "Fehler beim Laden der Benutzer",
@@ -220,6 +227,6 @@
       "title": "System Mission",
       "desc": "Die Mission von ProAdmin ist es, ein standardisiertes Toolset für die Verwaltung von Benutzern, Berechtigungen und Analysen mit absoluter Zuverlässigkeit bereitzustellen. Durch die Kombination modernster Frontend-Technologien mit professionellen Architekturmustern liefern wir ein unternehmenstaugliches Dashboard-Erlebnis."
     },
-    "footer": "ProAdmin Dashboard • Version {{version}} • Mit ❤️ und Präzision gebaut"
+    "footer": "ProAdmin Dashboard • Version {{version}} • Mit ❤️ und PräзISION gebaut"
   }
 }

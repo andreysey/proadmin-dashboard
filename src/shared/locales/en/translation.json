@@ -4,6 +4,13 @@
     "welcome": "Welcome back",
     "guest": "Guest User"
   },
+  "header": {
+    "dropdown": {
+      "profile": "Profile",
+      "settings": "Settings",
+      "logout": "Log out"
+    }
+  },
   "sidebar": {
     "dashboard": "Dashboard",
     "users": "Users",
@@ -40,6 +47,11 @@
   "users": {
     "title": "Users List",
     "search_placeholder": "Search users...",
+    "aria": {
+      "select_all": "Select all rows",
+      "select_row": "Select row",
+      "expand_row": "Expand row"
+    },
     "columns": {
       "id": "ID",
       "name": "Name",
@@ -49,7 +61,7 @@
       "created_at": "Created At"
     },
     "pagination": {
-      "showing": "Showing {{from}} to {{to}} of {{total}} users",
+      "info": "Showing {{from}} to {{to}} of {{total}} users",
       "previous": "Previous",
       "next": "Next"
     },
@@ -66,6 +78,13 @@
       "export": "Export",
       "deleting": "Deleting...",
       "delete": "Delete"
+    },
+    "bulk_delete": {
+      "title": "Delete Users",
+      "description": "Are you sure you want to delete {{count}} users? This action cannot be undone.",
+      "cancel": "Cancel",
+      "confirm": "Delete",
+      "deleting": "Deleting..."
     },
     "state": {
       "error_title": "Failed to load users",
