@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.1.0](https://github.com/andreysey/proadmin-dashboard/compare/v1.0.0...v1.1.0) (2026-02-01)
+
+
+### Features
+
+* **infra:** prepare for production deployment and monitoring ([3caf673](https://github.com/andreysey/proadmin-dashboard/commit/3caf6735a30a60e5d327700ee1d628075ea5df25))
+* **ui:** enhance responsive design for login and dashboard ([93758d7](https://github.com/andreysey/proadmin-dashboard/commit/93758d73669c06e455c757ddeb1b51fa21c670b8))
+* **ui:** implement responsive layout and mobile sidebar ([53f607d](https://github.com/andreysey/proadmin-dashboard/commit/53f607d45a81704e6c798d1eef4093b91f2887a4))
+* **users:** implement responsive list with mobile card view ([ac5f066](https://github.com/andreysey/proadmin-dashboard/commit/ac5f066e5d0b25578a08260b42f909a668a8bca4))
+
+
+### Performance Improvements
+
+* optimize bundle size with lazy loading and improved chunking ([5d4fc07](https://github.com/andreysey/proadmin-dashboard/commit/5d4fc07f31df76d1a76e1f1b090ea68953268844))
+
 ## 1.0.0 (2026-01-31)
 
 
