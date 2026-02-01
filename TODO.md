@@ -142,4 +142,4 @@
 - [x] Full i18n localization support.
 - [x] Accessibility (a11y) Audit & Fixes using `axe-core`.
 - [x] Optimistic UI Updates (Instant feedback for mutations).
-- [ ] Architecture Decision Records (ADRs) - Documenting key tech choices.
+- [x] Architecture Decision Records (ADRs) - Documenting key tech choices.
