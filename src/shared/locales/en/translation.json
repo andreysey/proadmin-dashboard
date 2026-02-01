@@ -226,6 +226,11 @@
       "title": "System Mission",
       "desc": "The mission of ProAdmin is to provide a standardized toolset for managing users, permissions, and analytics with absolute reliability. By combining cutting-edge frontend technologies with professional architectural patterns, we deliver an enterprise-ready dashboard experience."
     },
+    "connect": {
+      "title": "Connect with Me",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
     "footer": "ProAdmin Dashboard • Version {{version}} • Built with ❤️ and Precision"
   }
 }

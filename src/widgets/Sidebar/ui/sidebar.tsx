@@ -1,8 +1,9 @@
-import { useAuthStore } from '@/features/auth'
-import { Link } from '@tanstack/react-router'
-import { Home, Info, LayoutDashboard, LogOut, Users } from 'lucide-react'
+import { SOCIAL_LINKS } from '@/shared/config'
+import { Home, Info, LayoutDashboard, LogOut, Users, Github, Linkedin } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/shared/lib/utils'
+import { useAuthStore } from '@/features/auth'
+import { Link } from '@tanstack/react-router'
 
 interface SidebarProps {
   className?: string
@@ -57,6 +58,26 @@ export const Sidebar = ({ className, onNavigate }: SidebarProps) => {
         </nav>
 
         <div className="mt-auto border-t pt-4">
+          <div className="mb-2 space-y-1 border-b pb-4">
+            <a
+              href={SOCIAL_LINKS.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group text-foreground hover:bg-accent flex w-full items-center rounded-lg p-2 transition-colors"
+            >
+              <Github className="group-hover:text-primary h-5 w-5 transition-colors" />
+              <span className="ml-3">{t('about.connect.github')}</span>
+            </a>
+            <a
+              href={SOCIAL_LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group text-foreground hover:bg-accent flex w-full items-center rounded-lg p-2 transition-colors"
+            >
+              <Linkedin className="h-5 w-5 transition-colors group-hover:text-[#0077b5]" />
+              <span className="ml-3">{t('about.connect.linkedin')}</span>
+            </a>
+          </div>
           <button
             onClick={() => {
               logout()

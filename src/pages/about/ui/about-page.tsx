@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/shared/ui'
-import { Info, ShieldCheck, Zap, Layers } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, Button } from '@/shared/ui'
+import { Info, ShieldCheck, Zap, Layers, Github, Linkedin } from 'lucide-react'
 import { useTranslation, Trans } from 'react-i18next'
+import { SOCIAL_LINKS } from '@/shared/config'
 
 export const AboutPage = () => {
   const { t } = useTranslation()
@@ -81,6 +82,24 @@ export const AboutPage = () => {
           <p className="text-sm leading-relaxed">{t('about.mission.desc')}</p>
         </CardContent>
       </Card>
+
+      <div className="space-y-4 text-center">
+        <h2 className="text-2xl font-bold">{t('about.connect.title')}</h2>
+        <div className="flex justify-center gap-4">
+          <Button variant="outline" size="lg" asChild className="gap-2">
+            <a href={SOCIAL_LINKS.github} target="_blank" rel="noopener noreferrer">
+              <Github className="h-5 w-5" />
+              {t('about.connect.github')}
+            </a>
+          </Button>
+          <Button variant="outline" size="lg" asChild className="gap-2">
+            <a href={SOCIAL_LINKS.linkedin} target="_blank" rel="noopener noreferrer">
+              <Linkedin className="h-5 w-5 text-[#0077b5]" />
+              {t('about.connect.linkedin')}
+            </a>
+          </Button>
+        </div>
+      </div>
 
       <div className="flex justify-center pt-4">
         <p className="text-muted-foreground text-xs font-medium">

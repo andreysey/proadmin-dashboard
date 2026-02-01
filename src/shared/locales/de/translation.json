@@ -227,6 +227,11 @@
       "title": "System Mission",
       "desc": "Die Mission von ProAdmin ist es, ein standardisiertes Toolset für die Verwaltung von Benutzern, Berechtigungen und Analysen mit absoluter Zuverlässigkeit bereitzustellen. Durch die Kombination modernster Frontend-Technologien mit professionellen Architekturmustern liefern wir ein unternehmenstaugliches Dashboard-Erlebnis."
     },
+    "connect": {
+      "title": "Kontakt aufnehmen",
+      "github": "GitHub",
+      "linkedin": "LinkedIn"
+    },
     "footer": "ProAdmin Dashboard • Version {{version}} • Mit ❤️ und PräзISION gebaut"
   }
 }
