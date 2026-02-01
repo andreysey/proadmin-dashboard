@@ -14,6 +14,7 @@ interface UserListMobileProps {
 }
 
 import { useOptimisticUsers } from '../model/use-optimistic-users'
+import { useLongPress } from '@/shared/lib/hooks/use-long-press'
 
 export const UserListMobile = ({ table }: UserListMobileProps) => {
   const { t } = useTranslation()
@@ -37,11 +38,23 @@ export const UserListMobile = ({ table }: UserListMobileProps) => {
       {derivedData.map(({ optimisticData: user, ...row }) => {
         const { isDeleting, isUpdating } = user
 
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const longPressHandlers = useLongPress({
+          onLongPress: () => {
+            row.toggleSelected()
+            if ('vibrate' in navigator) {
+              navigator.vibrate(50) // Subtle haptic feedback
+            }
+          },
+        })
+
         return (
           <Card
             key={row.id}
+            {...longPressHandlers}
             className={cn(
-              'relative transition-all duration-300',
+              'relative transition-all duration-300 active:scale-[0.98] active:shadow-inner',
+              row.getIsSelected() && 'ring-primary ring-2 ring-offset-2',
               isDeleting &&
                 'bg-destructive/10 border-l-destructive border-l-2 opacity-60 grayscale select-none',
               isUpdating && 'bg-primary/5 border-l-primary animate-pulse border-l-2 opacity-80'
@@ -55,6 +68,7 @@ export const UserListMobile = ({ table }: UserListMobileProps) => {
                     onChange={row.getToggleSelectedHandler()}
                     aria-label={t('users.aria.select_row')}
                     className="shrink-0"
+                    onClick={(e) => e.stopPropagation()} // Prevent card's future potential click
                   />
                   <div className="flex min-w-0 flex-1 items-center gap-3">
                     {user.image ? (
@@ -93,15 +107,24 @@ export const UserListMobile = ({ table }: UserListMobileProps) => {
                       to="/users/$userId/edit"
                       params={{ userId: user.id.toString() }}
                       className="w-full"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       <Button variant="outline" size="sm" className="h-8 w-full gap-2">
                         <Edit className="h-3.5 w-3.5" />
-                        {t('common.actions')}
+                        {t('users.edit.save') === 'Save Changes'
+                          ? 'Edit'
+                          : t('users.edit.title').split(':')[0]}
                       </Button>
                     </Link>
                   </ProtectedAction>
                   <ProtectedAction permission="users:delete">
-                    <DeleteUserButton userId={user.id} />
+                    <div
+                      role="presentation"
+                      onClick={(e) => e.stopPropagation()}
+                      onKeyDown={(e) => e.stopPropagation()}
+                    >
+                      <DeleteUserButton userId={user.id} />
+                    </div>
                   </ProtectedAction>
                 </div>
               </div>
