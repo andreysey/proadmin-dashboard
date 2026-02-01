@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0](https://github.com/andreysey/proadmin-dashboard/compare/v1.1.0...v1.2.0) (2026-02-01)
+
+
+### Features
+
+* **a11y:** fix button contrast, add missing translations, and harden a11y checks ([7c55887](https://github.com/andreysey/proadmin-dashboard/commit/7c5588700ba88e7750a7d5780a7b0c1255e67755))
+* **a11y:** improve login page accessibility and axe-core config ([1a71e8e](https://github.com/andreysey/proadmin-dashboard/commit/1a71e8e2cc1125f31c061d770148f89e09527cb4))
+* complete i18n coverage, optimize assets, and fix linting ([1d13fcd](https://github.com/andreysey/proadmin-dashboard/commit/1d13fcd1f32759088d34a263a02bf1d93cc0faf2))
+* **header:** implement UserDropdown with account actions ([d1c08a0](https://github.com/andreysey/proadmin-dashboard/commit/d1c08a056e29cc2e958345be413c2023308e58d0))
+* **i18n:** expand localization coverage for Dashboard and User List ([23c6562](https://github.com/andreysey/proadmin-dashboard/commit/23c65623ea4edd34072898fa1bb9b7008cb05cb5))
+* **infra:** integrate Sentry for error tracking ([c188a9b](https://github.com/andreysey/proadmin-dashboard/commit/c188a9b7061a790d896e4a1efe422531fb8d4396))
+* **mobile:** implement comprehensive Mobile UX suite ([fcb2480](https://github.com/andreysey/proadmin-dashboard/commit/fcb248056feac12dacb1176da7cbf65151c85e41))
+* **mobile:** implement long-press selection and haptic feedback ([9c2987d](https://github.com/andreysey/proadmin-dashboard/commit/9c2987d65f4fa6e4750ee6543d720fbd49694518))
+* **social:** integrate GitHub and LinkedIn links ([6fe9c77](https://github.com/andreysey/proadmin-dashboard/commit/6fe9c77480ac37a414548948868c0a608db059f0))
+* **users:** implement concurrent-safe optimistic UI updates ([3d702ad](https://github.com/andreysey/proadmin-dashboard/commit/3d702add2caffef525a1d64325da98b0546ce4ba))
+
+
+### Bug Fixes
+
+* **i18n:** add missing translation keys and harmonize locales ([cca6e40](https://github.com/andreysey/proadmin-dashboard/commit/cca6e40152ce6063291c2583ae82462d48340f6c))
+* resolve accessibility violations and build errors ([818267f](https://github.com/andreysey/proadmin-dashboard/commit/818267f8e111ab62e37a9cecf744a427c18b6e35))
+* **storybook:** improve docs visibility and clean up styles ([1358385](https://github.com/andreysey/proadmin-dashboard/commit/1358385eb827a3a561f169f26556f8e30df52714))
+* **ui:** enable functional mode toggle and styled toasts in storybook ([a022890](https://github.com/andreysey/proadmin-dashboard/commit/a022890d4535d6ed1d69625a57013a2ece747bee))
+* vercel spa routing rewrites ([26d2904](https://github.com/andreysey/proadmin-dashboard/commit/26d2904b381383e6621b53827f76f2b8413f2a24))
+
 ## [1.1.0](https://github.com/andreysey/proadmin-dashboard/compare/v1.0.0...v1.1.0) (2026-02-01)
 
 
