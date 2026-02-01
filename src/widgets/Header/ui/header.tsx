@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from '@/shared/ui'
 import { Sidebar } from '@/widgets/Sidebar'
+import { UserDropdown } from '@/features/user-dropdown'
 import { useState } from 'react'
 
 import { useTranslation } from 'react-i18next'
@@ -49,23 +50,29 @@ export const Header = () => {
         <div className="flex items-center gap-4">
           <LanguageSwitcher />
           <ModeToggle />
-          <div className="flex items-center gap-3 border-l pl-4">
-            <div className="hidden text-right sm:block">
-              <p className="text-sm leading-none font-medium">
-                {user ? `${user.firstName} ${user.lastName}` : t('app.guest', 'Guest User')}
-              </p>
-              <p className="text-muted-foreground mt-1 text-xs">
-                {user?.email ?? 'guest@proadmin.com'}
-              </p>
+          <UserDropdown>
+            <div className="flex items-center gap-3 border-l pl-4">
+              <div className="hidden text-right sm:block">
+                <p className="text-sm leading-none font-medium">
+                  {user ? `${user.firstName} ${user.lastName}` : t('app.guest', 'Guest User')}
+                </p>
+                <p className="text-muted-foreground mt-1 text-xs">
+                  {user?.email ?? 'guest@proadmin.com'}
+                </p>
+              </div>
+              <div className="bg-primary/10 text-primary hover:ring-primary/20 flex h-8 w-8 items-center justify-center overflow-hidden rounded-full transition-shadow hover:ring-2">
+                {user?.image ? (
+                  <img
+                    src={user.image}
+                    alt={user.username}
+                    className="h-full w-full object-cover"
+                  />
+                ) : (
+                  <User className="h-4 w-4" />
+                )}
+              </div>
             </div>
-            <div className="bg-primary/10 text-primary flex h-8 w-8 items-center justify-center overflow-hidden rounded-full">
-              {user?.image ? (
-                <img src={user.image} alt={user.username} className="h-full w-full object-cover" />
-              ) : (
-                <User className="h-4 w-4" />
-              )}
-            </div>
-          </div>
+          </UserDropdown>
         </div>
       </div>
     </header>
