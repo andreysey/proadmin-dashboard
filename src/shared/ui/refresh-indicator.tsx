@@ -1,14 +1,17 @@
 import { Loader2 } from 'lucide-react'
+import { cn } from '@/shared/lib/utils'
 
 interface RefreshIndicatorProps {
   pullDistance: number
   isRefreshing: boolean
+  isDragging?: boolean
   threshold?: number
 }
 
 export const RefreshIndicator = ({
   pullDistance,
   isRefreshing,
+  isDragging = false,
   threshold = 80,
 }: RefreshIndicatorProps) => {
   if (pullDistance === 0 && !isRefreshing) return null
@@ -18,7 +21,10 @@ export const RefreshIndicator = ({
 
   return (
     <div
-      className="fixed top-20 left-1/2 z-[60] -translate-x-1/2 transition-transform duration-200"
+      className={cn(
+        'fixed top-20 left-1/2 z-[60] -translate-x-1/2 transform-gpu will-change-transform',
+        !isDragging && 'transition-all duration-300'
+      )}
       style={{
         transform: `translateX(-50%) translateY(${pullDistance}px)`,
         opacity,

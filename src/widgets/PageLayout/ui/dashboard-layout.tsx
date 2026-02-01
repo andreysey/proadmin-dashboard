@@ -6,7 +6,7 @@ import { ErrorBoundary } from '@/shared/ui'
 
 export const DashboardLayout = () => {
   return (
-    <div className="bg-muted/30 min-h-screen">
+    <div className="bg-muted/30 min-h-screen touch-pan-y overscroll-y-none">
       <Sidebar className="fixed left-0 z-40 hidden w-64 md:top-16 md:block md:h-[calc(100vh-4rem)]" />
       <div className="flex flex-col">
         <Header />
