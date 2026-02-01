@@ -1,14 +1,34 @@
-import { User } from 'lucide-react'
+import { LayoutDashboard, Menu, User } from 'lucide-react'
 import { useAuthStore } from '@/features/auth'
-import { ModeToggle } from '@/shared/ui'
+import { ModeToggle, Sheet, SheetContent, SheetTrigger } from '@/shared/ui'
+import { Sidebar } from '@/widgets/Sidebar'
+import { useState } from 'react'
 
 export const Header = () => {
   const user = useAuthStore((state) => state.user)
+  const [open, setOpen] = useState(false)
 
   return (
-    <header className="bg-background/95 sticky top-0 z-30 flex h-16 w-full items-center border-b px-4 backdrop-blur">
-      <div className="ml-64 flex w-full items-center justify-between">
-        <div className="flex items-center" />
+    <header className="bg-background/95 sticky top-0 z-50 flex h-16 w-full items-center border-b px-4 backdrop-blur">
+      <div className="flex w-full items-center justify-between">
+        <div className="flex items-center">
+          <div className="hidden items-center md:flex md:w-64">
+            <LayoutDashboard className="text-primary mr-2 h-6 w-6" />
+            <span className="text-xl font-bold tracking-tight">ProAdmin</span>
+          </div>
+
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <button className="mr-4 md:hidden">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Toggle menu</span>
+              </button>
+            </SheetTrigger>
+            <SheetContent side="left" className="p-0">
+              <Sidebar className="w-full border-none" onNavigate={() => setOpen(false)} />
+            </SheetContent>
+          </Sheet>
+        </div>
 
         <div className="flex items-center gap-4">
           <ModeToggle />

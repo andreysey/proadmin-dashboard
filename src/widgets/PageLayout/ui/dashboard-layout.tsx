@@ -6,10 +6,10 @@ import { ErrorBoundary } from '@/shared/ui'
 export const DashboardLayout = () => {
   return (
     <div className="bg-muted/30 min-h-screen">
-      <Sidebar />
+      <Sidebar className="fixed left-0 z-40 hidden w-64 md:top-16 md:block md:h-[calc(100vh-4rem)]" />
       <div className="flex flex-col">
         <Header />
-        <main className="ml-64 p-6 transition-all">
+        <main className="p-6 transition-all md:ml-64">
           <ErrorBoundary>
             <Outlet />
           </ErrorBoundary>
