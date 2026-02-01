@@ -43,7 +43,7 @@ function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-4 md:p-0">
       {/* Header with filters */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -52,7 +52,7 @@ function DashboardPage() {
             Welcome back! Here's an overview of your analytics.
           </p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <AutoRefreshToggle enabled={autoRefresh} onChange={handleAutoRefreshChange} />
           <DateRangePicker value={dateRange} onChange={handleDateRangeChange} />
           <ExportButton stats={stats} events={events} dateRange={dateRange} />
