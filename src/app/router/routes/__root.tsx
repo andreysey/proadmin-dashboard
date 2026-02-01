@@ -1,5 +1,5 @@
 import { createRootRoute, Outlet, useNavigate, useRouterState } from '@tanstack/react-router'
-import { TanStackRouterDevtools } from '@tanstack/router-devtools'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import { useAuthStore } from '@/features/auth'
 import { NotFound } from '@/shared/ui'
 import { useEffect } from 'react'

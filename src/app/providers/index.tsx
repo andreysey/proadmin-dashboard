@@ -3,7 +3,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { RouterProvider } from '@tanstack/react-router'
 import { Analytics } from '@vercel/analytics/react'
 import { SpeedInsights } from '@vercel/speed-insights/react'
-import { useState, type ReactNode } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
+import React from 'react'
+import ReactDOM from 'react-dom'
 
 import { router } from '../router'
 import { Toaster } from '@/shared/ui'
@@ -26,6 +28,14 @@ export const Providers = ({ children }: ProvidersProps) => {
         },
       })
   )
+
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      import('@axe-core/react').then((axe) => {
+        axe.default(React, ReactDOM, 3000)
+      })
+    }
+  }, [])
 
   return (
     <ThemeProvider>

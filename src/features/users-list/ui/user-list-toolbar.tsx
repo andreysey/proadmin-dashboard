@@ -26,6 +26,7 @@ export const UserListToolbar = ({
     <div className="flex items-center justify-between px-2">
       <div className="w-72">
         <Input
+          aria-label={t('users.search_placeholder')}
           placeholder={t('users.search_placeholder')}
           value={search}
           onChange={(e) => onSearchChange(e.target.value)}

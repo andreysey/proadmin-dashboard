@@ -102,7 +102,7 @@ export const getUserListColumns = (t: (key: string) => string) => [
       <div className="flex items-center justify-end gap-2">
         <ProtectedAction permission="users:edit">
           <Link to="/users/$userId/edit" params={{ userId: info.row.original.id.toString() }}>
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" aria-label={t('common.actions')}>
               <Edit className="text-muted-foreground h-4 w-4" />
             </Button>
           </Link>

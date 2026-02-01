@@ -39,7 +39,7 @@ async function enableMocking() {
   })
 }
 
-enableMocking().then(() => {
+enableMocking().then(async () => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
       <Providers />
