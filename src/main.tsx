@@ -5,6 +5,9 @@ import './app/styles/index.css'
 import { setForbiddenHandler, setUnauthorizedHandler } from './shared/api'
 import { useAuthStore } from './features/auth'
 import { router } from './app'
+import { initSentry } from './shared/config/sentry'
+
+initSentry()
 
 setUnauthorizedHandler(() => {
   useAuthStore.getState().logout()
