@@ -1,6 +1,6 @@
-import type { User, UserRole } from '@/entities/user/model/types'
+import type { User } from '@/entities/user/model/types'
 import { cn } from '@/shared/lib/utils'
-import { flexRender, type Table, type Row, type CellContext } from '@tanstack/react-table'
+import { flexRender, type Table, type CellContext } from '@tanstack/react-table'
 import { ChevronDown, ChevronUp, ArrowUpDown } from 'lucide-react'
 import { Fragment, useMemo } from 'react'
 
@@ -12,58 +12,27 @@ interface UserListTableProps {
 }
 
 import { useTranslation } from 'react-i18next'
-import { useMutationState } from '@tanstack/react-query'
+import { useOptimisticUsers, type OptimisticUser } from '../model/use-optimistic-users'
 
 export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableProps) => {
   const { t } = useTranslation()
 
-  /**
-   * ARCHITECTURAL PATTERN: UI-Driven Optimistic Updates (Concurrent-Safe)
-   * Instead of manual cache manipulation in hooks (onMutate), we derive the
-   * view state globally using useMutationState. This natively handles
-   * simultaneous mutations and avoids race conditions.
-   * @see https://tkdodo.eu/blog/concurrent-optimistic-updates-in-react-query
-   */
-  const pendingDeletions = useMutationState({
-    filters: { mutationKey: ['deleteUser'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as number,
-  })
-
-  const pendingBulkDeletions = useMutationState({
-    filters: { mutationKey: ['bulkDelete'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as number[],
-  }).flat()
-
-  const pendingRoleUpdates = useMutationState({
-    filters: { mutationKey: ['bulkUpdateRole'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as { ids: number[]; role: UserRole },
-  })
-
-  // Derive the table data by applying pending mutations to the raw query data
+  // Derive optimistic state (UI-Driven pattern, see useOptimisticUsers for details)
   const rows = table.getRowModel().rows
+  const rawUsers = useMemo(() => rows.map((r) => r.original), [rows])
+  const optimisticUsers = useOptimisticUsers(rawUsers)
+
   const derivedData = useMemo(() => {
-    return rows.map((row: Row<User>) => {
-      const user = row.original
-      const isDeleting =
-        pendingDeletions.includes(user.id) || pendingBulkDeletions.includes(user.id)
-
-      // Find if there's a pending role update for this user
-      // We use the last mutation's role if multiple are pending (unlikely but possible)
-      const pendingUpdate = [...pendingRoleUpdates]
-        .reverse()
-        .find((update) => update.ids.includes(user.id))
-
+    return rows.map((row, index) => {
+      const optimisticUser = optimisticUsers[index]
       return {
         ...row,
-        optimisticData: {
-          ...user,
-          role: pendingUpdate ? (pendingUpdate.role as UserRole) : user.role,
-        },
-        isDeleting,
-        isUpdating: !!pendingUpdate,
+        optimisticData: optimisticUser,
+        isDeleting: optimisticUser.isDeleting,
+        isUpdating: optimisticUser.isUpdating,
       }
     })
-  }, [rows, pendingDeletions, pendingBulkDeletions, pendingRoleUpdates])
+  }, [rows, optimisticUsers])
 
   return (
     <div className="border-border bg-card hidden w-full overflow-x-auto rounded-lg border shadow-sm md:block">
@@ -119,7 +88,7 @@ export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableP
         <tbody className="divide-border bg-card divide-y">
           {derivedData.length > 0 ? (
             derivedData.map(({ optimisticData, isDeleting, isUpdating, ...row }) => {
-              const user = optimisticData as User
+              const user = optimisticData as OptimisticUser
               const isMutating = isDeleting || isUpdating
 
               return (
