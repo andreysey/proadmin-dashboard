@@ -57,12 +57,10 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401 && !error.config._retry) {
-      console.log('Interceptor: 401 detected. Attempting silent refresh...')
       const originalRequest = error.config
 
       // If we are already refreshing, join the queue
       if (isRefreshing) {
-        console.log('Interceptor: Refresh already in progress, adding request to queue.')
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject })
         })
@@ -91,11 +89,9 @@ api.interceptors.response.use(
 
           const { token, refreshToken: newRefreshToken } = response.data
 
-          console.log('Interceptor: Token refreshed successfully!')
           tokenStorage.setTokens({ accessToken: token, refreshToken: newRefreshToken })
           processQueue(null, token)
 
-          console.log('Interceptor: Retrying original request...')
           originalRequest.headers.Authorization = `Bearer ${token}`
           return api(originalRequest)
         } catch (refreshError) {

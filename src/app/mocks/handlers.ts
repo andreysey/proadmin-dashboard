@@ -48,7 +48,6 @@ export const handlers = [
   http.get('https://dummyjson.com/users', async ({ request }) => {
     const authHeader = request.headers.get('Authorization')
     if (authHeader === 'Bearer mock-expired-token') {
-      console.log('MSW: Detected poison token, returning 401...')
       return new HttpResponse(null, { status: 401 })
     }
 
