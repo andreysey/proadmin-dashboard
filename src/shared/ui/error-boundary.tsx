@@ -1,5 +1,6 @@
 import { ErrorBoundary as ReactErrorBoundary, type FallbackProps } from 'react-error-boundary'
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { AlertTriangle, RefreshCw } from 'lucide-react'
 import { Button } from './button'
 
@@ -8,7 +9,8 @@ import { Button } from './button'
  * Shows error message in dev mode only.
  */
 function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
-  const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+  const { t } = useTranslation()
+  const errorMessage = error instanceof Error ? error.message : t('common.error_boundary.unknown')
 
   return (
     <div className="flex min-h-[400px] flex-col items-center justify-center p-8">
@@ -16,10 +18,12 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
         <AlertTriangle className="text-destructive h-12 w-12" />
       </div>
 
-      <h2 className="text-foreground mb-2 text-xl font-semibold">Something went wrong</h2>
+      <h2 className="text-foreground mb-2 text-xl font-semibold">
+        {t('common.error_boundary.title')}
+      </h2>
 
       <p className="text-muted-foreground mb-6 max-w-md text-center">
-        An unexpected error occurred. Please try again or contact support if the problem persists.
+        {t('common.error_boundary.subtitle')}
       </p>
 
       {import.meta.env.DEV && (
@@ -30,7 +34,7 @@ function ErrorFallback({ error, resetErrorBoundary }: FallbackProps) {
 
       <Button onClick={resetErrorBoundary} variant="outline">
         <RefreshCw className="mr-2 h-4 w-4" />
-        Try Again
+        {t('common.error_boundary.retry')}
       </Button>
     </div>
   )

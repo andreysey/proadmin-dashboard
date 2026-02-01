@@ -17,13 +17,25 @@
     "cancel": "Abbrechen",
     "delete": "Löschen",
     "actions": "Aktionen",
-    "logout": "Abmelden"
-  },
-  "theme": {
-    "toggle": "Thema wechseln",
-    "light": "Hell",
-    "dark": "Dunkel",
-    "system": "System"
+    "logout": "Abmelden",
+    "error_boundary": {
+      "title": "Etwas ist schief gelaufen",
+      "subtitle": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut oder wenden Sie sich an den Support, wenn das Problem weiterhin besteht.",
+      "retry": "Erneut versuchen"
+    },
+    "not_found": {
+      "title": "404 - Seite nicht gefunden",
+      "subtitle": "Hoppla! Es scheint, als hätten Sie sich verirrt.",
+      "desc": "Die von Ihnen gesuchte Seite wurde möglicherweise entfernt, umbenannt oder ist vorübergehend nicht verfügbar.",
+      "home": "Zurück zum Dashboard"
+    },
+    "theme": {
+      "toggle": "Thema umschalten",
+      "current": "Aktuelles Thema: {{theme}}",
+      "light": "Hell",
+      "dark": "Dunkel",
+      "system": "System"
+    }
   },
   "users": {
     "title": "Benutzerliste",
@@ -61,7 +73,24 @@
       "retry": "Verbindung wiederholen",
       "empty": "Keine Benutzer gefunden.",
       "empty_search": "Versuchen Sie Ihre Suche nach \"{{query}}\" anzupassen"
+    },
+    "edit": {
+      "title": "Benutzer bearbeiten: {{name}}",
+      "first_name": "Vorname",
+      "last_name": "Nachname",
+      "username": "Benutzername",
+      "save": "Änderungen speichern",
+      "saving": "Speichern...",
+      "cancel": "Abbrechen",
+      "success": "Benutzer erfolgreich aktualisiert",
+      "error": "Fehler beim Aktualisieren des Benutzers"
     }
+  },
+  "validation": {
+    "required": "Dieses Feld ist erforderlich",
+    "email": "Ungültige E-Mail-Adresse",
+    "min_length": "Muss mindestens {{count}} Zeichen lang sein",
+    "username_min": "Benutzername muss mindestens 3 Zeichen lang sein"
   },
   "auth": {
     "login": {
@@ -80,6 +109,8 @@
     }
   },
   "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Willkommen zurück! Hier ist ein Überblick über Ihre Analysen.",
     "stats": {
       "total_users": "Gesamtbenutzer",
       "active_now": "Jetzt aktiv",
@@ -92,6 +123,35 @@
       "title": "Umsatzentwicklung",
       "tooltip": "Umsatz",
       "error": "Umsatzdaten konnten nicht geladen werden"
+    },
+    "filters": {
+      "auto_refresh": "Automatisch aktualisieren",
+      "date_range": {
+        "24h": "Letzte 24 Stunden",
+        "7d": "Letzte 7 Tage",
+        "30d": "Letzte 30 Tage",
+        "placeholder": "Zeitraum wählen"
+      }
+    },
+    "export": {
+      "button": "Exportieren",
+      "excel": "Als Excel exportieren",
+      "pdf": "Als PDF exportieren",
+      "report_title": "ProAdmin Dashboard Bericht",
+      "date_range": "Zeitraum: {{value}}",
+      "generated": "Erstellt am: {{date}}",
+      "overview": "Statistik Übersicht",
+      "footer": "Erstellt vom ProAdmin Dashboard",
+      "excel_sheets": {
+        "stats": "Statistiken",
+        "events": "Letzte Aktivitäten"
+      },
+      "stats": {
+        "total_users": "Gesamtbenutzer",
+        "active_now": "Jetzt aktiv",
+        "total_revenue": "Gesamtumsatz",
+        "monthly_growth": "Monatliches Wachstum"
+      }
     },
     "activity": {
       "title": "Letzte Aktivitäten",

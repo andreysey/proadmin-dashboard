@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from '@/shared/ui'
 import { useAuthStore } from '../model/auth.store'
-import { loginFormSchema, type LoginFormValues } from '../model/schemas'
+import { createLoginFormSchema, type LoginFormValues } from '../model/schemas'
 import { login } from '../api/auth.api'
 
 const ROLE_OPTIONS = [
@@ -42,7 +42,7 @@ export const LoginForm = () => {
     control,
     formState: { errors },
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(createLoginFormSchema(t)),
     defaultValues: {
       username: 'andriibutsvin', // Default for easy testing
       password: 'vawelrfn98rjh4',

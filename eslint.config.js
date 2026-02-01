@@ -10,7 +10,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
 export default defineConfig([
-  globalIgnores(['dist', 'public']),
+  globalIgnores(['dist', 'public', 'coverage']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -23,6 +23,12 @@ export default defineConfig([
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
+    },
+  },
+  {
+    files: ['src/app/router/routes/**/*'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
     },
   },
   ...storybook.configs['flat/recommended'],
