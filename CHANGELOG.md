@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/andreysey/proadmin-dashboard/compare/v1.2.1...v1.2.2) (2026-02-01)
+
+
+### Bug Fixes
+
+* **ui:** adjust BulkActions position to avoid MobileNav overlap ([9cd423e](https://github.com/andreysey/proadmin-dashboard/commit/9cd423e47ee92421781e04ce65892e4af6f61271))
+* **ui:** center refresh indicator and disable native overscroll ([68b9563](https://github.com/andreysey/proadmin-dashboard/commit/68b9563e0174f0191857470c70d40c1b1d8cdd18))
+
 ## [1.2.1](https://github.com/andreysey/proadmin-dashboard/compare/v1.2.0...v1.2.1) (2026-02-01)
 
 
