@@ -32,9 +32,9 @@ vi.mock('@/shared/ui', () => ({
   DropdownMenuTrigger: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   DropdownMenuContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   DropdownMenuItem: ({ children, onClick }: { children: ReactNode; onClick?: () => void }) => (
-    <div role="menuitem" onClick={onClick}>
+    <button role="menuitem" onClick={onClick} className="w-full text-left">
       {children}
-    </div>
+    </button>
   ),
 }))
 

@@ -48,6 +48,7 @@ describe('exportToPdf', () => {
     exportToPdf({
       stats: sampleStats,
       dateRange: '7d',
+      t: (key: string) => key,
       title: 'My Report',
     })
 
@@ -67,6 +68,7 @@ describe('exportToPdf', () => {
     exportToPdf({
       stats: sampleStats,
       dateRange: '30d',
+      t: (key: string) => key,
     })
 
     // Check for Total Users formatting
