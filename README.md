@@ -159,12 +159,24 @@ I use AI as a **Technical Partner**, not a code generator.
   - Russian (Native)
 - **Work Status:** Resident in Germany (§24), Full Work Permit.
 
+## Available Scripts
+
+Common commands for development and maintenance:
+
+- **`pnpm dev`**: Start the development server.
+- **`pnpm build`**: Run full type-check and production build.
+- **`pnpm typecheck`**: Fast TypeScript validation without building.
+- **`pnpm lint:fix`**: Auto-fix code style issues (ESLint).
+- **`pnpm format`**: Format all files with Prettier.
+- **`pnpm tsr:generate`**: Regulate TanStack Router route tree.
+- **`pnpm test`**: Run unit tests (Vitest).
+
 ## Getting Started
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start the development server (with MSW auto-start)
-npm run dev
+pnpm dev
 ```
