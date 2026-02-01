@@ -21,6 +21,9 @@ export const getUserListColumns = (t: (key: string) => string) => [
               style: { cursor: 'pointer' },
             }}
             className="hover:bg-muted flex h-6 w-6 items-center justify-center rounded-sm p-0"
+            aria-label={
+              row.getIsExpanded() ? t('users.aria.collapse_row') : t('users.aria.expand_row')
+            }
           >
             {row.getIsExpanded() ? (
               <ChevronDown className="h-4 w-4" />

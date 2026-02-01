@@ -97,14 +97,25 @@ export const LoginForm = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="username">{t('auth.login.username')}</Label>
-            <Input id="username" placeholder="kminchelle" {...register('username')} />
+            <Input
+              id="username"
+              placeholder="kminchelle"
+              {...register('username')}
+              aria-invalid={!!errors.username}
+            />
             {errors.username && (
               <span className="text-destructive text-sm">{errors.username.message}</span>
             )}
           </div>
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="password">{t('auth.login.password')}</Label>
-            <Input id="password" type="password" placeholder="•••••••" {...register('password')} />
+            <Input
+              id="password"
+              type="password"
+              placeholder="•••••••"
+              {...register('password')}
+              aria-invalid={!!errors.password}
+            />
             {errors.password && (
               <span className="text-destructive text-sm">{errors.password.message}</span>
             )}
@@ -135,7 +146,7 @@ export const LoginForm = () => {
           {error && <div className="text-destructive text-sm font-medium">{error}</div>}
 
           <Button type="submit" disabled={isLoading} className="mt-2 w-full">
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />}
             {t('auth.login.submit')}
           </Button>
         </form>
