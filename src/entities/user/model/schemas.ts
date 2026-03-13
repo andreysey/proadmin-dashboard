@@ -5,7 +5,10 @@ import { z } from 'zod'
  * Zod enum provides both runtime validation and type inference.
  */
 export const ROLES = ['admin', 'user', 'moderator'] as const
-export const userRoleSchema = z.enum(ROLES)
+export const userRoleSchema = z.preprocess(
+  (val) => (typeof val === 'string' ? val.toLowerCase() : val),
+  z.enum(ROLES)
+)
 export type UserRole = z.infer<typeof userRoleSchema>
 
 /**

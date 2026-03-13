@@ -137,7 +137,6 @@ export const handlers = [
     if (url.searchParams.has('bypass')) return passthrough()
 
     const { id } = params as { id: string }
-
     if (deletedUserIds.has(id)) {
       return new HttpResponse(null, { status: 404, statusText: 'User not found' })
     }
@@ -157,7 +156,10 @@ export const handlers = [
     return HttpResponse.json(finalUser)
   }),
 
-  http.get(`${BASE_URL}/users/me`, async () => {
+  http.get(`${BASE_URL}/users/me`, async ({ request }) => {
+    const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     await delay(500)
     return HttpResponse.json({
       id: 15,
@@ -172,6 +174,9 @@ export const handlers = [
   }),
 
   http.patch(`${BASE_URL}/users/:id`, async ({ params, request }) => {
+    const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const { id } = params as { id: string }
     const updates = (await request.json()) as Partial<User>
 
@@ -195,7 +200,10 @@ export const handlers = [
     return HttpResponse.json(enhanced)
   }),
 
-  http.delete(`${BASE_URL}/users/:id`, async ({ params }) => {
+  http.delete(`${BASE_URL}/users/:id`, async ({ params, request }) => {
+    const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const { id } = params as { id: string }
     deletedUserIds.add(id)
     await delay(1000)
@@ -211,6 +219,8 @@ export const handlers = [
 
   http.get(`${BASE_URL}/analytics/stats`, async ({ request }) => {
     const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(800)
 
@@ -227,6 +237,8 @@ export const handlers = [
 
   http.get(`${BASE_URL}/analytics/activity`, async ({ request }) => {
     const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(1200)
 
@@ -246,12 +258,21 @@ export const handlers = [
           value: Math.floor(Math.random() * 100) + 10,
         })),
       },
+      {
+        type: 'revenue',
+        data: Array.from({ length: pointCount }).map((_, i) => ({
+          timestamp: new Date(now.getTime() - (pointCount - 1 - i) * intervalMs).toISOString(),
+          value: Math.floor(Math.random() * 5000) + 1000,
+        })),
+      },
     ]
     return HttpResponse.json(activity)
   }),
 
   http.get(`${BASE_URL}/analytics/recent`, async ({ request }) => {
     const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(500)
 
@@ -285,6 +306,8 @@ export const handlers = [
 
   http.get(`${BASE_URL}/analytics/revenue`, async ({ request }) => {
     const url = new URL(request.url)
+    if (url.searchParams.has('bypass')) return passthrough()
+
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(900)
 

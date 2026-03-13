@@ -16,17 +16,24 @@ export const getMe = async (): Promise<User> => {
  */
 export const register = async (data: unknown): Promise<User> => {
   const response = await api.post('/auth/register', data)
-  const { user, access_token, accessToken, token } = response.data
+  // Support both snake_case and camelCase tokens
+  const { user, access_token, accessToken, token, refresh_token, refreshToken } = response.data
 
-  const authToken = access_token || accessToken || token
+  const authToken = accessToken || access_token || token
+  const nextRefreshToken = refreshToken || refresh_token || ''
+
   if (authToken) {
     tokenStorage.setTokens({
       accessToken: authToken,
-      refreshToken: response.data.refresh_token || response.data.refreshToken || '',
+      refreshToken: nextRefreshToken,
     })
   }
 
-  return user || response.data
+  // If backend returns the user object directly, use it
+  if (user) return user
+
+  // Otherwise, we might need to fetch the profile using the new token
+  return await getMe()
 }
 
 /**

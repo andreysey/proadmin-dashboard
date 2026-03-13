@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useForm, Controller, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
-import { Loader2 } from 'lucide-react'
+import { Loader2, Eye, EyeOff } from 'lucide-react'
 import { tokenStorage } from '@/shared/lib/auth'
 import {
   Button,
@@ -37,6 +37,7 @@ export const LoginForm = () => {
   const [isRegister, setIsRegister] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [showPassword, setShowPassword] = useState(false)
   const { t } = useTranslation()
 
   const {
@@ -149,13 +150,30 @@ export const LoginForm = () => {
 
           <div className="flex flex-col space-y-1.5">
             <Label htmlFor="password">{t('auth.login.password')}</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="•••••••"
-              {...register('password')}
-              aria-invalid={!!errors.password}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="•••••••"
+                className="pr-10"
+                {...register('password')}
+                aria-invalid={!!errors.password}
+              />
+              <button
+                type="button"
+                className="text-muted-foreground hover:text-foreground focus-visible:ring-ring absolute top-1/2 right-3 -translate-y-1/2 transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
+                onClick={() => setShowPassword((prev) => !prev)}
+                disabled={isLoading}
+                tabIndex={-1}
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" aria-hidden="true" />
+                ) : (
+                  <Eye className="h-4 w-4" aria-hidden="true" />
+                )}
+                <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
+              </button>
+            </div>
             {errors.password && (
               <span className="text-destructive text-sm">{errors.password.message}</span>
             )}
