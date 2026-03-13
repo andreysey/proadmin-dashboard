@@ -4,23 +4,23 @@ import { useTranslation } from 'react-i18next'
 interface UserListToolbarProps {
   search: string
   onSearchChange: (value: string) => void
-  skip: number
+  page: number
   limit: number
   total: number
-  onPageChange?: (newSkip: number) => void
+  onPageChange?: (newPage: number) => void
 }
 
 export const UserListToolbar = ({
   search,
   onSearchChange,
-  skip,
+  page,
   limit,
   total,
   onPageChange,
 }: UserListToolbarProps) => {
   const { t } = useTranslation()
-  const hasNextPage = skip + limit < total
-  const hasPrevPage = skip > 0
+  const hasNextPage = page * limit < total
+  const hasPrevPage = page > 1
 
   return (
     <div className="flex items-center justify-between px-2">
@@ -36,7 +36,7 @@ export const UserListToolbar = ({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => onPageChange?.(Math.max(0, skip - limit))}
+          onClick={() => onPageChange?.(Math.max(1, page - 1))}
           disabled={!hasPrevPage}
         >
           {t('users.pagination.previous')}
@@ -44,7 +44,7 @@ export const UserListToolbar = ({
         <Button
           variant="outline"
           size="sm"
-          onClick={() => onPageChange?.(skip + limit)}
+          onClick={() => onPageChange?.(page + 1)}
           disabled={!hasNextPage}
         >
           {t('users.pagination.next')}

@@ -23,8 +23,9 @@ setForbiddenHandler(() => {
 })
 
 async function enableMocking() {
-  if (import.meta.env.PROD && !import.meta.env.VITE_ENABLE_MOCKS) {
-    // Optional: Add a flag if we ever want to disable it in prod
+  // Only enable mocks if explicitly requested via env variable
+  if (import.meta.env.VITE_ENABLE_MOCKS !== 'true') {
+    return
   }
 
   const { worker } = await import('./app/mocks/browser')

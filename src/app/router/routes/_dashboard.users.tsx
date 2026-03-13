@@ -3,11 +3,11 @@ import { z } from 'zod'
 import { UsersPage } from '@/pages/users'
 
 const usersSearchSchema = z.object({
-  skip: z.number().optional().default(0),
+  page: z.number().optional().default(1),
   limit: z.number().optional().default(10),
-  q: z.string().optional(),
+  search: z.string().optional(),
   sortBy: z.string().optional(),
-  order: z.enum(['asc', 'desc']).optional().default('asc'),
+  sortOrder: z.enum(['asc', 'desc']).optional().default('asc'),
 })
 
 export type UsersSearch = z.infer<typeof usersSearchSchema>

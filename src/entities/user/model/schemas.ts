@@ -18,13 +18,13 @@ export type UserRole = z.infer<typeof userRoleSchema>
  * 3. Detailed error messages when validation fails
  */
 export const userSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   username: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
   email: z.email(),
   role: userRoleSchema,
-  image: z.url(),
+  image: z.url().optional().nullable(),
 })
 
 // Type is inferred from schema - no manual interface needed!
@@ -35,10 +35,13 @@ export type User = z.infer<typeof userSchema>
  * Validates the entire API response structure.
  */
 export const usersResponseSchema = z.object({
-  users: z.array(userSchema),
-  total: z.number(),
-  skip: z.number(),
-  limit: z.number(),
+  data: z.array(userSchema),
+  meta: z.object({
+    total: z.number(),
+    page: z.number(),
+    limit: z.number(),
+    totalPages: z.number(),
+  }),
 })
 
 export type UsersResponse = z.infer<typeof usersResponseSchema>

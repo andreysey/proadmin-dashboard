@@ -1,37 +1,51 @@
 import type { User } from '@/entities/user'
 import type { DashboardStats, ActivitySeries, RecentEvent } from '@/entities/analytics'
 import { http, HttpResponse, delay, passthrough } from 'msw'
+import { config } from '@/shared/config'
 
-const deletedUserIds = new Set<number>()
-const updatedUsers = new Map<number, Partial<User>>()
+const deletedUserIds = new Set<string>()
+const updatedUsers = new Map<string, Partial<User>>()
+const BASE_URL = config.api.baseUrl
 
 const propertyAccessor = (obj: User, path: string) => {
-  if (path === 'user') return obj.firstName.toLowerCase()
+  if (path === 'user') return (obj.firstName ?? obj.username).toLowerCase()
   const key = path as keyof User
   return obj[key]?.toString().toLowerCase() ?? ''
 }
 
 export const handlers = [
-  // Mocking DummyJSON login endpoint
-  http.post('https://dummyjson.com/auth/login', async ({ request }) => {
+  // Mocking current API baseUrl
+  http.post(`${BASE_URL}/auth/login`, async ({ request }) => {
     const { role = 'admin' } = (await request.json()) as { role?: string }
     await delay(1000)
 
     return HttpResponse.json({
-      id: 15,
+      id: '15',
       username: 'andriibutsvin',
       email: 'andreyseynew@gmail.com',
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
       role: role,
-      image: 'https://dummyjson.com/icon/kminchelle/128',
+      image: `${BASE_URL}/icon/kminchelle/128`,
       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     })
   }),
 
-  http.post('https://dummyjson.com/auth/refresh', async ({ request }) => {
+  http.post(`${BASE_URL}/auth/register`, async ({ request }) => {
+    const data = await request.json()
+    await delay(1000)
+
+    return HttpResponse.json({
+      ...(data as object),
+      id: Math.floor(Math.random() * 1000) + 100,
+      role: (data as { role?: string }).role || 'user',
+      createdAt: new Date().toISOString(),
+    })
+  }),
+
+  http.post(`${BASE_URL}/auth/refresh`, async ({ request }) => {
     const { refreshToken } = (await request.json()) as { refreshToken: string }
 
     if (!refreshToken) {
@@ -45,47 +59,48 @@ export const handlers = [
     })
   }),
 
-  http.get('https://dummyjson.com/users', async ({ request }) => {
+  http.get(`${BASE_URL}/users`, async ({ request }) => {
     const authHeader = request.headers.get('Authorization')
     if (authHeader === 'Bearer mock-expired-token') {
       return new HttpResponse(null, { status: 401 })
     }
 
     const url = new URL(request.url)
-    const skip = parseInt(url.searchParams.get('skip') ?? '0')
+    const page = parseInt(url.searchParams.get('page') ?? '1')
     const limit = parseInt(url.searchParams.get('limit') ?? '10')
+    const skip = (page - 1) * limit
 
     if (url.searchParams.get('limit') === '0') {
       return passthrough()
     }
 
-    const response = await fetch('https://dummyjson.com/users?limit=0')
-    const data = await response.json()
+    const response = await fetch(`${BASE_URL}/users?limit=0`)
+    const rawData = await response.json()
 
     // Enhance, apply updates, and then filter out deleted ones
-    const allUsers = data.users
+    const allUsers = rawData.users
       .map((user: User) => {
         const enhanced = {
           ...user,
-          role: user.id % 2 === 1 ? 'admin' : 'user',
+          role: String(user.id).length % 2 === 1 ? 'admin' : 'user',
         }
         // Apply local updates if any
-        if (updatedUsers.has(user.id)) {
-          return { ...enhanced, ...updatedUsers.get(user.id) }
+        if (updatedUsers.has(String(user.id))) {
+          return { ...enhanced, ...updatedUsers.get(String(user.id)) }
         }
         return enhanced
       })
-      .filter((user: User) => !deletedUserIds.has(user.id))
+      .filter((user: User) => !deletedUserIds.has(String(user.id)))
 
-    const query = url.searchParams.get('q')?.toLowerCase() ?? ''
+    const query = url.searchParams.get('search')?.toLowerCase() ?? ''
     const sortBy = url.searchParams.get('sortBy')
-    const order = url.searchParams.get('order') ?? 'asc'
+    const sortOrder = url.searchParams.get('sortOrder') ?? 'asc'
 
     const filteredUsers = query
       ? allUsers.filter(
           (user: User) =>
-            user.firstName.toLowerCase().includes(query) ||
-            user.lastName.toLowerCase().includes(query) ||
+            user.firstName?.toLowerCase().includes(query) ||
+            user.lastName?.toLowerCase().includes(query) ||
             user.email.toLowerCase().includes(query) ||
             user.username.toLowerCase().includes(query)
         )
@@ -97,8 +112,8 @@ export const handlers = [
         const fieldA = propertyAccessor(a, sortBy)
         const fieldB = propertyAccessor(b, sortBy)
 
-        if (fieldA < fieldB) return order === 'asc' ? -1 : 1
-        if (fieldA > fieldB) return order === 'asc' ? 1 : -1
+        if (fieldA < fieldB) return sortOrder === 'asc' ? -1 : 1
+        if (fieldA > fieldB) return sortOrder === 'asc' ? 1 : -1
         return 0
       })
     }
@@ -107,59 +122,72 @@ export const handlers = [
     const paginatedUsers = filteredUsers.slice(skip, skip + limit)
 
     return HttpResponse.json({
-      users: paginatedUsers,
-      total: filteredUsers.length,
-      skip,
-      limit,
+      data: paginatedUsers,
+      meta: {
+        total: filteredUsers.length,
+        page,
+        limit,
+        totalPages: Math.ceil(filteredUsers.length / limit),
+      },
     })
   }),
 
-  http.get('https://dummyjson.com/users/:id', async ({ params, request }) => {
+  http.get(`${BASE_URL}/users/:id`, async ({ params, request }) => {
     const url = new URL(request.url)
     if (url.searchParams.has('bypass')) return passthrough()
 
-    const { id } = params
-    const userId = Number(id)
+    const { id } = params as { id: string }
 
-    if (deletedUserIds.has(userId)) {
+    if (deletedUserIds.has(id)) {
       return new HttpResponse(null, { status: 404, statusText: 'User not found' })
     }
 
-    const response = await fetch(`https://dummyjson.com/users/${id}?bypass=true`)
+    const response = await fetch(`${BASE_URL}/users/${id}?bypass=true`)
     if (!response.ok) return passthrough()
 
     const user = await response.json()
     const enhanced = {
       ...user,
-      role: userId % 2 === 1 ? 'admin' : 'user',
+      role: id.length % 2 === 1 ? 'admin' : 'user',
     }
 
     // Apply local updates if any
-    const finalUser = updatedUsers.has(userId)
-      ? { ...enhanced, ...updatedUsers.get(userId) }
-      : enhanced
+    const finalUser = updatedUsers.has(id) ? { ...enhanced, ...updatedUsers.get(id) } : enhanced
 
     return HttpResponse.json(finalUser)
   }),
 
-  http.put('https://dummyjson.com/users/:id', async ({ params, request }) => {
-    const { id } = params
-    const userId = Number(id)
+  http.get(`${BASE_URL}/users/me`, async () => {
+    await delay(500)
+    return HttpResponse.json({
+      id: 15,
+      username: 'andriibutsvin',
+      email: 'andreyseynew@gmail.com',
+      firstName: 'Andrii',
+      lastName: 'Butsvin',
+      gender: 'male',
+      role: 'admin',
+      image: `${BASE_URL}/icon/kminchelle/128`,
+    })
+  }),
+
+  http.patch(`${BASE_URL}/users/:id`, async ({ params, request }) => {
+    const { id } = params as { id: string }
     const updates = (await request.json()) as Partial<User>
 
     await delay(1000)
 
     // Store the update locally
-    const existingUpdates = updatedUsers.get(userId) ?? {}
-    updatedUsers.set(userId, { ...existingUpdates, ...updates })
+    const existingUpdates = updatedUsers.get(id) ?? {}
+    updatedUsers.set(id, { ...existingUpdates, ...updates })
 
     // Fetch the original user to return complete object (for Zod validation)
-    const response = await fetch(`https://dummyjson.com/users/${id}?bypass=true`)
+    const response = await fetch(`${BASE_URL}/users/${id}?bypass=true`)
     const originalUser = await response.json()
 
     const enhanced = {
       ...originalUser,
-      role: userId % 2 === 1 ? 'admin' : 'user',
+      role: id.length % 2 === 1 ? 'admin' : 'user',
       ...existingUpdates,
       ...updates,
     }
@@ -167,13 +195,13 @@ export const handlers = [
     return HttpResponse.json(enhanced)
   }),
 
-  http.delete('https://dummyjson.com/users/:id', async ({ params }) => {
-    const { id } = params
-    deletedUserIds.add(Number(id))
+  http.delete(`${BASE_URL}/users/:id`, async ({ params }) => {
+    const { id } = params as { id: string }
+    deletedUserIds.add(id)
     await delay(1000)
 
     return HttpResponse.json({
-      id: Number(id),
+      id: id,
       isDeleted: true,
       deletedOn: new Date().toISOString(),
     })
@@ -181,7 +209,7 @@ export const handlers = [
 
   // --- Analytics Dashboard ---
 
-  http.get('https://dummyjson.com/analytics/stats', async ({ request }) => {
+  http.get(`${BASE_URL}/analytics/stats`, async ({ request }) => {
     const url = new URL(request.url)
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(800)
@@ -197,7 +225,7 @@ export const handlers = [
     return HttpResponse.json(stats)
   }),
 
-  http.get('https://dummyjson.com/analytics/activity', async ({ request }) => {
+  http.get(`${BASE_URL}/analytics/activity`, async ({ request }) => {
     const url = new URL(request.url)
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(1200)
@@ -222,7 +250,7 @@ export const handlers = [
     return HttpResponse.json(activity)
   }),
 
-  http.get('https://dummyjson.com/analytics/recent', async ({ request }) => {
+  http.get(`${BASE_URL}/analytics/recent`, async ({ request }) => {
     const url = new URL(request.url)
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(500)
@@ -255,7 +283,7 @@ export const handlers = [
     return HttpResponse.json(events)
   }),
 
-  http.get('https://dummyjson.com/analytics/revenue', async ({ request }) => {
+  http.get(`${BASE_URL}/analytics/revenue`, async ({ request }) => {
     const url = new URL(request.url)
     const dateRange = url.searchParams.get('dateRange') ?? '7d'
     await delay(900)

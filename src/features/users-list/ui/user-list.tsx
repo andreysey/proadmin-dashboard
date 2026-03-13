@@ -32,29 +32,29 @@ import { UserListTable } from './user-list-table'
 import { UserListToolbar } from './user-list-toolbar'
 
 export const UserList = ({
-  skip = 0,
+  page = 1,
   limit = 10,
-  q,
+  urlSearch,
   sortBy,
-  order,
+  sortOrder,
   onPageChange,
   onSortChange,
   search,
   onSearchChange,
 }: {
-  skip?: number
+  page?: number
   limit?: number
-  q?: string
+  urlSearch?: string
   sortBy?: string
-  order?: 'asc' | 'desc'
-  onPageChange?: (newSkip: number) => void
-  onSortChange?: (sortBy: string | undefined, order: 'asc' | 'desc') => void
+  sortOrder?: 'asc' | 'desc'
+  onPageChange?: (newPage: number) => void
+  onSortChange?: (sortBy: string | undefined, sortOrder: 'asc' | 'desc') => void
   search: string
   onSearchChange: (value: string) => void
 }) => {
   const { data, isPending, isError } = useQuery({
-    queryKey: ['users', { skip, limit, q, sortBy, order }],
-    queryFn: () => getUsers({ skip, limit, q, sortBy, order }),
+    queryKey: ['users', { page, limit, urlSearch, sortBy, sortOrder }],
+    queryFn: () => getUsers({ page, limit, search: urlSearch, sortBy, sortOrder }),
     placeholderData: keepPreviousData,
   })
 
@@ -65,8 +65,8 @@ export const UserList = ({
   const defaultData = useMemo(() => [], [])
 
   const sorting = useMemo(
-    () => (sortBy ? [{ id: sortBy, desc: order === 'desc' }] : []),
-    [sortBy, order]
+    () => (sortBy ? [{ id: sortBy, desc: sortOrder === 'desc' }] : []),
+    [sortBy, sortOrder]
   )
 
   const { t } = useTranslation()
@@ -74,7 +74,7 @@ export const UserList = ({
 
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
-    data: data?.users ?? defaultData,
+    data: data?.data ?? defaultData,
     columns,
     state: { sorting, rowSelection, expanded },
     onRowSelectionChange: setRowSelection,
@@ -137,14 +137,15 @@ export const UserList = ({
     )
   }
 
-  const total = data?.total ?? 0
+  const pagination = data?.meta ?? { total: 0, page: 1, limit: 10, totalPages: 0 }
+  const { total } = pagination
 
   return (
     <div className="flex flex-col gap-4">
       <UserListToolbar
         search={search}
         onSearchChange={onSearchChange}
-        skip={skip}
+        page={page}
         limit={limit}
         total={total}
         onPageChange={onPageChange}
@@ -152,13 +153,13 @@ export const UserList = ({
 
       <UserListMobile table={table} />
 
-      <UserListTable table={table} q={q} sortBy={sortBy} onSortChange={onSortChange} />
+      <UserListTable table={table} search={urlSearch} sortBy={sortBy} onSortChange={onSortChange} />
 
       <div className="flex items-center justify-between px-2">
         <div className="text-muted-foreground text-sm">
           {t('users.pagination.info', {
-            from: skip + 1,
-            to: Math.min(skip + limit, total),
+            from: (page - 1) * limit + 1,
+            to: Math.min(page * limit, total),
             total,
           })}
         </div>
@@ -166,16 +167,16 @@ export const UserList = ({
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onPageChange?.(Math.max(0, skip - limit))}
-            disabled={skip === 0}
+            onClick={() => onPageChange?.(Math.max(1, page - 1))}
+            disabled={page === 1}
           >
             {t('users.pagination.previous')}
           </Button>
           <Button
             variant="outline"
             size="sm"
-            onClick={() => onPageChange?.(skip + limit)}
-            disabled={skip + limit >= total}
+            onClick={() => onPageChange?.(page + 1)}
+            disabled={page >= pagination.totalPages}
           >
             {t('users.pagination.next')}
           </Button>

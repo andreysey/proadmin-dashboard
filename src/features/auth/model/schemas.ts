@@ -9,31 +9,51 @@ import { userRoleSchema } from '@/entities/user'
  * to handle differences between development and production environments.
  */
 export const loginResponseSchema = z.object({
-  id: z.number(),
-  username: z.string(),
-  email: z.string(),
-  firstName: z.string(),
-  lastName: z.string(),
-  image: z.url(),
-  // Real API returns 'accessToken', MSW mock returns 'token'
+  id: z.union([z.string(), z.number()]).optional(),
+  username: z.string().optional(),
+  email: z.email().optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  image: z.url().optional(),
+  // Support various token field names
   accessToken: z.string().optional(),
+  access_token: z.string().optional(),
   token: z.string().optional(),
-  refreshToken: z.string(),
-  // Role is optional - real API doesn't return it
+  refreshToken: z.string().optional(),
+  refresh_token: z.string().optional(),
   role: userRoleSchema.optional(),
 })
 
 export type LoginResponse = z.infer<typeof loginResponseSchema>
 
-/**
- * Login form input schema.
- * Used for form validation with react-hook-form.
- */
-export const createLoginFormSchema = (t: (key: string) => string) =>
+const authBaseSchema = (t: (key: string, options?: Record<string, unknown>) => string) =>
   z.object({
     username: z.string().min(1, t('validation.required')),
     password: z.string().min(1, t('validation.required')),
     role: z.string().optional(),
+    email: z.string().optional(),
   })
 
-export type LoginFormValues = z.infer<ReturnType<typeof createLoginFormSchema>>
+/**
+ * Login form schema.
+ */
+export const createLoginFormSchema = (
+  t: (key: string, options?: Record<string, unknown>) => string
+) => authBaseSchema(t)
+
+/**
+ * Registration form schema.
+ */
+export const createRegisterSchema = (
+  t: (key: string, options?: Record<string, unknown>) => string
+) =>
+  authBaseSchema(t).extend({
+    username: z.string().min(3, t('validation.username_min')),
+    email: z.email(t('validation.email')),
+    password: z.string().min(6, t('validation.min_length', { count: 6 })),
+  })
+
+export type AuthFormValues = z.infer<ReturnType<typeof createRegisterSchema>>
+// Keep aliases for backward compatibility or clarity
+export type LoginFormValues = AuthFormValues
+export type RegisterFormValues = AuthFormValues

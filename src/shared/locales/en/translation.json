@@ -124,7 +124,25 @@
         "admin": "Admin (Full Access)",
         "user": "User (View Only)",
         "moderator": "Moderator (Manage Users)"
+      },
+      "demo_access": {
+        "title": "Recruiter Quick Access",
+        "description": "Click below to enter the dashboard as a demo admin user.",
+        "button": "Demo Login"
       }
+    },
+    "register": {
+      "title": "Create Account",
+      "email": "Email Address",
+      "submit": "Sign Up",
+      "success": "Registration successful! You can now log in.",
+      "error": "Registration failed. Please try again."
+    },
+    "toggle": {
+      "need_account": "Don't have an account? ",
+      "have_account": "Already have an account? ",
+      "link_register": "Sign up",
+      "link_login": "Sign in"
     }
   },
   "dashboard": {

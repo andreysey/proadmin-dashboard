@@ -8,7 +8,7 @@ export const useBulkDelete = () => {
   // Note: Optimistic UI is handled in UserListTable using the 'UI-driven' pattern via useMutationState.
   return useMutation({
     mutationKey: ['bulkDelete'],
-    mutationFn: async (ids: number[]) => {
+    mutationFn: async (ids: string[]) => {
       // Perform all deletions in parallel
       return Promise.all(ids.map((id) => deleteUser(id)))
     },

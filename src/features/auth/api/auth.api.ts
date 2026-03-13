@@ -4,25 +4,46 @@ import { loginResponseSchema, type LoginFormValues, type LoginResponse } from '.
 import type { User } from '@/entities/user'
 
 /**
+ * Get current user profile.
+ */
+export const getMe = async (): Promise<User> => {
+  const response = await api.get('/users/me')
+  return response.data
+}
+
+/**
+ * Register a new user.
+ */
+export const register = async (data: unknown): Promise<User> => {
+  const response = await api.post('/auth/register', data)
+  const { user, access_token, accessToken, token } = response.data
+
+  const authToken = access_token || accessToken || token
+  if (authToken) {
+    tokenStorage.setTokens({
+      accessToken: authToken,
+      refreshToken: response.data.refresh_token || response.data.refreshToken || '',
+    })
+  }
+
+  return user || response.data
+}
+
+/**
  * Authenticate user with username and password.
- *
- * This function handles the entire login flow:
- * 1. Sends credentials to API
- * 2. Validates response with Zod schema (network boundary)
- * 3. Stores tokens in tokenStorage
- * 4. Returns User object for state management
- *
- * @throws ZodError if API response doesn't match expected schema
- * @throws AxiosError if authentication fails
  */
 export const login = async (credentials: LoginFormValues): Promise<User> => {
-  const response = await api.post('/auth/login', credentials)
+  // Strip extra fields like 'role' and 'email' if your backend 400s on unexpected properties
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { role, email, ...payload } = credentials
+  const response = await api.post('/auth/login', payload)
 
   // Validate API response at network boundary
   const validated: LoginResponse = loginResponseSchema.parse(response.data)
 
-  // Real DummyJSON uses 'accessToken', MSW mock uses 'token'
-  const authToken = validated.accessToken ?? validated.token
+  // NestJS/DummyJSON token fallback
+  const authToken = validated.accessToken || validated.access_token || validated.token
+  const refreshToken = validated.refreshToken || validated.refresh_token || ''
 
   if (!authToken) {
     throw new Error('No authentication token received')
@@ -31,17 +52,22 @@ export const login = async (credentials: LoginFormValues): Promise<User> => {
   // Store tokens for future API requests
   tokenStorage.setTokens({
     accessToken: authToken,
-    refreshToken: validated.refreshToken,
+    refreshToken: refreshToken,
   })
 
-  // Return User object with role fallback (real API doesn't return role)
+  // If the login response doesn't include user details, fetch them separately
+  if (!validated.username || !validated.email) {
+    return await getMe()
+  }
+
+  // Return User object with role fallback
   return {
-    id: validated.id,
+    id: String(validated.id ?? ''),
     username: validated.username,
+    firstName: validated.firstName || '',
+    lastName: validated.lastName || '',
     email: validated.email,
-    firstName: validated.firstName,
-    lastName: validated.lastName,
-    image: validated.image,
+    image: validated.image || '',
     role: validated.role ?? 'user',
   }
 }

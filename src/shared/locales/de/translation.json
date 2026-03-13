@@ -122,10 +122,28 @@
       "submit": "Anmelden",
       "error_credentials": "Ungültige Anmeldedaten",
       "roles": {
-        "admin": "Admin (Voller Zugriff)",
-        "user": "Benutzer (Nur Lesen)",
+        "admin": "Admin (Vollzugriff)",
+        "user": "Benutzer (Nur Lesezugriff)",
         "moderator": "Moderator (Benutzer verwalten)"
+      },
+      "demo_access": {
+        "title": "Schnellzugriff für Recruiter",
+        "description": "Klicken Sie unten, um das Dashboard als Demo-Admin zu betreten.",
+        "button": "Demo-Login"
       }
+    },
+    "register": {
+      "title": "Konto erstellen",
+      "email": "E-Mail-Adresse",
+      "submit": "Registrieren",
+      "success": "Registrierung erfolgreich! Sie können sich jetzt anmelden.",
+      "error": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+    },
+    "toggle": {
+      "need_account": "Noch kein Konto? ",
+      "have_account": "Bereits ein Konto? ",
+      "link_register": "Registrieren",
+      "link_login": "Anmelden"
     }
   },
   "dashboard": {

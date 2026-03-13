@@ -54,7 +54,11 @@ export const Header = () => {
             <div className="flex items-center gap-3 border-l pl-4">
               <div className="hidden text-right sm:block">
                 <p className="text-sm leading-none font-medium">
-                  {user ? `${user.firstName} ${user.lastName}` : t('app.guest', 'Guest User')}
+                  {user
+                    ? user.firstName && user.lastName
+                      ? `${user.firstName} ${user.lastName}`
+                      : user.username
+                    : t('app.guest', 'Guest User')}
                 </p>
                 <p className="text-muted-foreground mt-1 text-xs">
                   {user?.email ?? 'guest@proadmin.com'}

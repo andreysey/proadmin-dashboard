@@ -6,15 +6,15 @@ import { Fragment, useMemo } from 'react'
 
 interface UserListTableProps {
   table: Table<User>
-  q?: string
+  search?: string
   sortBy?: string
-  onSortChange?: (sortBy: string | undefined, order: 'asc' | 'desc') => void
+  onSortChange?: (sortBy: string | undefined, sortOrder: 'asc' | 'desc') => void
 }
 
 import { useTranslation } from 'react-i18next'
 import { useOptimisticUsers, type OptimisticUser } from '../model/use-optimistic-users'
 
-export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableProps) => {
+export const UserListTable = ({ table, search, sortBy, onSortChange }: UserListTableProps) => {
   const { t } = useTranslation()
 
   // Derive optimistic state (UI-Driven pattern, see useOptimisticUsers for details)
@@ -56,10 +56,10 @@ export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableP
                     )}
                     onClick={() => {
                       if (header.column.getCanSort()) {
-                        const nextOrder = isSorted === 'asc' ? 'desc' : 'asc'
+                        const nextSortOrder = isSorted === 'asc' ? 'desc' : 'asc'
                         const nextSortBy =
                           isSorted === 'desc' && header.id === sortBy ? undefined : header.id
-                        onSortChange?.(nextSortBy, nextOrder as 'asc' | 'desc')
+                        onSortChange?.(nextSortBy, nextSortOrder as 'asc' | 'desc')
                       }
                     }}
                   >
@@ -170,9 +170,9 @@ export const UserListTable = ({ table, q, sortBy, onSortChange }: UserListTableP
               <td colSpan={table.getAllColumns().length} className="h-24 text-center">
                 <div className="flex flex-col items-center justify-center py-10">
                   <p className="text-muted-foreground text-sm">{t('users.state.empty')}</p>
-                  {q && (
+                  {search && (
                     <p className="text-muted-foreground mt-1 text-xs">
-                      {t('users.state.empty_search', { query: q })}
+                      {t('users.state.empty_search', { query: search })}
                     </p>
                   )}
                 </div>

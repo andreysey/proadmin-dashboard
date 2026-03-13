@@ -17,18 +17,18 @@ export const UsersPage = () => {
     },
   })
 
-  const { skip, limit, q, sortBy, order } = Route.useSearch()
+  const { page, limit, search: q, sortBy, sortOrder } = Route.useSearch()
   const navigate = Route.useNavigate()
   const [search, setSearch] = useState(q ?? '')
   const [prevQ, setPrevQ] = useState(q)
 
-  // ... (keep previous q sync logic)
+  // Sync state with URL when it changes externally
   if (q !== prevQ) {
     setPrevQ(q)
     setSearch(q ?? '')
   }
 
-  // ... (keep search debounce logic)
+  // Debounced search update to URL
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (search === (q ?? '')) return
@@ -36,31 +36,31 @@ export const UsersPage = () => {
       navigate({
         search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
           ...prev,
-          q: search || undefined,
-          skip: 0,
-        }), // Reset skip on search
+          search: search || undefined,
+          page: 1, // Reset to first page
+        }),
       })
     }, 500)
 
     return () => clearTimeout(timeoutId)
   }, [search, navigate, q])
 
-  const handlePageChange = (newSkip: number) => {
+  const handlePageChange = (newPage: number) => {
     navigate({
       search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
         ...prev,
-        skip: newSkip,
+        page: newPage,
       }),
     })
   }
 
-  const handleSortChange = (newSortBy: string | undefined, newOrder: 'asc' | 'desc') => {
+  const handleSortChange = (newSortBy: string | undefined, newSortOrder: 'asc' | 'desc') => {
     navigate({
       search: (prev: import('@/app/router/routes/_dashboard.users').UsersSearch) => ({
         ...prev,
         sortBy: newSortBy,
-        order: newOrder,
-        skip: 0, // Reset pagination on sort
+        sortOrder: newSortOrder,
+        page: 1, // Reset to first page
       }),
     })
   }
@@ -69,11 +69,11 @@ export const UsersPage = () => {
     <div className="relative space-y-4 p-4 md:p-0">
       <RefreshIndicator pullDistance={pullDistance} isRefreshing={isPTR} isDragging={isDragging} />
       <UserList
-        skip={skip}
+        page={page}
         limit={limit}
-        q={q}
+        urlSearch={q}
         sortBy={sortBy}
-        order={order}
+        sortOrder={sortOrder}
         onPageChange={handlePageChange}
         onSortChange={handleSortChange}
         search={search}

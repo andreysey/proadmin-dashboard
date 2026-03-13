@@ -56,7 +56,10 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401 && !error.config._retry) {
+    const isAuthRequest =
+      error.config?.url?.includes('/auth/login') || error.config?.url?.includes('/auth/register')
+
+    if (error.response?.status === 401 && !error.config._retry && !isAuthRequest) {
       const originalRequest = error.config
 
       // If we are already refreshing, join the queue
@@ -87,15 +90,35 @@ api.interceptors.response.use(
             refreshToken,
           })
 
-          const { token, refreshToken: newRefreshToken } = response.data
+          const {
+            token,
+            accessToken,
+            access_token,
+            next_access_token,
+            refreshToken: nextRefreshToken,
+            refresh_token,
+            next_refresh_token,
+          } = response.data
 
-          tokenStorage.setTokens({ accessToken: token, refreshToken: newRefreshToken })
-          processQueue(null, token)
+          const newAccessToken = accessToken || access_token || next_access_token || token
+          const newRefreshToken =
+            nextRefreshToken || refresh_token || next_refresh_token || refreshToken
 
-          originalRequest.headers.Authorization = `Bearer ${token}`
+          if (!newAccessToken) {
+            throw new Error('Refresh response missing access token')
+          }
+
+          tokenStorage.setTokens({
+            accessToken: newAccessToken,
+            refreshToken: newRefreshToken,
+          })
+
+          processQueue(null, newAccessToken)
+
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
           return api(originalRequest)
         } catch (refreshError) {
-          console.error('Interceptor: Refresh failed. Redirecting to login.')
+          console.error('[API Interceptor] Token refresh failed:', refreshError)
           toast.error('Session expired', {
             description: 'Please sign in again to continue.',
           })
