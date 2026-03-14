@@ -38,19 +38,19 @@ describe('useBulkUpdateRole', () => {
 
   it('should call updateUser for each ID and invalidate queries on success', async () => {
     vi.mocked(updateUser).mockResolvedValue({
-      id: 1,
+      id: '1',
       role: 'admin',
     } as unknown as import('@/entities/user').User)
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 
-    result.current.mutate({ ids: [1, 2], role: 'admin' })
+    result.current.mutate({ ids: ['1', '2'], role: 'admin' })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(updateUser).toHaveBeenCalledTimes(2)
-    expect(updateUser).toHaveBeenCalledWith(1, { role: 'admin' })
-    expect(updateUser).toHaveBeenCalledWith(2, { role: 'admin' })
+    expect(updateUser).toHaveBeenCalledWith('1', { role: 'admin' })
+    expect(updateUser).toHaveBeenCalledWith('2', { role: 'admin' })
     expect(toast.success).toHaveBeenCalledWith('Successfully updated 2 users to admin')
   })
 
@@ -59,7 +59,7 @@ describe('useBulkUpdateRole', () => {
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 
-    result.current.mutate({ ids: [1], role: 'moderator' })
+    result.current.mutate({ ids: ['1'], role: 'moderator' })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
 

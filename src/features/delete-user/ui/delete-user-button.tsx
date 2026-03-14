@@ -14,7 +14,7 @@ import {
 import { useDeleteUser } from '../model/use-delete-user'
 
 interface DeleteUserButtonProps {
-  userId: number
+  userId: string
 }
 
 export const DeleteUserButton = ({ userId }: DeleteUserButtonProps) => {

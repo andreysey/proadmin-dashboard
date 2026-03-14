@@ -8,7 +8,7 @@ export const useDeleteUser = () => {
   // Note: Optimistic UI is handled in UserListTable using the 'UI-driven' pattern via useMutationState.
   return useMutation({
     mutationKey: ['deleteUser'],
-    mutationFn: (id: number) => deleteUser(id),
+    mutationFn: (id: string) => deleteUser(id),
     onSuccess: (_, id) => {
       toast.success(`User #${id} deleted successfully`)
     },

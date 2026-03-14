@@ -53,7 +53,6 @@ export const createRegisterSchema = (
     password: z.string().min(6, t('validation.min_length', { count: 6 })),
   })
 
-export type AuthFormValues = z.infer<ReturnType<typeof createRegisterSchema>>
-// Keep aliases for backward compatibility or clarity
-export type LoginFormValues = AuthFormValues
-export type RegisterFormValues = AuthFormValues
+export type LoginFormValues = z.infer<ReturnType<typeof createLoginFormSchema>>
+export type RegisterFormValues = z.infer<ReturnType<typeof createRegisterSchema>>
+export type AuthFormValues = RegisterFormValues

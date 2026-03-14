@@ -80,8 +80,9 @@ export const UserListMobile = ({ table }: UserListMobileProps) => {
                     ) : (
                       <div className="bg-muted flex h-10 w-10 shrink-0 items-center justify-center rounded-full">
                         <span className="text-muted-foreground text-sm font-medium">
-                          {user.firstName[0]}
-                          {user.lastName[0]}
+                          {user.firstName?.[0] || ''}
+                          {user.lastName?.[0] || ''}
+                          {!user.firstName && !user.lastName ? '?' : ''}
                         </span>
                       </div>
                     )}

@@ -41,14 +41,14 @@ describe('useBulkDelete', () => {
 
     const { result } = renderHook(() => useBulkDelete(), { wrapper: createWrapper() })
 
-    result.current.mutate([1, 2, 3])
+    result.current.mutate(['1', '2', '3'])
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(deleteUser).toHaveBeenCalledTimes(3)
-    expect(deleteUser).toHaveBeenCalledWith(1)
-    expect(deleteUser).toHaveBeenCalledWith(2)
-    expect(deleteUser).toHaveBeenCalledWith(3)
+    expect(deleteUser).toHaveBeenCalledWith('1')
+    expect(deleteUser).toHaveBeenCalledWith('2')
+    expect(deleteUser).toHaveBeenCalledWith('3')
     expect(toast.success).toHaveBeenCalledWith('Successfully deleted 3 users')
   })
 
@@ -57,7 +57,7 @@ describe('useBulkDelete', () => {
 
     const { result } = renderHook(() => useBulkDelete(), { wrapper: createWrapper() })
 
-    result.current.mutate([1, 2])
+    result.current.mutate(['1', '2'])
 
     await waitFor(() => expect(result.current.isError).toBe(true))
 

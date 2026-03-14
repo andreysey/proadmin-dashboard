@@ -83,7 +83,7 @@ describe('LoginForm', () => {
   it('should redirect to dashboard on success', async () => {
     const user = userEvent.setup()
     vi.mocked(authApi.login).mockResolvedValue({
-      id: 1,
+      id: '1',
       username: 'test',
       role: 'admin',
       firstName: 'Test',

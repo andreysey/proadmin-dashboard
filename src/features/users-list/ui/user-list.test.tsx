@@ -125,7 +125,7 @@ describe('UserList', () => {
     } as unknown as ReturnType<typeof reactQuery.useQuery>)
 
     // First page: Prev disabled, Next enabled
-    const { rerender } = render(<UserList skip={0} limit={10} search="" onSearchChange={vi.fn()} />)
+    const { rerender } = render(<UserList page={1} limit={10} search="" onSearchChange={vi.fn()} />)
     const prevBtns = screen.getAllByText('Previous')
     const nextBtns = screen.getAllByText('Next')
 
@@ -133,12 +133,12 @@ describe('UserList', () => {
     nextBtns.forEach((btn) => expect(btn.closest('button')).toBeEnabled())
 
     // Middle page: Both enabled
-    rerender(<UserList skip={10} limit={10} search="" onSearchChange={vi.fn()} />)
+    rerender(<UserList page={2} limit={10} search="" onSearchChange={vi.fn()} />)
     screen.getAllByText('Previous').forEach((btn) => expect(btn.closest('button')).toBeEnabled())
     screen.getAllByText('Next').forEach((btn) => expect(btn.closest('button')).toBeEnabled())
 
     // Last page: Next disabled
-    rerender(<UserList skip={90} limit={10} search="" onSearchChange={vi.fn()} />)
+    rerender(<UserList page={10} limit={10} search="" onSearchChange={vi.fn()} />)
     screen.getAllByText('Previous').forEach((btn) => expect(btn.closest('button')).toBeEnabled())
     screen.getAllByText('Next').forEach((btn) => expect(btn.closest('button')).toBeDisabled())
   })
@@ -152,7 +152,7 @@ describe('UserList', () => {
     const onPageChange = vi.fn()
     render(
       <UserList
-        skip={0}
+        page={1}
         limit={10}
         search=""
         onSearchChange={vi.fn()}
@@ -162,7 +162,7 @@ describe('UserList', () => {
 
     const nextBtn = screen.getAllByText('Next')[0]
     await userEvent.click(nextBtn)
-    expect(onPageChange).toHaveBeenCalledWith(10)
+    expect(onPageChange).toHaveBeenCalledWith(2)
 
     onPageChange.mockClear()
     cleanup()
@@ -170,7 +170,7 @@ describe('UserList', () => {
     // Re-render with skip > 0 to test Previous
     render(
       <UserList
-        skip={10}
+        page={2}
         limit={10}
         search=""
         onSearchChange={vi.fn()}
@@ -180,7 +180,7 @@ describe('UserList', () => {
     const prevBtn = screen.getAllByText('Previous')[0]
     expect(prevBtn.closest('button')).toBeEnabled()
     fireEvent.click(prevBtn)
-    expect(onPageChange).toHaveBeenCalledWith(0)
+    expect(onPageChange).toHaveBeenCalledWith(1)
   })
 
   it('should call onSortChange when clicking table headers', async () => {
@@ -197,7 +197,7 @@ describe('UserList', () => {
         onSearchChange={vi.fn()}
         onSortChange={onSortChange}
         sortBy="id"
-        order="desc"
+        sortOrder="desc"
       />
     )
 

@@ -17,17 +17,17 @@ export interface OptimisticUser extends User {
 export const useOptimisticUsers = (users: User[]) => {
   const pendingDeletions = useMutationState({
     filters: { mutationKey: ['deleteUser'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as number,
+    select: (mutation) => mutation.state.variables as string,
   })
 
   const pendingBulkDeletions = useMutationState({
     filters: { mutationKey: ['bulkDelete'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as number[],
+    select: (mutation) => mutation.state.variables as string[],
   }).flat()
 
   const pendingRoleUpdates = useMutationState({
     filters: { mutationKey: ['bulkUpdateRole'], status: 'pending' },
-    select: (mutation) => mutation.state.variables as { ids: number[]; role: UserRole },
+    select: (mutation) => mutation.state.variables as { ids: string[]; role: UserRole },
   })
 
   return useMemo(() => {

@@ -72,8 +72,9 @@ export const getUserListColumns = (t: (key: string) => string) => [
         ) : (
           <div className="bg-muted flex h-8 w-8 items-center justify-center rounded-full">
             <span className="text-muted-foreground text-xs font-medium">
-              {info.row.original.firstName[0]}
-              {info.row.original.lastName[0]}
+              {info.row.original.firstName?.[0] || ''}
+              {info.row.original.lastName?.[0] || ''}
+              {!info.row.original.firstName && !info.row.original.lastName ? '?' : ''}
             </span>
           </div>
         )}

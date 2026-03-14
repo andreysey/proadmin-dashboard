@@ -14,7 +14,7 @@ vi.mock('@/shared/lib/auth', () => ({
 
 describe('Auth Store', () => {
   const mockUser = {
-    id: 1,
+    id: '1',
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',

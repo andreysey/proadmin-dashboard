@@ -17,21 +17,21 @@ export const EditUserPage = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['users', Number(userId)],
-    queryFn: () => getUserById(Number(userId)),
+    queryKey: ['users', userId],
+    queryFn: () => getUserById(userId!),
   })
 
   const handleSubmit = (data: Partial<User>) => {
     update(
-      { id: Number(userId), data },
+      { id: userId!, data },
       {
         onSuccess: () => {
           navigate({
             to: '/users',
             search: {
-              skip: 0,
+              page: 1,
               limit: 10,
-              order: 'asc',
+              sortOrder: 'asc',
             },
           })
         },
@@ -59,10 +59,9 @@ export const EditUserPage = () => {
               navigate({
                 to: '/users',
                 search: {
-                  skip: 0,
+                  page: 1,
                   limit: 10,
-                  order: 'asc',
-                  q: undefined,
+                  sortOrder: 'asc',
                 },
               })
             }

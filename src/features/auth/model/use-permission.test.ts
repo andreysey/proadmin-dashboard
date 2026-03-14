@@ -5,7 +5,7 @@ import { useAuthStore } from './auth.store'
 import type { User } from '@/entities/user'
 
 const ADMIN_USER: User = {
-  id: 1,
+  id: '1',
   username: 'admin',
   email: 'admin@example.com',
   firstName: 'Admin',
@@ -15,7 +15,7 @@ const ADMIN_USER: User = {
 }
 
 const REGULAR_USER: User = {
-  id: 2,
+  id: '2',
   username: 'user',
   email: 'user@example.com',
   firstName: 'Regular',

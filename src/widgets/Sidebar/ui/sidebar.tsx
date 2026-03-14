@@ -39,7 +39,7 @@ export const Sidebar = ({ className, onNavigate }: SidebarProps) => {
 
           <Link
             to="/users"
-            search={{ skip: 0, limit: 10, order: 'asc' }}
+            search={{ page: 1, limit: 10, sortOrder: 'asc' }}
             className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"
             onClick={handleNavigate}
           >

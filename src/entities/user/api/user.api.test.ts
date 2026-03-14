@@ -17,7 +17,7 @@ describe('User API', () => {
   })
 
   const mockUser = {
-    id: 1,
+    id: '1',
     username: 'testu',
     email: 'test@example.com',
     firstName: 'Test',
@@ -49,7 +49,7 @@ describe('User API', () => {
     it('should fetch single user', async () => {
       vi.mocked(api.get).mockResolvedValue({ data: mockUser })
 
-      const result = await getUserById(1)
+      const result = await getUserById('1')
 
       expect(api.get).toHaveBeenCalledWith('/users/1')
       expect(result).toEqual(mockUser)
@@ -60,7 +60,7 @@ describe('User API', () => {
     it('should delete user by id', async () => {
       vi.mocked(api.delete).mockResolvedValue({ data: { isDeleted: true } })
 
-      const result = await deleteUser(1)
+      const result = await deleteUser('1')
 
       expect(api.delete).toHaveBeenCalledWith('/users/1')
       expect(result).toEqual({ isDeleted: true })
@@ -74,7 +74,7 @@ describe('User API', () => {
 
       vi.mocked(api.put).mockResolvedValue({ data: updatedUser })
 
-      const result = await updateUser(1, updateData)
+      const result = await updateUser('1', updateData)
 
       expect(api.put).toHaveBeenCalledWith('/users/1', updateData)
       expect(result).toEqual(updatedUser)
