@@ -14,6 +14,7 @@ import {
 import { cn } from '@/shared/lib/utils'
 import type { DateRangeValue } from '@/features/dashboard-filters'
 import { Link } from '@tanstack/react-router'
+import { formatRelativeTime } from '@/shared/lib/date'
 
 type TranslationFn = (key: string, options?: Record<string, unknown>) => string
 
@@ -24,20 +25,6 @@ const eventIcons: Record<string, React.ReactNode> = {
   user_updated: <User className="h-4 w-4 text-orange-500" />,
   system_alert: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
   payment_success: <CreditCard className="h-4 w-4 text-blue-500" />,
-}
-
-const formatRelativeTime = (timestamp: string, t: TranslationFn): string => {
-  const date = new Date(timestamp)
-  const now = new Date()
-  const diffMs = now.getTime() - date.getTime()
-  const diffMinutes = Math.floor(diffMs / (1000 * 60))
-  const diffHours = Math.floor(diffMs / (1000 * 60 * 60))
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
-
-  if (diffMinutes < 1) return t('dashboard.activity.time.just_now')
-  if (diffMinutes < 60) return t('dashboard.activity.time.minutes_ago', { count: diffMinutes })
-  if (diffHours < 24) return t('dashboard.activity.time.hours_ago', { count: diffHours })
-  return t('dashboard.activity.time.days_ago', { count: diffDays })
 }
 
 interface EventItemProps {
@@ -59,9 +46,7 @@ const EventItem = ({ event, t }: EventItemProps) => {
           {event.description || t(`dashboard.activity.events.${event.type}.description`)}
         </p>
       </div>
-      <time className="text-muted-foreground text-xs">
-        {formatRelativeTime(event.timestamp, t)}
-      </time>
+      <time className="text-muted-foreground text-xs">{formatRelativeTime(event.timestamp)}</time>
     </div>
   )
 }

@@ -1,4 +1,5 @@
 import { useActivityLogs } from '@/entities/activity-log'
+import { formatDateTime } from '@/shared/lib/date'
 import { Card, CardContent, CardHeader, CardTitle, Button } from '@/shared/ui'
 import { useTranslation } from 'react-i18next'
 import {
@@ -72,7 +73,7 @@ export const ActivityLogPage = () => {
                       className="hover:bg-muted/50 data-[state=selected]:bg-muted border-b transition-colors"
                     >
                       <td className="p-4 align-middle whitespace-nowrap">
-                        {new Date(log.timestamp).toLocaleString()}
+                        {formatDateTime(log.timestamp)}
                       </td>
                       <td className="p-4 align-middle whitespace-nowrap">
                         <div className="flex items-center gap-2">
