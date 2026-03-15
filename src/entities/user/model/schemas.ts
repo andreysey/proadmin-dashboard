@@ -2,14 +2,20 @@ import { z } from 'zod'
 
 /**
  * Available user roles in the system.
- * Zod enum provides both runtime validation and type inference.
  */
-export const ROLES = ['admin', 'user', 'moderator'] as const
+export const ROLES = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  MODERATOR: 'MODERATOR',
+} as const
+
+export type UserRole = (typeof ROLES)[keyof typeof ROLES]
+export const ROLE_VALUES = Object.values(ROLES)
+
 export const userRoleSchema = z.preprocess(
-  (val) => (typeof val === 'string' ? val.toLowerCase() : val),
-  z.enum(ROLES)
+  (val) => (typeof val === 'string' ? val.toUpperCase() : val),
+  z.enum(ROLE_VALUES as [string, ...string[]])
 )
-export type UserRole = z.infer<typeof userRoleSchema>
 
 /**
  * User entity schema.

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Label } from '@/shared/ui/label'
-import { ROLES, type User } from '@/entities/user/model/types'
+import { ROLES, ROLE_VALUES, type User } from '@/entities/user'
 
 type UserFormData = {
   firstName: string
@@ -30,7 +30,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading, onCancel }: UserFor
     lastName: z.string().min(2, t('validation.min_length', { count: 2 })),
     email: z.email(t('validation.email')),
     username: z.string().min(3, t('validation.username_min')),
-    role: z.enum(ROLES),
+    role: z.enum(ROLE_VALUES as [string, ...string[]]),
   })
 
   const {
@@ -44,7 +44,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading, onCancel }: UserFor
       lastName: initialData?.lastName ?? '',
       email: initialData?.email ?? '',
       username: initialData?.username ?? '',
-      role: initialData?.role ?? 'user',
+      role: initialData?.role ?? ROLES.USER,
     },
   })
 
@@ -84,9 +84,9 @@ export const UserForm = ({ initialData, onSubmit, isLoading, onCancel }: UserFor
           {...register('role')}
           className="border-input focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
         >
-          {ROLES.map((role) => (
+          {ROLE_VALUES.map((role) => (
             <option key={role} value={role}>
-              {t(`users.roles.${role}`)}
+              {t(`users.roles.${role.toLowerCase()}`)}
             </option>
           ))}
         </select>

@@ -23,11 +23,12 @@ import {
 import { useAuthStore } from '../model/auth.store'
 import { createLoginFormSchema, createRegisterSchema, type AuthFormValues } from '../model/schemas'
 import { login, register as registerApi } from '../api/auth.api'
+import { ROLES } from '@/entities/user'
 
 const ROLE_OPTIONS = [
-  { value: 'admin', label: 'Admin (Full Access)' },
-  { value: 'user', label: 'User (View Only)' },
-  { value: 'moderator', label: 'Moderator (Manage Users)' },
+  { value: ROLES.ADMIN, label: 'Admin (Full Access)' },
+  { value: ROLES.USER, label: 'User (View Only)' },
+  { value: ROLES.MODERATOR, label: 'Moderator (Manage Users)' },
 ] as const
 
 export const LoginForm = () => {
@@ -54,7 +55,7 @@ export const LoginForm = () => {
       username: '',
       password: '',
       email: '',
-      role: 'admin',
+      role: ROLES.USER,
     },
   })
 
@@ -100,12 +101,13 @@ export const LoginForm = () => {
 
   // Helper to get translated label for role
   const getRoleLabel = (role: string) => {
-    switch (role) {
-      case 'admin':
+    const r = role.toUpperCase()
+    switch (r) {
+      case ROLES.ADMIN:
         return t('auth.login.roles.admin')
-      case 'user':
+      case ROLES.USER:
         return t('auth.login.roles.user')
-      case 'moderator':
+      case ROLES.MODERATOR:
         return t('auth.login.roles.moderator')
       default:
         return role
@@ -133,19 +135,32 @@ export const LoginForm = () => {
           </div>
 
           {isRegister && (
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">{t('auth.register.email')}</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                {...register('email')}
-                aria-invalid={!!errors.email}
-              />
-              {errors.email && (
-                <span className="text-destructive text-sm">{errors.email.message}</span>
-              )}
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="firstName">{t('auth.register.firstName')}</Label>
+                  <Input id="firstName" placeholder="John" {...register('firstName')} />
+                </div>
+                <div className="flex flex-col space-y-1.5">
+                  <Label htmlFor="lastName">{t('auth.register.lastName')}</Label>
+                  <Input id="lastName" placeholder="Doe" {...register('lastName')} />
+                </div>
+              </div>
+
+              <div className="flex flex-col space-y-1.5">
+                <Label htmlFor="email">{t('auth.register.email')}</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  placeholder="name@example.com"
+                  {...register('email')}
+                  aria-invalid={!!errors.email}
+                />
+                {errors.email && (
+                  <span className="text-destructive text-sm">{errors.email.message}</span>
+                )}
+              </div>
+            </>
           )}
 
           <div className="flex flex-col space-y-1.5">
@@ -262,7 +277,7 @@ export const LoginForm = () => {
                       firstName: 'Guest',
                       lastName: 'Recruiter',
                       email: 'recruiter@demo.proadmin',
-                      role: 'admin' as const,
+                      role: ROLES.ADMIN,
                       image: '',
                     }
 

@@ -1,7 +1,13 @@
 import { api } from '@/shared/api'
 import { tokenStorage } from '@/shared/lib/auth'
-import { loginResponseSchema, type LoginFormValues, type LoginResponse } from '../model/schemas'
-import type { User } from '@/entities/user'
+import {
+  loginResponseSchema,
+  registerResponseSchema,
+  type LoginFormValues,
+  type LoginResponse,
+  type RegisterFormValues,
+} from '../model/schemas'
+import { type User, ROLES } from '@/entities/user'
 
 /**
  * Get current user profile.
@@ -14,26 +20,32 @@ export const getMe = async (): Promise<User> => {
 /**
  * Register a new user.
  */
-export const register = async (data: unknown): Promise<User> => {
+export const register = async (data: RegisterFormValues): Promise<User> => {
   const response = await api.post('/auth/register', data)
-  // Support both snake_case and camelCase tokens
-  const { user, access_token, accessToken, token, refresh_token, refreshToken } = response.data
 
-  const authToken = accessToken || access_token || token
-  const nextRefreshToken = refreshToken || refresh_token || ''
+  // Validate and normalize response
+  const validated = registerResponseSchema.parse(response.data)
+
+  const authToken = validated.accessToken || validated.token
+  const refreshToken = validated.refreshToken || ''
 
   if (authToken) {
     tokenStorage.setTokens({
       accessToken: authToken,
-      refreshToken: nextRefreshToken,
+      refreshToken: refreshToken,
     })
   }
 
-  // If backend returns the user object directly, use it
-  if (user) return user
-
-  // Otherwise, we might need to fetch the profile using the new token
-  return await getMe()
+  // Return User object with role fallback/normalization
+  return {
+    id: String(validated.id ?? ''),
+    username: validated.username,
+    firstName: validated.firstName || '',
+    lastName: validated.lastName || '',
+    email: validated.email,
+    image: '',
+    role: validated.role ?? ROLES.USER,
+  }
 }
 
 /**
@@ -75,6 +87,6 @@ export const login = async (credentials: LoginFormValues): Promise<User> => {
     lastName: validated.lastName || '',
     email: validated.email,
     image: validated.image || '',
-    role: validated.role ?? 'user',
+    role: validated.role ?? ROLES.USER,
   }
 }

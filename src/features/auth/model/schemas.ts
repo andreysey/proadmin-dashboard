@@ -51,8 +51,26 @@ export const createRegisterSchema = (
     username: z.string().min(3, t('validation.username_min')),
     email: z.email(t('validation.email')),
     password: z.string().min(6, t('validation.min_length', { count: 6 })),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
   })
+
+/**
+ * Registration response schema.
+ */
+export const registerResponseSchema = z.object({
+  id: z.string().or(z.number()),
+  username: z.string(),
+  email: z.string().email(),
+  firstName: z.string().optional().nullable(),
+  lastName: z.string().optional().nullable(),
+  accessToken: z.string().optional(),
+  token: z.string().optional(),
+  refreshToken: z.string().optional(),
+  role: userRoleSchema.optional(),
+})
 
 export type LoginFormValues = z.infer<ReturnType<typeof createLoginFormSchema>>
 export type RegisterFormValues = z.infer<ReturnType<typeof createRegisterSchema>>
+export type RegisterResponse = z.infer<typeof registerResponseSchema>
 export type AuthFormValues = RegisterFormValues

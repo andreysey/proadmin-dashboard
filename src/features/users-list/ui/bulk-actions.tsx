@@ -1,7 +1,7 @@
 import { Trash2, Download, X, ShieldAlert } from 'lucide-react'
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui'
 import { useTranslation } from 'react-i18next'
-import { ROLES, type UserRole } from '@/entities/user/model/types'
+import { ROLE_VALUES, type UserRole } from '@/entities/user'
 import { useState } from 'react'
 import { ProtectedAction } from '@/features/auth'
 
@@ -54,7 +54,7 @@ export const BulkActions = ({
               <SelectValue placeholder={t('users.bulk_actions.role_placeholder')} />
             </SelectTrigger>
             <SelectContent>
-              {ROLES.map((role) => (
+              {ROLE_VALUES.map((role) => (
                 <SelectItem key={role} value={role}>
                   {t(`users.roles.${role.toLowerCase()}`)}
                 </SelectItem>
