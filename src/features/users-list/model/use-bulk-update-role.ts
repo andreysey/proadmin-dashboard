@@ -18,6 +18,7 @@ export const useBulkUpdateRole = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
     },
   })
 }

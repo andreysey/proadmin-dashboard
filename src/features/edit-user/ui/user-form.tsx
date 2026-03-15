@@ -1,10 +1,11 @@
-import { useForm } from 'react-hook-form'
+import { useForm, Controller } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
 import { Input } from '@/shared/ui/input'
 import { Button } from '@/shared/ui/button'
 import { Label } from '@/shared/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/shared/ui/select'
 import { ROLES, ROLE_VALUES, type User } from '@/entities/user'
 
 type UserFormData = {
@@ -36,6 +37,7 @@ export const UserForm = ({ initialData, onSubmit, isLoading, onCancel }: UserFor
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<UserFormData>({
     resolver: zodResolver(userSchema),
@@ -79,17 +81,24 @@ export const UserForm = ({ initialData, onSubmit, isLoading, onCancel }: UserFor
 
       <div className="space-y-2">
         <Label htmlFor="role">{t('users.columns.role')}</Label>
-        <select
-          id="role"
-          {...register('role')}
-          className="border-input focus-visible:ring-ring flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-base shadow-sm transition-colors focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
-        >
-          {ROLE_VALUES.map((role) => (
-            <option key={role} value={role}>
-              {t(`users.roles.${role.toLowerCase()}`)}
-            </option>
-          ))}
-        </select>
+        <Controller
+          name="role"
+          control={control}
+          render={({ field }) => (
+            <Select onValueChange={field.onChange} value={field.value}>
+              <SelectTrigger id="role" className="w-full">
+                <SelectValue placeholder={t('users.edit.select_role')} />
+              </SelectTrigger>
+              <SelectContent>
+                {ROLE_VALUES.map((role) => (
+                  <SelectItem key={role} value={role}>
+                    {t(`users.roles.${role.toLowerCase()}`)}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        />
         {errors.role && <p className="text-destructive text-xs">{errors.role.message}</p>}
       </div>
 

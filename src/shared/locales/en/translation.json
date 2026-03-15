@@ -101,6 +101,7 @@
       "save": "Save Changes",
       "saving": "Saving...",
       "cancel": "Cancel",
+      "select_role": "Select Role",
       "success": "User updated successfully",
       "error": "Failed to update user"
     }
@@ -212,6 +213,14 @@
         "user_delete": {
           "title": "User Account Deleted",
           "description": "A user account has been removed."
+        },
+        "user_login": {
+          "title": "User Logged In",
+          "description": "A user has successfully authenticated."
+        },
+        "user_updated": {
+          "title": "User Updated",
+          "description": "A user profile or role was modified."
         },
         "system_alert": {
           "title": "System Alert",

@@ -21,7 +21,14 @@ export const ActivitySeriesSchema = z.object({
 
 export const RecentEventSchema = z.object({
   id: z.string(),
-  type: z.enum(['user_signup', 'user_delete', 'system_alert', 'payment_success']),
+  type: z.enum([
+    'user_signup',
+    'user_delete',
+    'user_login',
+    'user_updated',
+    'system_alert',
+    'payment_success',
+  ]),
   title: z.string(),
   description: z.string(),
   timestamp: z.string().datetime(),

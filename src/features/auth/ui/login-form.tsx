@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useForm, Controller, type Resolver } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from '@tanstack/react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import { Loader2, Eye, EyeOff } from 'lucide-react'
 import { tokenStorage } from '@/shared/lib/auth'
 import {
@@ -62,6 +63,7 @@ export const LoginForm = () => {
     },
   })
 
+  const queryClient = useQueryClient()
   const onSubmit = async (data: AuthFormValues) => {
     setIsLoading(true)
     setError(null)
@@ -70,6 +72,7 @@ export const LoginForm = () => {
     try {
       if (isRegister) {
         await registerApi(data)
+        queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
         setSuccess(t('auth.register.success'))
         setIsRegister(false)
         reset()

@@ -2,15 +2,17 @@ import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
 import { useTranslation } from 'react-i18next'
 import { useRecentEvents } from '@/entities/analytics'
 import type { RecentEvent } from '@/entities/analytics'
-import { UserPlus, UserMinus, AlertTriangle, CreditCard } from 'lucide-react'
+import { UserPlus, UserMinus, AlertTriangle, CreditCard, LogIn, User } from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import type { DateRangeValue } from '@/features/dashboard-filters'
 
 type TranslationFn = (key: string, options?: Record<string, unknown>) => string
 
-const eventIcons: Record<RecentEvent['type'], React.ReactNode> = {
+const eventIcons: Record<string, React.ReactNode> = {
   user_signup: <UserPlus className="h-4 w-4 text-green-500" />,
   user_delete: <UserMinus className="h-4 w-4 text-red-500" />,
+  user_login: <LogIn className="h-4 w-4 text-blue-500" />,
+  user_updated: <User className="h-4 w-4 text-orange-500" />,
   system_alert: <AlertTriangle className="h-4 w-4 text-yellow-500" />,
   payment_success: <CreditCard className="h-4 w-4 text-blue-500" />,
 }
@@ -45,7 +47,7 @@ const EventItem = ({ event, t }: EventItemProps) => {
           {t(`dashboard.activity.events.${event.type}.title`)}
         </p>
         <p className="text-muted-foreground text-xs">
-          {t(`dashboard.activity.events.${event.type}.description`)}
+          {event.description || t(`dashboard.activity.events.${event.type}.description`)}
         </p>
       </div>
       <time className="text-muted-foreground text-xs">
