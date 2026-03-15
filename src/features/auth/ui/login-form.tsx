@@ -252,8 +252,8 @@ export const LoginForm = () => {
                 onClick={async () => {
                   const demoCredentials = {
                     username: 'andriibutsvin',
-                    password: 'vawelrfn98rjh4',
-                    role: 'admin',
+                    password: '12345678',
+                    role: ROLES.ADMIN,
                   }
 
                   setIsLoading(true)

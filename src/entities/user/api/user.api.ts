@@ -46,3 +46,12 @@ export const updateUser = async (id: string, data: Partial<User>): Promise<User>
 
   return userSchema.parse(response.data)
 }
+
+/**
+ * Bulk update user roles.
+ */
+export const bulkUpdateRole = async (ids: string[], role: User['role']) => {
+  const response = await api.patch('/users/bulk-update', { ids, role })
+
+  return response.data
+}

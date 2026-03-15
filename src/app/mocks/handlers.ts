@@ -7,6 +7,50 @@ const deletedUserIds = new Set<string>()
 const updatedUsers = new Map<string, Partial<User>>()
 const BASE_URL = config.api.baseUrl
 
+// Static users list for mock mode to avoid backend dependency
+const MOCK_USERS_SEED: User[] = [
+  {
+    id: '1',
+    username: 'atuny0',
+    email: 'atuny0@sohu.com',
+    firstName: 'Terry',
+    lastName: 'Medhurst',
+    role: 'ADMIN',
+    image: 'https://i.pravatar.cc/150?u=1',
+  },
+  {
+    id: '2',
+    username: 'hbingley1',
+    email: 'hbingley1@plala.or.jp',
+    firstName: 'Sheldon',
+    lastName: 'Quigley',
+    role: 'USER',
+    image: 'https://i.pravatar.cc/150?u=2',
+  },
+  {
+    id: '3',
+    username: 'rshawe2',
+    email: 'rshawe2@51.la',
+    firstName: 'Terrill',
+    lastName: 'Hills',
+    role: 'MODERATOR',
+    image: 'https://i.pravatar.cc/150?u=3',
+  },
+]
+
+// Add 15 more generic users
+for (let i = 4; i <= 20; i++) {
+  MOCK_USERS_SEED.push({
+    id: String(i),
+    username: `user_${i}`,
+    email: `user${i}@example.com`,
+    firstName: `User`,
+    lastName: `${i}`,
+    role: i % 3 === 0 ? 'ADMIN' : i % 3 === 1 ? 'USER' : 'MODERATOR',
+    image: `https://i.pravatar.cc/150?u=${i}`,
+  })
+}
+
 const propertyAccessor = (obj: User, path: string) => {
   if (path === 'user') return (obj.firstName ?? obj.username).toLowerCase()
   const key = path as keyof User
@@ -16,7 +60,7 @@ const propertyAccessor = (obj: User, path: string) => {
 export const handlers = [
   // Mocking current API baseUrl
   http.post(`${BASE_URL}/auth/login`, async ({ request }) => {
-    const { role = 'admin' } = (await request.json()) as { role?: string }
+    const { role = 'USER' } = (await request.json()) as { role?: string }
     await delay(1000)
 
     return HttpResponse.json({
@@ -26,9 +70,9 @@ export const handlers = [
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
-      role: role,
-      image: `${BASE_URL}/icon/kminchelle/128`,
-      token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
+      role: role.toUpperCase(),
+      image: `https://github.com/andreysey.png`,
+      accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     })
   }),
@@ -39,8 +83,8 @@ export const handlers = [
 
     return HttpResponse.json({
       ...(data as object),
-      id: Math.floor(Math.random() * 1000) + 100,
-      role: (data as { role?: string }).role || 'user',
+      id: String(Math.floor(Math.random() * 1000) + 100),
+      role: ((data as { role?: string }).role || 'USER').toUpperCase(),
       createdAt: new Date().toISOString(),
     })
   }),
@@ -70,27 +114,14 @@ export const handlers = [
     const limit = parseInt(url.searchParams.get('limit') ?? '10')
     const skip = (page - 1) * limit
 
-    if (url.searchParams.get('limit') === '0') {
-      return passthrough()
-    }
-
-    const response = await fetch(`${BASE_URL}/users?limit=0`)
-    const rawData = await response.json()
-
-    // Enhance, apply updates, and then filter out deleted ones
-    const allUsers = rawData.users
-      .map((user: User) => {
-        const enhanced = {
-          ...user,
-          role: String(user.id).length % 2 === 1 ? 'admin' : 'user',
-        }
-        // Apply local updates if any
-        if (updatedUsers.has(String(user.id))) {
-          return { ...enhanced, ...updatedUsers.get(String(user.id)) }
-        }
-        return enhanced
-      })
-      .filter((user: User) => !deletedUserIds.has(String(user.id)))
+    // Process from static seed instead of fetching from external API
+    const allUsers = MOCK_USERS_SEED.map((user) => {
+      // Apply local updates if any
+      if (updatedUsers.has(user.id)) {
+        return { ...user, ...updatedUsers.get(user.id) }
+      }
+      return user
+    }).filter((user) => !deletedUserIds.has(user.id))
 
     const query = url.searchParams.get('search')?.toLowerCase() ?? ''
     const sortBy = url.searchParams.get('sortBy')
@@ -132,51 +163,38 @@ export const handlers = [
     })
   }),
 
-  http.get(`${BASE_URL}/users/:id`, async ({ params, request }) => {
-    const url = new URL(request.url)
-    if (url.searchParams.has('bypass')) return passthrough()
-
+  http.get(`${BASE_URL}/users/:id`, async ({ params }) => {
     const { id } = params as { id: string }
     if (deletedUserIds.has(id)) {
       return new HttpResponse(null, { status: 404, statusText: 'User not found' })
     }
 
-    const response = await fetch(`${BASE_URL}/users/${id}?bypass=true`)
-    if (!response.ok) return passthrough()
-
-    const user = await response.json()
-    const enhanced = {
-      ...user,
-      role: id.length % 2 === 1 ? 'admin' : 'user',
+    const user = MOCK_USERS_SEED.find((u) => u.id === id)
+    if (!user) {
+      return new HttpResponse(null, { status: 404 })
     }
 
     // Apply local updates if any
-    const finalUser = updatedUsers.has(id) ? { ...enhanced, ...updatedUsers.get(id) } : enhanced
+    const finalUser = updatedUsers.has(id) ? { ...user, ...updatedUsers.get(id) } : user
 
     return HttpResponse.json(finalUser)
   }),
 
-  http.get(`${BASE_URL}/users/me`, async ({ request }) => {
-    const url = new URL(request.url)
-    if (url.searchParams.has('bypass')) return passthrough()
-
+  http.get(`${BASE_URL}/users/me`, async () => {
     await delay(500)
     return HttpResponse.json({
-      id: 15,
+      id: '15',
       username: 'andriibutsvin',
       email: 'andreyseynew@gmail.com',
       firstName: 'Andrii',
       lastName: 'Butsvin',
       gender: 'male',
-      role: 'admin',
-      image: `${BASE_URL}/icon/kminchelle/128`,
+      role: 'ADMIN',
+      image: `https://github.com/andreysey.png`,
     })
   }),
 
   http.patch(`${BASE_URL}/users/:id`, async ({ params, request }) => {
-    const url = new URL(request.url)
-    if (url.searchParams.has('bypass')) return passthrough()
-
     const { id } = params as { id: string }
     const updates = (await request.json()) as Partial<User>
 
@@ -184,20 +202,18 @@ export const handlers = [
 
     // Store the update locally
     const existingUpdates = updatedUsers.get(id) ?? {}
-    updatedUsers.set(id, { ...existingUpdates, ...updates })
+    const newUpdates = { ...existingUpdates, ...updates }
+    updatedUsers.set(id, newUpdates)
 
-    // Fetch the original user to return complete object (for Zod validation)
-    const response = await fetch(`${BASE_URL}/users/${id}?bypass=true`)
-    const originalUser = await response.json()
+    const originalUser = MOCK_USERS_SEED.find((u) => u.id === id)
+    if (!originalUser) return new HttpResponse(null, { status: 404 })
 
-    const enhanced = {
+    const finalUser = {
       ...originalUser,
-      role: id.length % 2 === 1 ? 'admin' : 'user',
-      ...existingUpdates,
-      ...updates,
+      ...newUpdates,
     }
 
-    return HttpResponse.json(enhanced)
+    return HttpResponse.json(finalUser)
   }),
 
   http.delete(`${BASE_URL}/users/:id`, async ({ params, request }) => {

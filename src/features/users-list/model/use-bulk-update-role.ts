@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateUser } from '@/entities/user'
+import { bulkUpdateRole } from '@/entities/user'
 import type { UserRole } from '@/entities/user/model/types'
 import { toast } from 'sonner'
 
@@ -9,9 +9,7 @@ export const useBulkUpdateRole = () => {
   // Note: Optimistic UI is handled in UserListTable using the 'UI-driven' pattern via useMutationState.
   return useMutation({
     mutationKey: ['bulkUpdateRole'],
-    mutationFn: async ({ ids, role }: { ids: string[]; role: UserRole }) => {
-      return Promise.all(ids.map((id) => updateUser(id, { role })))
-    },
+    mutationFn: ({ ids, role }: { ids: string[]; role: UserRole }) => bulkUpdateRole(ids, role),
     onSuccess: (_, { ids, role }) => {
       toast.success(`Successfully updated ${ids.length} users to ${role}`)
     },
