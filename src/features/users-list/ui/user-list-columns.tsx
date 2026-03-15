@@ -53,9 +53,9 @@ export const getUserListColumns = (t: (key: string) => string) => [
       />
     ),
   }),
-  columnHelper.accessor('id', {
+  columnHelper.accessor('displayId', {
     header: t('users.columns.id'),
-    cell: (info) => info.getValue(),
+    cell: (info) => `#${info.getValue()}`,
     enableSorting: true,
   }),
   columnHelper.accessor((row) => `${row.firstName} ${row.lastName}`, {

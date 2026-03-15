@@ -11,6 +11,7 @@ const BASE_URL = config.api.baseUrl
 const MOCK_USERS_SEED: User[] = [
   {
     id: '1',
+    displayId: 1,
     username: 'atuny0',
     email: 'atuny0@sohu.com',
     firstName: 'Terry',
@@ -20,6 +21,7 @@ const MOCK_USERS_SEED: User[] = [
   },
   {
     id: '2',
+    displayId: 2,
     username: 'hbingley1',
     email: 'hbingley1@plala.or.jp',
     firstName: 'Sheldon',
@@ -29,6 +31,7 @@ const MOCK_USERS_SEED: User[] = [
   },
   {
     id: '3',
+    displayId: 3,
     username: 'rshawe2',
     email: 'rshawe2@51.la',
     firstName: 'Terrill',
@@ -42,6 +45,7 @@ const MOCK_USERS_SEED: User[] = [
 for (let i = 4; i <= 20; i++) {
   MOCK_USERS_SEED.push({
     id: String(i),
+    displayId: i,
     username: `user_${i}`,
     email: `user${i}@example.com`,
     firstName: `User`,

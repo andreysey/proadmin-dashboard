@@ -273,6 +273,7 @@ export const LoginForm = () => {
                     )
                     const guestUser = {
                       id: '0',
+                      displayId: 0,
                       username: 'guest_recruiter',
                       firstName: 'Guest',
                       lastName: 'Recruiter',

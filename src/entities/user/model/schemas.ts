@@ -28,6 +28,7 @@ export const userRoleSchema = z.preprocess(
  */
 export const userSchema = z.object({
   id: z.string(),
+  displayId: z.number(),
   username: z.string(),
   firstName: z.string().optional().nullable(),
   lastName: z.string().optional().nullable(),
