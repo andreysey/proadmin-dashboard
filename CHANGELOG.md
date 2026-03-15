@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.3.0](https://github.com/andreysey/proadmin-dashboard/compare/v1.2.2...v1.3.0) (2026-03-15)
+
+
+### Features
+
+* Add `date-fns` and a shared date utility to provide consistent and localized date formatting for activity logs and recent activity feeds. ([5c1f7bb](https://github.com/andreysey/proadmin-dashboard/commit/5c1f7bb8ac4c4c9016dd12ed7d0c3523a204fe90))
+* Add first and last name translation keys for registration and enhance login form's demo access with dynamic role selection. ([e255672](https://github.com/andreysey/proadmin-dashboard/commit/e255672a23d03f60e7fce42be2f383f2b9715cf5))
+* add git-commit skill and its lockfile entry. ([bf4348a](https://github.com/andreysey/proadmin-dashboard/commit/bf4348a24079236db3150052bac1fc84ed4155ff))
+* Add numerous agent skills, rules, and workflows, and migrate existing agent configurations to the pluralized `.agents` directory. ([26eaa2a](https://github.com/andreysey/proadmin-dashboard/commit/26eaa2ae0c945ced78ecbe7d03a26fbf39ac182f))
+* Adopt Zod v4 patterns, refine user registration API with new schemas, and update user role definitions. ([29fa28a](https://github.com/andreysey/proadmin-dashboard/commit/29fa28a545e7f1214c4eb3d8f8e6e4dea1f12346))
+* Implement a dedicated activity log page with routing, pagination, and sidebar integration, including new event types and translations. ([7a864bb](https://github.com/andreysey/proadmin-dashboard/commit/7a864bba83a8da18085de4255f0b24ac4b0109ff))
+* Implement bulk user role updates and refactor MSW handlers to use a static user seed for local development. ([40d6b13](https://github.com/andreysey/proadmin-dashboard/commit/40d6b1332aef5f2a5384c70d6ee1f8791973dc54))
+* Implement user registration, add demo login/guest mode, and update user data schemas and mocking logic. ([7110475](https://github.com/andreysey/proadmin-dashboard/commit/7110475811fa9a1e5a129abfc3b468f9d1190eec))
+* Introduce `displayId` for users and update user list to display it. ([0b7989c](https://github.com/andreysey/proadmin-dashboard/commit/0b7989c421aef0cb438d54cc74a40bd2fe595cc6))
+* Introduce password visibility toggle, enhance authentication token parsing and user retrieval, update analytics and user role schemas, and add MSW bypass functionality. ([4da5bf3](https://github.com/andreysey/proadmin-dashboard/commit/4da5bf39bbfc0f6c3c6964e502b8babcdf3ac6cb))
+* Introduce user login and update events to the recent activity feed and enhance user role selection UI. ([99174ff](https://github.com/andreysey/proadmin-dashboard/commit/99174ff41df9cfe73f8ee5a0df098348773e298e))
+* Invalidate recent analytics query after successful login. ([f2d729d](https://github.com/andreysey/proadmin-dashboard/commit/f2d729d5de4bf94bf7d592e20d60cddd3f99324a))
+* Update demo login to use selected role from form via `getValues` and explicitly set it, and change default role to ADMIN. ([0e4f458](https://github.com/andreysey/proadmin-dashboard/commit/0e4f458ace228bf002c10fd637976a1230899cba))
+
 ## [1.2.2](https://github.com/andreysey/proadmin-dashboard/compare/v1.2.1...v1.2.2) (2026-02-01)
 
 
