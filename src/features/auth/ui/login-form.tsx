@@ -79,6 +79,8 @@ export const LoginForm = () => {
       } else {
         const user = await login(data)
         setAuth(user)
+        // Invalidate analytics to show login event immediately
+        await queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
         void router.navigate({
           to: '/',
           search: { dateRange: '7d', autoRefresh: false },
