@@ -303,12 +303,16 @@ export const handlers = [
       'system_alert',
       'payment_success',
       'user_delete',
+      'user_login',
+      'user_updated',
     ]
     const eventTitles: Record<RecentEvent['type'], string> = {
       user_signup: 'New User Registered',
       user_delete: 'User Account Deleted',
       system_alert: 'Server Load High',
       payment_success: 'Payment Received',
+      user_login: 'User Logged In',
+      user_updated: 'User Profile Updated',
     }
 
     const events: RecentEvent[] = Array.from({ length: eventCount }).map((_, i) => {

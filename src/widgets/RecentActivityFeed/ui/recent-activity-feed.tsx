@@ -1,10 +1,19 @@
-import { Card, CardContent, CardHeader, CardTitle, Skeleton } from '@/shared/ui'
+import { Card, CardContent, CardHeader, CardTitle, Skeleton, Button } from '@/shared/ui'
 import { useTranslation } from 'react-i18next'
 import { useRecentEvents } from '@/entities/analytics'
 import type { RecentEvent } from '@/entities/analytics'
-import { UserPlus, UserMinus, AlertTriangle, CreditCard, LogIn, User } from 'lucide-react'
+import {
+  UserPlus,
+  UserMinus,
+  AlertTriangle,
+  CreditCard,
+  LogIn,
+  User,
+  ArrowRight,
+} from 'lucide-react'
 import { cn } from '@/shared/lib/utils'
 import type { DateRangeValue } from '@/features/dashboard-filters'
+import { Link } from '@tanstack/react-router'
 
 type TranslationFn = (key: string, options?: Record<string, unknown>) => string
 
@@ -108,8 +117,14 @@ export const RecentActivityFeed = ({ dateRange, autoRefresh = false }: RecentAct
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle>{t('dashboard.activity.title')}</CardTitle>
+        <Button variant="ghost" size="sm" asChild>
+          <Link to="/activity-log">
+            {t('dashboard.activity.view_all')}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+        </Button>
       </CardHeader>
       <CardContent>
         <div className={cn('divide-y', data.length === 0 && 'py-8 text-center')}>

@@ -14,6 +14,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "users": "Benutzer",
+    "activity_log": "Aktivitätsprotokoll",
     "settings": "Einstellungen",
     "about": "Über uns"
   },
@@ -42,7 +43,13 @@
       "light": "Hell",
       "dark": "Dunkel",
       "system": "System"
-    }
+    },
+    "date": "Datum",
+    "event": "Ereignis",
+    "description": "Beschreibung",
+    "previous": "Zurück",
+    "next": "Weiter",
+    "page_of": "Seite {{current}} von {{total}}"
   },
   "users": {
     "title": "Benutzerliste",
@@ -205,6 +212,9 @@
         "hours_ago": "vor {{count}} Std.",
         "days_ago": "vor {{count}} Tagen"
       },
+      "view_all": "Alle anzeigen",
+      "full_title": "Vollständiger Aktivitätsaudit",
+      "audit_trail": "System-Audit-Trail",
       "events": {
         "user_signup": {
           "title": "Neuer Benutzer registriert",
@@ -213,6 +223,14 @@
         "user_delete": {
           "title": "Benutzerkonto gelöscht",
           "description": "Ein Benutzerkonto wurde entfernt."
+        },
+        "user_login": {
+          "title": "Benutzer angemeldet",
+          "description": "Ein Benutzer wurde erfolgreich authentifiziert."
+        },
+        "user_updated": {
+          "title": "Benutzer aktualisiert",
+          "description": "Ein Benutzerprofil oder eine Rolle wurde geändert."
         },
         "system_alert": {
           "title": "Systemwarnung",

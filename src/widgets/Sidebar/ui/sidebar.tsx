@@ -1,5 +1,14 @@
 import { SOCIAL_LINKS } from '@/shared/config'
-import { Home, Info, LayoutDashboard, LogOut, Users, Github, Linkedin } from 'lucide-react'
+import {
+  Home,
+  Info,
+  LayoutDashboard,
+  LogOut,
+  Users,
+  Github,
+  Linkedin,
+  ClipboardList,
+} from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { cn } from '@/shared/lib/utils'
 import { useAuthStore } from '@/features/auth'
@@ -45,6 +54,15 @@ export const Sidebar = ({ className, onNavigate }: SidebarProps) => {
           >
             <Users className="group-hover:text-primary h-5 w-5 transition duration-75" />
             <span className="ml-3">{t('sidebar.users')}</span>
+          </Link>
+
+          <Link
+            to="/activity-log"
+            className="group text-foreground hover:bg-accent [&.active]:bg-primary/10 [&.active]:text-primary flex items-center rounded-lg p-2"
+            onClick={handleNavigate}
+          >
+            <ClipboardList className="group-hover:text-primary h-5 w-5 transition duration-75" />
+            <span className="ml-3">{t('sidebar.activity_log')}</span>
           </Link>
 
           <Link

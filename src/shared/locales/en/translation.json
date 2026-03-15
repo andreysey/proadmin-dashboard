@@ -14,6 +14,7 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "users": "Users",
+    "activity_log": "Activity Log",
     "settings": "Settings",
     "about": "About"
   },
@@ -42,7 +43,13 @@
       "light": "Light",
       "dark": "Dark",
       "system": "System"
-    }
+    },
+    "date": "Date",
+    "event": "Event",
+    "description": "Description",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{current}} of {{total}}"
   },
   "users": {
     "title": "Users List",
@@ -205,6 +212,9 @@
         "hours_ago": "{{count}}h ago",
         "days_ago": "{{count}}d ago"
       },
+      "view_all": "View All",
+      "full_title": "Full Activity Audit",
+      "audit_trail": "System Audit Trail",
       "events": {
         "user_signup": {
           "title": "New User Registered",

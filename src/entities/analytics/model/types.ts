@@ -19,7 +19,13 @@ export interface ActivitySeries {
 
 export interface RecentEvent {
   id: string
-  type: 'user_signup' | 'user_delete' | 'system_alert' | 'payment_success'
+  type:
+    | 'user_signup'
+    | 'user_delete'
+    | 'user_login'
+    | 'user_updated'
+    | 'system_alert'
+    | 'payment_success'
   title: string
   description: string
   timestamp: string
