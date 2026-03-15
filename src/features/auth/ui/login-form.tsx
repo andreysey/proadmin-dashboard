@@ -48,6 +48,7 @@ export const LoginForm = () => {
     handleSubmit,
     control,
     reset,
+    getValues,
     formState: { errors },
   } = useForm<AuthFormValues>({
     resolver: zodResolver(
@@ -57,7 +58,7 @@ export const LoginForm = () => {
       username: '',
       password: '',
       email: '',
-      role: ROLES.USER,
+      role: ROLES.ADMIN,
     },
   })
 
@@ -242,7 +243,7 @@ export const LoginForm = () => {
                 variant="outline"
                 className="border-primary/20 bg-primary/5 hover:bg-primary/10 w-full"
                 onClick={async () => {
-                  const selectedRole = control._formValues.role || ROLES.ADMIN
+                  const selectedRole = getValues('role') || ROLES.ADMIN
                   const demoCredentials = {
                     username: 'andriibutsvin',
                     password: '12345678',
@@ -253,7 +254,8 @@ export const LoginForm = () => {
                   try {
                     // Attempt real login first
                     const user = await login(demoCredentials as AuthFormValues)
-                    setAuth(user)
+                    // Force the selected role for demo purposes
+                    setAuth({ ...user, role: selectedRole })
                     void router.navigate({
                       to: '/',
                       search: { dateRange: '7d', autoRefresh: false },
