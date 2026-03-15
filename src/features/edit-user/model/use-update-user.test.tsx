@@ -37,13 +37,13 @@ describe('useUpdateUser', () => {
   })
 
   const mockUser = {
-    id: 1,
+    id: '1',
     username: 'testuser',
     email: 'test@example.com',
     firstName: 'Test',
     lastName: 'User',
     image: 'img.jpg',
-    role: 'user',
+    role: 'ADMIN',
   }
 
   it('should call updateUser API and invalidate queries on success', async () => {
@@ -51,11 +51,11 @@ describe('useUpdateUser', () => {
 
     const { result } = renderHook(() => useUpdateUser(), { wrapper: createWrapper() })
 
-    result.current.mutate({ id: 1, data: { firstName: 'Updated' } })
+    result.current.mutate({ id: '1', data: { firstName: 'Updated' } })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(updateUser).toHaveBeenCalledWith(1, { firstName: 'Updated' })
+    expect(updateUser).toHaveBeenCalledWith('1', { firstName: 'Updated' })
     expect(toast.success).toHaveBeenCalledWith(`User updated successfully: ${mockUser.username}`)
   })
 
@@ -64,7 +64,7 @@ describe('useUpdateUser', () => {
 
     const { result } = renderHook(() => useUpdateUser(), { wrapper: createWrapper() })
 
-    result.current.mutate({ id: 1, data: { firstName: 'Updated' } })
+    result.current.mutate({ id: '1', data: { firstName: 'Updated' } })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
 

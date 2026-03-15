@@ -41,11 +41,11 @@ describe('useDeleteUser', () => {
 
     const { result } = renderHook(() => useDeleteUser(), { wrapper: createWrapper() })
 
-    result.current.mutate(123)
+    result.current.mutate('123')
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(deleteUser).toHaveBeenCalledWith(123)
+    expect(deleteUser).toHaveBeenCalledWith('123')
     expect(toast.success).toHaveBeenCalledWith('User #123 deleted successfully')
     // Note: verifying cache invalidation directly is hard without a spy on queryClient.
     // But we trust standard useMutation behavior if onSuccess is executed.
@@ -56,7 +56,7 @@ describe('useDeleteUser', () => {
 
     const { result } = renderHook(() => useDeleteUser(), { wrapper: createWrapper() })
 
-    result.current.mutate(123)
+    result.current.mutate('123')
 
     await waitFor(() => expect(result.current.isError).toBe(true))
 

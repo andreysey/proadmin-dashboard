@@ -21,13 +21,13 @@ describe('DeleteUserButton', () => {
   })
 
   it('should render trigger button', () => {
-    render(<DeleteUserButton userId={1} />)
+    render(<DeleteUserButton userId="1" />)
     expect(screen.getByRole('button', { name: /delete/i })).toBeInTheDocument()
   })
 
   it('should open dialog on click', async () => {
     const user = userEvent.setup()
-    render(<DeleteUserButton userId={1} />)
+    render(<DeleteUserButton userId="1" />)
 
     await user.click(screen.getByRole('button', { name: /delete/i }))
 
@@ -37,14 +37,14 @@ describe('DeleteUserButton', () => {
 
   it('should calls mutate on confirm', async () => {
     const user = userEvent.setup()
-    render(<DeleteUserButton userId={123} />)
+    render(<DeleteUserButton userId="123" />)
 
     // Open User
     await user.click(screen.getByRole('button', { name: /delete/i }))
     // Click Confirm
     await user.click(screen.getByRole('button', { name: 'Delete User' }))
 
-    expect(mockMutate).toHaveBeenCalledWith(123)
+    expect(mockMutate).toHaveBeenCalledWith('123')
   })
 
   it('should show loading state', async () => {
@@ -53,7 +53,7 @@ describe('DeleteUserButton', () => {
       isPending: true,
     } as unknown as ReturnType<typeof useDeleteUserModule.useDeleteUser>)
 
-    render(<DeleteUserButton userId={1} />)
+    render(<DeleteUserButton userId="1" />)
     const btn = screen.getByRole('button', { name: /delete/i })
     expect(btn).toBeDisabled()
   })

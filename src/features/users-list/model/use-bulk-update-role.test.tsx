@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { useBulkUpdateRole } from './use-bulk-update-role'
-import { updateUser } from '@/entities/user'
+import { updateUser, ROLES } from '@/entities/user'
 import { toast } from 'sonner'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
@@ -9,6 +9,11 @@ import type { ReactNode } from 'react'
 // Mock dependencies
 vi.mock('@/entities/user', () => ({
   updateUser: vi.fn(),
+  ROLES: {
+    ADMIN: 'ADMIN',
+    USER: 'USER',
+    MODERATOR: 'MODERATOR',
+  },
 }))
 
 vi.mock('sonner', () => ({
@@ -39,19 +44,19 @@ describe('useBulkUpdateRole', () => {
   it('should call updateUser for each ID and invalidate queries on success', async () => {
     vi.mocked(updateUser).mockResolvedValue({
       id: '1',
-      role: 'admin',
+      role: ROLES.ADMIN,
     } as unknown as import('@/entities/user').User)
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 
-    result.current.mutate({ ids: ['1', '2'], role: 'admin' })
+    result.current.mutate({ ids: ['1', '2'], role: ROLES.ADMIN })
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(updateUser).toHaveBeenCalledTimes(2)
-    expect(updateUser).toHaveBeenCalledWith('1', { role: 'admin' })
-    expect(updateUser).toHaveBeenCalledWith('2', { role: 'admin' })
-    expect(toast.success).toHaveBeenCalledWith('Successfully updated 2 users to admin')
+    expect(updateUser).toHaveBeenCalledWith('1', { role: ROLES.ADMIN })
+    expect(updateUser).toHaveBeenCalledWith('2', { role: ROLES.ADMIN })
+    expect(toast.success).toHaveBeenCalledWith(`Successfully updated 2 users to ${ROLES.ADMIN}`)
   })
 
   it('should show error toast on failure', async () => {
@@ -59,7 +64,7 @@ describe('useBulkUpdateRole', () => {
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 
-    result.current.mutate({ ids: ['1'], role: 'moderator' })
+    result.current.mutate({ ids: ['1'], role: ROLES.MODERATOR })
 
     await waitFor(() => expect(result.current.isError).toBe(true))
 
