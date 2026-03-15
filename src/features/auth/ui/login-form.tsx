@@ -73,6 +73,7 @@ export const LoginForm = () => {
       if (isRegister) {
         await registerApi(data)
         queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
+        queryClient.invalidateQueries({ queryKey: ['activity-log'] })
         setSuccess(t('auth.register.success'))
         setIsRegister(false)
         reset()

@@ -15,6 +15,7 @@ export const useUpdateUser = () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       // Invalidate the recent activity feed
       queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
+      queryClient.invalidateQueries({ queryKey: ['activity-log'] })
       toast.success(`User updated successfully: ${updatedUser.username}`)
     },
     onError: () => {

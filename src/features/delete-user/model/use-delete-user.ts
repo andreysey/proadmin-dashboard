@@ -18,6 +18,7 @@ export const useDeleteUser = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] })
       queryClient.invalidateQueries({ queryKey: ['analytics', 'recent'] })
+      queryClient.invalidateQueries({ queryKey: ['activity-log'] })
     },
   })
 }
