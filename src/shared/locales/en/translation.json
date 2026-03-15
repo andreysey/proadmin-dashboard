@@ -133,6 +133,8 @@
     },
     "register": {
       "title": "Create Account",
+      "firstName": "First Name",
+      "lastName": "Last Name",
       "email": "Email Address",
       "submit": "Sign Up",
       "success": "Registration successful! You can now log in.",

@@ -24,12 +24,14 @@ import { useAuthStore } from '../model/auth.store'
 import { createLoginFormSchema, createRegisterSchema, type AuthFormValues } from '../model/schemas'
 import { login, register as registerApi } from '../api/auth.api'
 import { ROLES } from '@/entities/user'
+import type { TFunction } from 'i18next'
 
-const ROLE_OPTIONS = [
-  { value: ROLES.ADMIN, label: 'Admin (Full Access)' },
-  { value: ROLES.USER, label: 'User (View Only)' },
-  { value: ROLES.MODERATOR, label: 'Moderator (Manage Users)' },
-] as const
+const getRoleOptions = (t: TFunction) =>
+  [
+    { value: ROLES.ADMIN, label: t('auth.login.roles.admin') },
+    { value: ROLES.USER, label: t('auth.login.roles.user') },
+    { value: ROLES.MODERATOR, label: t('auth.login.roles.moderator') },
+  ] as const
 
 export const LoginForm = () => {
   const router = useRouter()
@@ -99,21 +101,6 @@ export const LoginForm = () => {
     reset()
   }
 
-  // Helper to get translated label for role
-  const getRoleLabel = (role: string) => {
-    const r = role.toUpperCase()
-    switch (r) {
-      case ROLES.ADMIN:
-        return t('auth.login.roles.admin')
-      case ROLES.USER:
-        return t('auth.login.roles.user')
-      case ROLES.MODERATOR:
-        return t('auth.login.roles.moderator')
-      default:
-        return role
-    }
-  }
-
   return (
     <Card className="border-border/50 bg-background/60 w-full shadow-2xl backdrop-blur-xl">
       <CardHeader>
@@ -125,7 +112,7 @@ export const LoginForm = () => {
             <Label htmlFor="username">{t('auth.login.username')}</Label>
             <Input
               id="username"
-              placeholder="kminchelle"
+              placeholder="username"
               {...register('username')}
               aria-invalid={!!errors.username}
             />
@@ -194,28 +181,6 @@ export const LoginForm = () => {
             )}
           </div>
 
-          <div className="flex flex-col space-y-1.5">
-            <Label htmlFor="role">{t('auth.login.role_label')}</Label>
-            <Controller
-              name="role"
-              control={control}
-              render={({ field }) => (
-                <Select value={field.value} onValueChange={field.onChange}>
-                  <SelectTrigger id="role" className="w-full">
-                    <SelectValue placeholder={t('auth.login.role_placeholder')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ROLE_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {getRoleLabel(option.value)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
-            />
-          </div>
-
           {error && <div className="text-destructive text-sm font-medium">{error}</div>}
           {success && <div className="text-sm font-medium text-emerald-500">{success}</div>}
 
@@ -245,15 +210,43 @@ export const LoginForm = () => {
                   {t('auth.login.demo_access.description')}
                 </p>
               </div>
+
+              <div className="mb-4 flex flex-col space-y-1.5 text-left">
+                <Label
+                  htmlFor="role"
+                  className="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+                >
+                  {t('auth.login.role_label')}
+                </Label>
+                <Controller
+                  name="role"
+                  control={control}
+                  render={({ field }) => (
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <SelectTrigger id="role" className="border-primary/20 bg-primary/5 w-full">
+                        <SelectValue placeholder={t('auth.login.role_placeholder')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {getRoleOptions(t).map((option) => (
+                          <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
+              </div>
               <Button
                 type="button"
                 variant="outline"
                 className="border-primary/20 bg-primary/5 hover:bg-primary/10 w-full"
                 onClick={async () => {
+                  const selectedRole = control._formValues.role || ROLES.ADMIN
                   const demoCredentials = {
                     username: 'andriibutsvin',
                     password: '12345678',
-                    role: ROLES.ADMIN,
+                    role: selectedRole,
                   }
 
                   setIsLoading(true)
@@ -274,11 +267,12 @@ export const LoginForm = () => {
                     const guestUser = {
                       id: '0',
                       displayId: 0,
-                      username: 'guest_recruiter',
+                      username: `guest_${selectedRole.toLowerCase()}`,
                       firstName: 'Guest',
-                      lastName: 'Recruiter',
-                      email: 'recruiter@demo.proadmin',
-                      role: ROLES.ADMIN,
+                      lastName:
+                        selectedRole.charAt(0).toUpperCase() + selectedRole.slice(1).toLowerCase(),
+                      email: `recruiter+${selectedRole.toLowerCase()}@demo.proadmin`,
+                      role: selectedRole,
                       image: '',
                     }
 

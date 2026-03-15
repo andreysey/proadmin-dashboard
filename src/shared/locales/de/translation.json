@@ -134,6 +134,8 @@
     },
     "register": {
       "title": "Konto erstellen",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
       "email": "E-Mail-Adresse",
       "submit": "Registrieren",
       "success": "Registrierung erfolgreich! Sie können sich jetzt anmelden.",
