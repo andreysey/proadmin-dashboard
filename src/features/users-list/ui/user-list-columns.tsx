@@ -5,6 +5,7 @@ import { Button, Checkbox } from '@/shared/ui'
 import { Link } from '@tanstack/react-router'
 import { createColumnHelper } from '@tanstack/react-table'
 import { ChevronDown, ChevronUp, Edit } from 'lucide-react'
+import { formatDate } from '@/shared/lib/date'
 
 const columnHelper = createColumnHelper<User>()
 
@@ -97,6 +98,13 @@ export const getUserListColumns = (t: (key: string) => string) => [
       <span className="bg-primary/10 text-primary ring-primary/20 inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ring-1 ring-inset">
         {t(`users.roles.${info.getValue().toLowerCase()}`)}
       </span>
+    ),
+    enableSorting: true,
+  }),
+  columnHelper.accessor('createdAt', {
+    header: t('users.columns.created_at'),
+    cell: (info) => (
+      <span className="text-muted-foreground whitespace-nowrap">{formatDate(info.getValue())}</span>
     ),
     enableSorting: true,
   }),

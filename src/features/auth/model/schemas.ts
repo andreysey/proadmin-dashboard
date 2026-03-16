@@ -14,7 +14,7 @@ export const loginResponseSchema = z.object({
   email: z.email().optional(),
   firstName: z.string().optional(),
   lastName: z.string().optional(),
-  image: z.url().optional(),
+  image: z.string().optional().nullable(),
   // Support various token field names
   accessToken: z.string().optional(),
   access_token: z.string().optional(),

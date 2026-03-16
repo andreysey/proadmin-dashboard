@@ -7,7 +7,7 @@ const usersSearchSchema = z.object({
   limit: z.number().optional().default(10),
   search: z.string().optional(),
   sortBy: z.string().optional(),
-  sortOrder: z.enum(['asc', 'desc']).optional().default('asc'),
+  sortOrder: z.enum(['asc', 'desc']).optional().default('desc'),
 })
 
 export type UsersSearch = z.infer<typeof usersSearchSchema>

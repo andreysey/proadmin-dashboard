@@ -32,9 +32,11 @@ export const userSchema = z.object({
   username: z.string(),
   firstName: z.string().optional().nullable(),
   lastName: z.string().optional().nullable(),
-  email: z.email(),
+  email: z.string().email(),
   role: userRoleSchema,
-  image: z.url().optional().nullable(),
+  image: z.string().optional().nullable(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
 })
 
 // Type is inferred from schema - no manual interface needed!
