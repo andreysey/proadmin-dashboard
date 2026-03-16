@@ -55,3 +55,12 @@ export const bulkUpdateRole = async (ids: string[], role: User['role']) => {
 
   return response.data
 }
+
+/**
+ * Export all users.
+ */
+export const exportUsers = async (): Promise<Partial<User>[]> => {
+  const response = await api.get('/users/export')
+
+  return response.data
+}

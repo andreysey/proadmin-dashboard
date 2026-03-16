@@ -183,6 +183,7 @@
     "export": {
       "button": "Exportieren",
       "excel": "Als Excel exportieren",
+      "csv": "Als CSV exportieren",
       "pdf": "Als PDF exportieren",
       "report_title": "ProAdmin Dashboard Bericht",
       "date_range": "Zeitraum: {{value}}",

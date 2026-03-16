@@ -167,6 +167,18 @@ export const handlers = [
     })
   }),
 
+  http.get(`${BASE_URL}/users/export`, async () => {
+    await delay(1000)
+    const allUsers = MOCK_USERS_SEED.map((user) => {
+      if (updatedUsers.has(user.id)) {
+        return { ...user, ...updatedUsers.get(user.id) }
+      }
+      return user
+    }).filter((user) => !deletedUserIds.has(user.id))
+
+    return HttpResponse.json(allUsers)
+  }),
+
   http.get(`${BASE_URL}/users/:id`, async ({ params }) => {
     const { id } = params as { id: string }
     if (deletedUserIds.has(id)) {
