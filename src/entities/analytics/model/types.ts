@@ -1,3 +1,5 @@
+import type { ActivityMetadata } from '@/entities/activity-log'
+
 export interface DashboardStats {
   totalUsers: number
   activeNow: number
@@ -29,7 +31,7 @@ export interface RecentEvent {
   title: string
   description: string
   timestamp: string
-  metadata?: Record<string, unknown>
+  metadata?: ActivityMetadata | null
 }
 
 export interface RevenueDataPoint {

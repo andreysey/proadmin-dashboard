@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { ActivityMetadataSchema } from '@/entities/activity-log'
 
 export const DashboardStatsSchema = z.object({
   totalUsers: z.number().min(0),
@@ -8,7 +9,7 @@ export const DashboardStatsSchema = z.object({
 })
 
 export const ActivityDataPointSchema = z.object({
-  timestamp: z.string().datetime(),
+  timestamp: z.string().datetime({}),
   value: z.number(),
 })
 
@@ -31,8 +32,8 @@ export const RecentEventSchema = z.object({
   ]),
   title: z.string(),
   description: z.string(),
-  timestamp: z.string().datetime(),
-  metadata: z.record(z.string(), z.unknown()).optional(),
+  timestamp: z.string().datetime({}),
+  metadata: ActivityMetadataSchema.optional().nullable(),
 })
 
 export const AnalyticsActivityResponseSchema = z.array(ActivitySeriesSchema)

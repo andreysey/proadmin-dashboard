@@ -1,4 +1,4 @@
-import { LogOut, Settings, User as UserIcon } from 'lucide-react'
+import { LogOut, LayoutDashboard, Users, ClipboardList, Info } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/features/auth'
 import {
@@ -41,15 +41,35 @@ export const UserDropdown = ({ children }: UserDropdownProps) => {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
-            <Link to="/about" className="flex w-full cursor-pointer items-center">
-              <UserIcon className="mr-2 h-4 w-4" />
-              <span>{t('header.dropdown.profile', 'Profile')}</span>
+            <Link
+              to="/"
+              search={{ dateRange: '7d', autoRefresh: false }}
+              className="flex w-full cursor-pointer items-center"
+            >
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <span>{t('sidebar.dashboard')}</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link
+              to="/users"
+              search={{ page: 1, limit: 10, sortOrder: 'desc' }}
+              className="flex w-full cursor-pointer items-center"
+            >
+              <Users className="mr-2 h-4 w-4" />
+              <span>{t('sidebar.users')}</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/activity-log" className="flex w-full cursor-pointer items-center">
+              <ClipboardList className="mr-2 h-4 w-4" />
+              <span>{t('sidebar.activity_log')}</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link to="/about" className="flex w-full cursor-pointer items-center">
-              <Settings className="mr-2 h-4 w-4" />
-              <span>{t('header.dropdown.settings', 'Settings')}</span>
+              <Info className="mr-2 h-4 w-4" />
+              <span>{t('sidebar.about', 'About')}</span>
             </Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>

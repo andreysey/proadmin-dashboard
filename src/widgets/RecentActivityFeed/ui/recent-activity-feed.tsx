@@ -45,6 +45,22 @@ const EventItem = ({ event, t }: EventItemProps) => {
         <p className="text-muted-foreground text-xs">
           {event.description || t(`dashboard.activity.events.${event.type}.description`)}
         </p>
+        {event.metadata && (
+          <div className="mt-1 flex flex-wrap gap-1.5 text-[10px] font-medium tracking-tight uppercase">
+            {event.metadata.userAgent && (
+              <span className="bg-muted text-muted-foreground rounded-sm px-1 py-0.5">
+                {event.metadata.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}
+              </span>
+            )}
+            {event.metadata.ip && (
+              <span className="rounded-sm bg-blue-500/5 px-1 py-0.5 text-blue-500/70">
+                {event.metadata.ip === '::1' || event.metadata.ip === '127.0.0.1'
+                  ? 'Local'
+                  : event.metadata.ip}
+              </span>
+            )}
+          </div>
+        )}
       </div>
       <time className="text-muted-foreground text-xs">{formatRelativeTime(event.timestamp)}</time>
     </div>

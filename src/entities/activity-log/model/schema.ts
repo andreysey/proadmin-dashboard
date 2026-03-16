@@ -1,4 +1,13 @@
 import { z } from 'zod'
+// from diff @@ -2,2 +2,6 @@
+export const ActivityMetadataSchema = z
+  .object({
+    userAgent: z.string().optional().nullable(),
+    ip: z.string().optional().nullable(),
+  })
+  .loose()
+
+export type ActivityMetadata = z.infer<typeof ActivityMetadataSchema>
 
 export const ActivityLogItemSchema = z.object({
   id: z.string(),
@@ -12,8 +21,9 @@ export const ActivityLogItemSchema = z.object({
   ]),
   title: z.string(),
   description: z.string(),
-  timestamp: z.string().datetime(),
-  userId: z.string().optional(),
+  timestamp: z.string().datetime({}),
+  userId: z.string().optional().nullable(),
+  metadata: ActivityMetadataSchema.optional().nullable(),
 })
 
 export type ActivityLogItem = z.infer<typeof ActivityLogItemSchema>

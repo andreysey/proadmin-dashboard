@@ -77,7 +77,28 @@ export const ActivityLogPage = () => {
                       </div>
                     </td>
                     <td className="p-4 align-middle">
-                      {log.description || t(`dashboard.activity.events.${log.type}.description`)}
+                      <div className="flex flex-col gap-1">
+                        <span>
+                          {log.description ||
+                            t(`dashboard.activity.events.${log.type}.description`)}
+                        </span>
+                        {log.metadata && (
+                          <div className="mt-1 flex flex-wrap gap-2 text-[10px] font-medium tracking-wider uppercase">
+                            {log.metadata.userAgent && (
+                              <span className="bg-muted text-muted-foreground border-border/50 rounded border px-1.5 py-0.5">
+                                {log.metadata.userAgent.includes('Mobile') ? 'Mobile' : 'Desktop'}
+                              </span>
+                            )}
+                            {log.metadata.ip && (
+                              <span className="rounded border border-blue-500/20 bg-blue-500/10 px-1.5 py-0.5 text-blue-500">
+                                {log.metadata.ip === '::1' || log.metadata.ip === '127.0.0.1'
+                                  ? 'Local'
+                                  : log.metadata.ip}
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
