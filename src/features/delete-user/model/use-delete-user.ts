@@ -9,8 +9,10 @@ export const useDeleteUser = () => {
   return useMutation({
     mutationKey: ['deleteUser'],
     mutationFn: (id: string) => deleteUser(id),
-    onSuccess: (_, id) => {
-      toast.success(`User #${id} deleted successfully`)
+    onSuccess: (deletedUser) => {
+      toast.success(
+        `User @${deletedUser.username} (#${deletedUser.displayId}) deleted successfully`
+      )
     },
     onError: (err) => {
       toast.error(err instanceof Error ? err.message : 'Failed to delete user')
