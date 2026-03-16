@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach } from 'vitest'
 import { renderHook } from '@testing-library/react'
 import { usePermission } from './use-permission'
 import { useAuthStore } from './auth.store'
-import type { User } from '@/entities/user'
+import { ROLES, type User } from '@/entities/user'
 
 const ADMIN_USER: User = {
   id: '1',
@@ -10,8 +10,11 @@ const ADMIN_USER: User = {
   email: 'admin@example.com',
   firstName: 'Admin',
   lastName: 'User',
-  role: 'admin',
+  role: ROLES.ADMIN,
   image: '',
+  displayId: 1,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 }
 
 const REGULAR_USER: User = {
@@ -20,8 +23,11 @@ const REGULAR_USER: User = {
   email: 'user@example.com',
   firstName: 'Regular',
   lastName: 'User',
-  role: 'user',
+  role: ROLES.USER,
   image: '',
+  displayId: 2,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 }
 
 describe('usePermission', () => {

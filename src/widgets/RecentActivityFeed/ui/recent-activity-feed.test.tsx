@@ -83,8 +83,8 @@ describe('RecentActivityFeed', () => {
 
     render(<RecentActivityFeed dateRange="7d" />)
     expect(screen.getByText('New User Registered')).toBeInTheDocument()
-    expect(screen.getByText('Just now')).toBeInTheDocument()
+    expect(screen.getByText('less than a minute ago')).toBeInTheDocument()
     expect(screen.getByText('Payment Received')).toBeInTheDocument()
-    expect(screen.getByText('2h ago')).toBeInTheDocument()
+    expect(screen.getByText('about 2 hours ago')).toBeInTheDocument()
   })
 })

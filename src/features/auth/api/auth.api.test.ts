@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { login } from './auth.api'
 import { api } from '@/shared/api'
 import { tokenStorage } from '@/shared/lib/auth'
+import { ROLES } from '@/entities/user'
 
 // Mock dependencies
 vi.mock('@/shared/api', () => ({
@@ -37,7 +38,7 @@ describe('Auth API', () => {
       image: 'https://example.com/avatar.jpg',
       accessToken: 'fake-jwt-token',
       refreshToken: 'fake-refresh-token',
-      role: 'admin' as const,
+      role: 'ADMIN' as const,
     },
   }
 
@@ -53,11 +54,14 @@ describe('Auth API', () => {
     })
     expect(user).toEqual(
       expect.objectContaining({
-        id: 1,
+        id: '1',
         username: 'testuser',
-        role: 'admin',
+        role: ROLES.ADMIN,
+        displayId: 1,
       })
     )
+    expect(user.createdAt).toBeDefined()
+    expect(user.updatedAt).toBeDefined()
   })
 
   it('should throw error if no token received', async () => {

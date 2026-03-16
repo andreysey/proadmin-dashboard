@@ -45,6 +45,9 @@ export const register = async (data: RegisterFormValues): Promise<User> => {
     email: validated.email,
     image: '',
     role: validated.role ?? ROLES.USER,
+    displayId: validated.displayId ?? (Number(validated.id) || 0),
+    createdAt: validated.createdAt ?? new Date().toISOString(),
+    updatedAt: validated.updatedAt ?? new Date().toISOString(),
   }
 }
 
@@ -88,5 +91,8 @@ export const login = async (credentials: LoginFormValues): Promise<User> => {
     email: validated.email,
     image: validated.image || '',
     role: validated.role ?? ROLES.USER,
+    displayId: validated.displayId ?? (Number(validated.id) || 0),
+    createdAt: validated.createdAt ?? new Date().toISOString(),
+    updatedAt: validated.updatedAt ?? new Date().toISOString(),
   }
 }

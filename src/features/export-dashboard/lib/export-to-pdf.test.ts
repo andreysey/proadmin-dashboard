@@ -68,7 +68,8 @@ describe('exportToPdf', () => {
     exportToPdf({
       stats: sampleStats,
       dateRange: '30d',
-      t: (key: string) => key,
+      t: (key: string, options?: { value?: string | number }) =>
+        options?.value ? `${key}:${options.value}` : key,
     })
 
     // Check for Total Users formatting
@@ -78,10 +79,10 @@ describe('exportToPdf', () => {
 
     // Check calls
     const textCalls = mockText.mock.calls.map((c) => c[0])
-    expect(textCalls).toContain('Statistics Overview')
-    expect(textCalls).toContain('Total Users')
+    expect(textCalls).toContain('dashboard.export.overview')
+    expect(textCalls).toContain('dashboard.export.stats.total_users')
 
     // Check if date label is converted
-    expect(textCalls.some((t) => t.includes('Last 30 Days'))).toBe(true)
+    expect(textCalls.some((t) => t.includes('dashboard.filters.date_range.30d'))).toBe(true)
   })
 })

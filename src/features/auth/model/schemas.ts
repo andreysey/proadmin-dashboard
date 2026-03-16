@@ -22,6 +22,9 @@ export const loginResponseSchema = z.object({
   refreshToken: z.string().optional(),
   refresh_token: z.string().optional(),
   role: userRoleSchema.optional(),
+  displayId: z.number().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 })
 
 export type LoginResponse = z.infer<typeof loginResponseSchema>
@@ -68,6 +71,9 @@ export const registerResponseSchema = z.object({
   token: z.string().optional(),
   refreshToken: z.string().optional(),
   role: userRoleSchema.optional(),
+  displayId: z.number().optional(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 })
 
 export type LoginFormValues = z.infer<ReturnType<typeof createLoginFormSchema>>

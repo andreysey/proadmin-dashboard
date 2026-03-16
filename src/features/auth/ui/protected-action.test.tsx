@@ -2,6 +2,7 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import { ProtectedAction } from './protected-action'
 import { usePermission } from '../model/use-permission'
+import { ROLES } from '@/entities/user'
 
 vi.mock('../model/use-permission', () => ({
   usePermission: vi.fn(),
@@ -13,7 +14,7 @@ describe('ProtectedAction', () => {
   it('should render children when user has permission', () => {
     vi.mocked(usePermission).mockReturnValue({
       hasPermission: vi.fn().mockReturnValue(true),
-      role: 'admin',
+      role: ROLES.ADMIN,
     })
 
     render(
@@ -28,7 +29,7 @@ describe('ProtectedAction', () => {
   it('should render fallback when user lacks permission', () => {
     vi.mocked(usePermission).mockReturnValue({
       hasPermission: vi.fn().mockReturnValue(false),
-      role: 'admin',
+      role: ROLES.ADMIN,
     })
 
     render(
@@ -44,7 +45,7 @@ describe('ProtectedAction', () => {
   it('should render nothing when user lacks permission and no fallback', () => {
     vi.mocked(usePermission).mockReturnValue({
       hasPermission: vi.fn().mockReturnValue(false),
-      role: 'admin',
+      role: ROLES.ADMIN,
     })
 
     const { container } = render(

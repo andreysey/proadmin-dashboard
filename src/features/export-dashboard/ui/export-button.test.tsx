@@ -117,6 +117,8 @@ describe('ExportButton', () => {
       expect(exportToPdf).toHaveBeenCalledWith({
         stats: mockStats,
         dateRange: '7d',
+        t: expect.any(Function),
+        filename: 'dashboard-report-7d',
       })
     })
   })

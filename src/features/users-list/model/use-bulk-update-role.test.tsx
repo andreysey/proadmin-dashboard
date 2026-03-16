@@ -1,14 +1,14 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import { useBulkUpdateRole } from './use-bulk-update-role'
-import { updateUser, ROLES } from '@/entities/user'
+import { bulkUpdateRole, ROLES } from '@/entities/user'
 import { toast } from 'sonner'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 
 // Mock dependencies
 vi.mock('@/entities/user', () => ({
-  updateUser: vi.fn(),
+  bulkUpdateRole: vi.fn(),
   ROLES: {
     ADMIN: 'ADMIN',
     USER: 'USER',
@@ -41,11 +41,10 @@ describe('useBulkUpdateRole', () => {
     vi.clearAllMocks()
   })
 
-  it('should call updateUser for each ID and invalidate queries on success', async () => {
-    vi.mocked(updateUser).mockResolvedValue({
-      id: '1',
-      role: ROLES.ADMIN,
-    } as unknown as import('@/entities/user').User)
+  it('should call bulkUpdateRole with IDs and role, and invalidate queries on success', async () => {
+    vi.mocked(bulkUpdateRole).mockResolvedValue({
+      success: true,
+    })
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 
@@ -53,14 +52,13 @@ describe('useBulkUpdateRole', () => {
 
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
-    expect(updateUser).toHaveBeenCalledTimes(2)
-    expect(updateUser).toHaveBeenCalledWith('1', { role: ROLES.ADMIN })
-    expect(updateUser).toHaveBeenCalledWith('2', { role: ROLES.ADMIN })
+    expect(bulkUpdateRole).toHaveBeenCalledTimes(1)
+    expect(bulkUpdateRole).toHaveBeenCalledWith(['1', '2'], ROLES.ADMIN)
     expect(toast.success).toHaveBeenCalledWith(`Successfully updated 2 users to ${ROLES.ADMIN}`)
   })
 
   it('should show error toast on failure', async () => {
-    vi.mocked(updateUser).mockRejectedValueOnce(new Error('API Error'))
+    vi.mocked(bulkUpdateRole).mockRejectedValueOnce(new Error('API Error'))
 
     const { result } = renderHook(() => useBulkUpdateRole(), { wrapper: createWrapper() })
 

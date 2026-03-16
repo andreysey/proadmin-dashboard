@@ -3,6 +3,8 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { LoginForm } from './login-form'
 import * as authApi from '../api/auth.api'
+import { ROLES } from '@/entities/user'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // Mock dependencies
 const navigateMock = vi.fn()
@@ -18,31 +20,40 @@ vi.mock('../api/auth.api', () => ({
 }))
 
 describe('LoginForm', () => {
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+    },
+  })
+
   beforeEach(() => {
     vi.clearAllMocks()
+    queryClient.clear()
   })
 
   it('should render form fields', () => {
-    render(<LoginForm />)
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    )
     expect(screen.getByLabelText(/username/i)).toBeInTheDocument()
     expect(screen.getByLabelText(/password/i)).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument()
   })
 
   it('should show validation error for empty fields', async () => {
-    render(<LoginForm />)
+    const user = userEvent.setup()
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    )
     const submitBtn = screen.getByRole('button', { name: /sign in/i })
 
-    // Clear default values if any (component has default values for dev, need to clear them to test required validation)
-    // The component has defaultValues: { username: 'andriibutsvin', ... }
-    // So to test empty validation, we must clear them.
-    const userInput = screen.getByLabelText(/username/i)
-    const passInput = screen.getByLabelText(/password/i)
-
-    await userEvent.clear(userInput)
-    await userEvent.clear(passInput)
-
-    await userEvent.click(submitBtn)
+    await user.click(submitBtn)
 
     await waitFor(() => {
       // Assuming zod schema requires min length or just non-empty
@@ -63,10 +74,14 @@ describe('LoginForm', () => {
 
   it('should call login API on valid submission', async () => {
     const user = userEvent.setup()
-    render(<LoginForm />)
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    )
 
-    // Helper to see if defaults are there; they are.
-    // So just clicking submit should trigger login with default values.
+    await user.type(screen.getByLabelText(/username/i), 'andriibutsvin')
+    await user.type(screen.getByLabelText(/password/i), 'password123')
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {
@@ -74,7 +89,7 @@ describe('LoginForm', () => {
       expect(authApi.login).toHaveBeenCalledWith(
         expect.objectContaining({
           username: 'andriibutsvin', // Default value
-          role: 'admin',
+          role: ROLES.ADMIN,
         })
       )
     })
@@ -85,14 +100,23 @@ describe('LoginForm', () => {
     vi.mocked(authApi.login).mockResolvedValue({
       id: '1',
       username: 'test',
-      role: 'admin',
+      role: ROLES.ADMIN,
       firstName: 'Test',
       lastName: 'User',
       email: 'test@example.com',
       image: '',
+      displayId: 1,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
 
-    render(<LoginForm />)
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    )
+    await user.type(screen.getByLabelText(/username/i), 'testuser')
+    await user.type(screen.getByLabelText(/password/i), 'password123')
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {
@@ -109,7 +133,13 @@ describe('LoginForm', () => {
       response: { data: { message: 'Invalid credentials' } },
     })
 
-    render(<LoginForm />)
+    render(
+      <QueryClientProvider client={queryClient}>
+        <LoginForm />
+      </QueryClientProvider>
+    )
+    await user.type(screen.getByLabelText(/username/i), 'testuser')
+    await user.type(screen.getByLabelText(/password/i), 'wrongpassword')
     await user.click(screen.getByRole('button', { name: /sign in/i }))
 
     await waitFor(() => {

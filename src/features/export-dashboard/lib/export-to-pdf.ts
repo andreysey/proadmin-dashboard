@@ -140,7 +140,9 @@ export const exportToPdf = ({
   doc.text(t('dashboard.export.footer'), pageWidth / 2, 285, { align: 'center' })
 
   // Save
-  doc.save(`${filename || 'report'}.pdf`)
+  const finalFilename =
+    filename || (stats && dateRange ? `dashboard-report-${dateRange}` : 'report')
+  doc.save(`${finalFilename}.pdf`)
 }
 
 // Helpers

@@ -282,6 +282,8 @@ export const LoginForm = () => {
                       email: `recruiter+${selectedRole.toLowerCase()}@demo.proadmin`,
                       role: selectedRole,
                       image: '',
+                      createdAt: new Date().toISOString(),
+                      updatedAt: new Date().toISOString(),
                     }
 
                     // Set dummy token to pass auth guards

@@ -18,6 +18,8 @@ const MOCK_USERS_SEED: User[] = [
     lastName: 'Medhurst',
     role: 'ADMIN',
     image: 'https://i.pravatar.cc/150?u=1',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: '2',
@@ -28,6 +30,8 @@ const MOCK_USERS_SEED: User[] = [
     lastName: 'Quigley',
     role: 'USER',
     image: 'https://i.pravatar.cc/150?u=2',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
     id: '3',
@@ -38,6 +42,8 @@ const MOCK_USERS_SEED: User[] = [
     lastName: 'Hills',
     role: 'MODERATOR',
     image: 'https://i.pravatar.cc/150?u=3',
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ]
 
@@ -52,6 +58,8 @@ for (let i = 4; i <= 20; i++) {
     lastName: `${i}`,
     role: i % 3 === 0 ? 'ADMIN' : i % 3 === 1 ? 'USER' : 'MODERATOR',
     image: `https://i.pravatar.cc/150?u=${i}`,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   })
 }
 
@@ -76,6 +84,9 @@ export const handlers = [
       gender: 'male',
       role: role.toUpperCase(),
       image: `https://github.com/andreysey.png`,
+      displayId: 15,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...', // Mock JWT
       refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
     })
@@ -207,6 +218,9 @@ export const handlers = [
       gender: 'male',
       role: 'ADMIN',
       image: `https://github.com/andreysey.png`,
+      displayId: 15,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     })
   }),
 
@@ -232,16 +246,35 @@ export const handlers = [
     return HttpResponse.json(finalUser)
   }),
 
+  http.patch(`${BASE_URL}/users/bulk-update`, async ({ request }) => {
+    const { ids, role } = (await request.json()) as { ids: string[]; role: string }
+    await delay(1000)
+
+    ids.forEach((id) => {
+      const existingUpdates = updatedUsers.get(id) ?? {}
+      updatedUsers.set(id, { ...existingUpdates, role })
+    })
+
+    return HttpResponse.json({ success: true, count: ids.length })
+  }),
+
   http.delete(`${BASE_URL}/users/:id`, async ({ params, request }) => {
     const url = new URL(request.url)
     if (url.searchParams.has('bypass')) return passthrough()
 
     const { id } = params as { id: string }
+    const user = MOCK_USERS_SEED.find((u) => u.id === id)
+
+    if (!user) {
+      return new HttpResponse(null, { status: 404 })
+    }
+
     deletedUserIds.add(id)
     await delay(1000)
 
+    // Return the full user object as the backend does, so the toast can show the name
     return HttpResponse.json({
-      id: id,
+      ...user,
       isDeleted: true,
       deletedOn: new Date().toISOString(),
     })
@@ -358,5 +391,55 @@ export const handlers = [
       orders: Math.floor(Math.random() * 300) + 100,
     }))
     return HttpResponse.json(revenueData)
+  }),
+
+  http.get(`${BASE_URL}/activity-log`, async ({ request }) => {
+    const url = new URL(request.url)
+    const skip = parseInt(url.searchParams.get('skip') ?? '0')
+    const take = parseInt(url.searchParams.get('take') ?? '50')
+
+    await delay(800)
+
+    const eventTypes = [
+      'user_signup',
+      'system_alert',
+      'payment_success',
+      'user_delete',
+      'user_login',
+      'user_updated',
+    ] as const
+
+    const eventTitles: Record<string, string> = {
+      user_signup: 'New User Registered',
+      user_delete: 'User Account Deleted',
+      system_alert: 'Server Load High',
+      payment_success: 'Payment Received',
+      user_login: 'User Logged In',
+      user_updated: 'User Profile Updated',
+    }
+
+    // Generate 100 historical events
+    const allEvents = Array.from({ length: 100 }).map((_, i) => {
+      const type = eventTypes[i % eventTypes.length]
+      return {
+        id: `log-${i + 1}`,
+        type,
+        title: eventTitles[type],
+        description: `Detailed audit trail entry for event ${i + 1}. System automatically verified the transaction.`,
+        timestamp: new Date(Date.now() - i * 1000 * 60 * 60).toISOString(), // One event per hour
+        userId: String((i % 20) + 1),
+        metadata: {
+          ip: `192.168.1.${i % 255}`,
+          userAgent: 'Mozilla/5.0 (Mock Agent)',
+        },
+      }
+    })
+
+    const paginatedEvents = allEvents.slice(skip, skip + take)
+
+    return HttpResponse.json({
+      items: paginatedEvents,
+      total: allEvents.length,
+    })
   }),
 ]

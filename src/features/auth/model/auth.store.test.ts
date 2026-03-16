@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { act } from '@testing-library/react'
 import { useAuthStore } from './auth.store'
 import { tokenStorage } from '@/shared/lib/auth'
+import { ROLES } from '@/entities/user'
 
 // Mock tokenStorage
 vi.mock('@/shared/lib/auth', () => ({
@@ -19,8 +20,11 @@ describe('Auth Store', () => {
     firstName: 'Test',
     lastName: 'User',
     username: 'test',
-    role: 'admin' as const,
+    role: ROLES.ADMIN,
     image: 'https://i.pravatar.cc/150?u=test',
+    displayId: 1,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   }
 
   beforeEach(() => {
