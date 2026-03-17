@@ -7,6 +7,8 @@ vi.mock('@/shared/api', () => ({
   api: {
     get: vi.fn(),
     delete: vi.fn(),
+    patch: vi.fn(),
+    post: vi.fn(),
     put: vi.fn(),
   },
 }))
@@ -18,25 +20,31 @@ describe('User API', () => {
 
   const mockUser = {
     id: '1',
-    username: 'testu',
-    email: 'test@example.com',
+    displayId: 1,
+    username: 'testuser',
     firstName: 'Test',
     lastName: 'User',
+    email: 'test@example.com',
+    role: 'ADMIN' as const,
     image: 'https://example.com/avatar.jpg',
-    role: 'user' as const,
+    createdAt: '2024-01-01T00:00:00.000Z',
+    updatedAt: '2024-01-01T00:00:00.000Z',
   }
 
   const mockUsersResponse = {
-    users: [mockUser],
-    total: 100,
-    skip: 0,
-    limit: 10,
+    data: [mockUser],
+    meta: {
+      total: 1,
+      page: 1,
+      limit: 10,
+      totalPages: 1,
+    },
   }
 
   describe('getUsers', () => {
     it('should fetch users with params', async () => {
       vi.mocked(api.get).mockResolvedValue({ data: mockUsersResponse })
-      const params = { skip: 10, limit: 5, q: 'search' }
+      const params = { page: 1, limit: 10 }
 
       const result = await getUsers(params)
 
@@ -72,11 +80,11 @@ describe('User API', () => {
       const updateData = { firstName: 'Updated' }
       const updatedUser = { ...mockUser, ...updateData }
 
-      vi.mocked(api.put).mockResolvedValue({ data: updatedUser })
+      vi.mocked(api.patch).mockResolvedValue({ data: updatedUser })
 
       const result = await updateUser('1', updateData)
 
-      expect(api.put).toHaveBeenCalledWith('/users/1', updateData)
+      expect(api.patch).toHaveBeenCalledWith('/users/1', updateData)
       expect(result).toEqual(updatedUser)
     })
   })

@@ -37,7 +37,17 @@ describe('useDeleteUser', () => {
   })
 
   it('should call deleteUser API and invalidate queries on success', async () => {
-    vi.mocked(deleteUser).mockResolvedValue({ isDeleted: true })
+    vi.mocked(deleteUser).mockResolvedValue({
+      id: '123',
+      displayId: 123,
+      username: 'testuser',
+      firstName: 'Test',
+      lastName: 'User',
+      email: 'test@example.com',
+      role: 'USER',
+      createdAt: '2024-01-01T00:00:00.000Z',
+      updatedAt: '2024-01-01T00:00:00.000Z',
+    })
 
     const { result } = renderHook(() => useDeleteUser(), { wrapper: createWrapper() })
 
@@ -46,7 +56,7 @@ describe('useDeleteUser', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true))
 
     expect(deleteUser).toHaveBeenCalledWith('123')
-    expect(toast.success).toHaveBeenCalledWith('User #123 deleted successfully')
+    expect(toast.success).toHaveBeenCalledWith('User @testuser (#123) deleted successfully')
     // Note: verifying cache invalidation directly is hard without a spy on queryClient.
     // But we trust standard useMutation behavior if onSuccess is executed.
   })
