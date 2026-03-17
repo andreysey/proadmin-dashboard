@@ -6,6 +6,7 @@ import { setForbiddenHandler, setUnauthorizedHandler } from './shared/api'
 import { useAuthStore } from './features/auth'
 import { router } from './app'
 import { initSentry } from './shared/config/sentry'
+import { config } from './shared/config'
 import './shared/config/i18n'
 
 initSentry()
@@ -23,8 +24,8 @@ setForbiddenHandler(() => {
 })
 
 async function enableMocking() {
-  // Only enable mocks if explicitly requested via env variable
-  if (import.meta.env.VITE_ENABLE_MOCKS !== 'true') {
+  // Only enable mocks if explicitly requested via config
+  if (!config.api.enableMocks) {
     return
   }
 

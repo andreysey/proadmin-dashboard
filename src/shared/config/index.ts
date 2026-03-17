@@ -1,8 +1,10 @@
 import { z } from 'zod'
 
 const envSchema = z.object({
-  VITE_API_URL: z.url().default('https://dummyjson.com'),
-  VITE_ENABLE_MOCKS: z.preprocess((val) => val === 'true', z.boolean()).default(false),
+  VITE_API_URL: z.string().min(1).default('https://dummyjson.com'),
+  VITE_ENABLE_MOCKS: z
+    .preprocess((val) => val === 'true' || val === true || val === '1', z.boolean())
+    .default(false),
 })
 
 const env = envSchema.parse(import.meta.env)
