@@ -67,9 +67,9 @@ export const UserListToolbar = ({
   }
 
   return (
-    <div className="flex items-center justify-between px-2">
-      <div className="flex items-center gap-4">
-        <div className="w-72">
+    <div className="flex flex-col gap-4 px-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+        <div className="w-full sm:w-72">
           <Input
             aria-label={t('users.search_placeholder')}
             placeholder={t('users.search_placeholder')}
@@ -83,7 +83,7 @@ export const UserListToolbar = ({
           onExportPdf={handleExportPdf}
         />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2 sm:justify-end">
         <Button
           variant="outline"
           size="sm"
